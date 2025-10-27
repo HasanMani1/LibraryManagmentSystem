@@ -9,7 +9,7 @@ If you see a commit message like:
 Updated database structure,
 Modified user table,
 Added activity_log table,
-**Then they should:
+**Then You should:
 Go to phpMyAdmin
 Delete the existing librarydb
 Create a new one named librarydb again
