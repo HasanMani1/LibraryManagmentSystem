@@ -14,6 +14,7 @@ if (!isset($_SESSION['role_id']) || $_SESSION['role_id'] != 1) {
 if (isset($_GET['delete'])) {
     $delete_id = intval($_GET['delete']);
     $conn->query("DELETE FROM user WHERE user_id = $delete_id");
+    logActivity($_SESSION['user_id'], "Deleted user ID: $delete_id");
     header("Location: manage_users.php?deleted=1");
     exit;
 }
@@ -187,10 +188,9 @@ $roles = $conn->query("SELECT role_id, role_name FROM role");
 </head>
 <body>
 
-<?php if (isset($_GET['deleted'])): logActivity($_SESSION['user_id'], "Deleted user ID: $delete_id");?>
+<?php if (isset($_GET['deleted'])):?>
     <div class="alert alert-success">✅ User deleted successfully!</div>
-<?php elseif (isset($_GET['updated'])): logActivity($_SESSION['user_id'], "Updated user ID: $user_id");
-?>
+<?php elseif (isset($_GET['updated'])):?>
     <div class="alert alert-success">✅ User updated successfully!</div>
 <?php endif; ?>
 
