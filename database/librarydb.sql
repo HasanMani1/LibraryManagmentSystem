@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Anamakine: 127.0.0.1
--- Üretim Zamanı: 26 Eki 2025, 07:35:50
+-- Üretim Zamanı: 27 Eki 2025, 13:38:08
 -- Sunucu sürümü: 10.4.32-MariaDB
 -- PHP Sürümü: 8.2.12
 
@@ -33,6 +33,30 @@ CREATE TABLE `account_blockage` (
   `block_date` datetime DEFAULT current_timestamp(),
   `reason` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `activity_log`
+--
+
+CREATE TABLE `activity_log` (
+  `log_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `action` varchar(255) NOT NULL,
+  `timestamp` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Tablo döküm verisi `activity_log`
+--
+
+INSERT INTO `activity_log` (`log_id`, `user_id`, `action`, `timestamp`) VALUES
+(1, 1, 'Logged in successfully', '2025-10-27 14:14:22'),
+(2, 1, 'Logged out', '2025-10-27 14:14:43'),
+(3, 5, 'Logged in successfully', '2025-10-27 14:15:03'),
+(4, 5, 'Logged out', '2025-10-27 14:15:06'),
+(5, 1, 'Logged in successfully', '2025-10-27 14:15:12');
 
 -- --------------------------------------------------------
 
@@ -313,6 +337,16 @@ CREATE TABLE `role` (
   `role_name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Tablo döküm verisi `role`
+--
+
+INSERT INTO `role` (`role_id`, `role_name`) VALUES
+(1, 'Admin'),
+(2, 'Librarian'),
+(3, 'Teacher'),
+(4, 'Student');
+
 -- --------------------------------------------------------
 
 --
@@ -330,6 +364,17 @@ CREATE TABLE `user` (
   `remember_me_token` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Tablo döküm verisi `user`
+--
+
+INSERT INTO `user` (`user_id`, `name`, `email`, `password`, `role_id`, `reset_token`, `token_expiry`, `remember_me_token`, `created_at`) VALUES
+(1, 'Hasan Mani Bulli', '21330969@emu.edu.tr', '$2y$10$Ky4yCy4ClKShEWYAs92yxuSIj8EuChYYPPkhqZ92mHNQPA7aXbHSm', 1, NULL, NULL, NULL, '2025-10-27 10:29:09'),
+(2, 'Bartu Bulli', 'test123@gmail.com', '$2y$10$OMzdSi3NKnRER/EQcJut7.NqfwMx3kk9o/ZEUNYaZpoU2DvntIelm', 4, NULL, NULL, NULL, '2025-10-27 10:43:31'),
+(3, 'Halide Sarıçizmeli', 'halide@emu.edu.tr', '$2y$10$pv6tIsd3AkwuLNDjlbvdbOAJDOkMpiaQRt8Icg6ApJMxXnAqTSg5i', 3, NULL, NULL, NULL, '2025-10-27 11:18:40'),
+(5, 'Ahmet Kutucu', 'kutucu@gmail.com', '$2y$10$Gdx6KObZ4IQs5O3NTUcAQ.0cDk.tzvD./BvNprYHD85gO93m8/voi', 2, NULL, NULL, NULL, '2025-10-27 12:43:26'),
+(6, 'Ali Veli', '2564218@emu.edu.tr', '$2y$10$Vm3cp5xb3hfQFTMpm2oIneCiCXKCbpnAL4RTOlx8qBtMmg9u.TjDi', 4, NULL, NULL, NULL, '2025-10-27 13:44:56');
 
 -- --------------------------------------------------------
 
@@ -354,6 +399,13 @@ CREATE TABLE `wishlist` (
 --
 ALTER TABLE `account_blockage`
   ADD PRIMARY KEY (`block_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Tablo için indeksler `activity_log`
+--
+ALTER TABLE `activity_log`
+  ADD PRIMARY KEY (`log_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
@@ -529,6 +581,12 @@ ALTER TABLE `account_blockage`
   MODIFY `block_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- Tablo için AUTO_INCREMENT değeri `activity_log`
+--
+ALTER TABLE `activity_log`
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- Tablo için AUTO_INCREMENT değeri `book`
 --
 ALTER TABLE `book`
@@ -646,13 +704,13 @@ ALTER TABLE `reminder`
 -- Tablo için AUTO_INCREMENT değeri `role`
 --
 ALTER TABLE `role`
-  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `wishlist`
@@ -669,6 +727,12 @@ ALTER TABLE `wishlist`
 --
 ALTER TABLE `account_blockage`
   ADD CONSTRAINT `account_blockage_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Tablo kısıtlamaları `activity_log`
+--
+ALTER TABLE `activity_log`
+  ADD CONSTRAINT `activity_log_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Tablo kısıtlamaları `book`
