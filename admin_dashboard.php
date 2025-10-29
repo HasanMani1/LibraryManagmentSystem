@@ -132,6 +132,7 @@ $conn->close();
             <li><a href="manage_users.php">MANAGE USERS</a></li>
             <li><a href="add_role.php">MANAGE ROLES</a></li>
             <li><a href="activity_log.php">ACTIVITY LOG</a></li>
+            <li><a href="event_proposal.php">EVENTS</a></li>
             <li><a href="logout.php">LOGOUT</a></li>
         </ul>
     </nav>

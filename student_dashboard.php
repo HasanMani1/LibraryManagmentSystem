@@ -50,6 +50,7 @@ $name = $_SESSION['name'];
             <li><a href="#">BOOKS</a></li>
             <li><a href="#">E-BOOKS</a></li>
             <li><a href="#">EVENTS</a></li>
+            <li><a href="track_event_attendance">ATTENDANCE</a></li>
             <li><a href="logout.php">LOGOUT</a></li>
         </ul>
     </nav>

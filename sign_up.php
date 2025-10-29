@@ -1,11 +1,14 @@
 <?php
+session_start();
 include 'db_connect.php';
 include 'log_activity.php';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
 
     // ✅ Restrict to EMU emails only
     if (!preg_match('/@emu\.edu\.tr$/', $email)) {
