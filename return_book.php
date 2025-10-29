@@ -4,7 +4,7 @@ include 'db_connect.php';
 include 'back_button.php';
 include 'log_activity.php';
 
- //✅ Ensure the user is logged in
+ ✅ Ensure the user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: user_login.php");
    exit;
