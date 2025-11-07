@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 29, 2025 at 05:14 PM
+-- Generation Time: Nov 07, 2025 at 10:20 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -108,7 +108,11 @@ INSERT INTO `activity_log` (`log_id`, `user_id`, `action`, `timestamp`) VALUES
 (54, 12, 'Logged in successfully', '2025-10-29 13:35:26'),
 (55, 12, 'Logged out', '2025-10-29 13:35:54'),
 (56, 12, 'Logged in successfully', '2025-10-29 15:17:02'),
-(57, 12, 'Logged out', '2025-10-29 15:18:24');
+(57, 12, 'Logged out', '2025-10-29 15:18:24'),
+(58, 14, 'Logged in successfully', '2025-11-07 22:30:06'),
+(59, 14, 'Logged in successfully', '2025-11-07 22:58:34'),
+(60, 14, 'Logged out', '2025-11-07 23:14:41'),
+(61, 15, 'Logged in successfully', '2025-11-07 23:17:20');
 
 -- --------------------------------------------------------
 
@@ -458,7 +462,9 @@ INSERT INTO `user` (`user_id`, `name`, `email`, `password`, `role_id`, `reset_to
 (10, 'Arther', '21900005@emu.edu.tr', '$2y$10$P9e5VZRllI8im8tcEoUKG.lPdMm.5DdUhanijeY.x/iRSj8wZ9NGS', 4, NULL, NULL, NULL, '2025-10-29 11:15:09'),
 (11, 'Arther', '2612345@emu.edu.tr', '$2y$10$C/dl7AAkXJRpSksFW0C1UeeoPK4KSQ.UJ5vFxVyzlBJsIERkLUYh.', 4, NULL, NULL, NULL, '2025-10-29 11:23:31'),
 (12, 'Arther', '12345@emu.edu.tr', '$2y$10$GNHSLFiZO2NU6.s1pzOmYOtBKWFMFB8ZGilzL.LxQBcV5MMr6akTO', 4, NULL, NULL, NULL, '2025-10-29 12:42:21'),
-(13, 'Chantel', 'chantel@gmail.com', '$2y$10$1ObWbz4vVgv99xeZfkJFPOfC8tCaKLetsYMuETjk6NtVvCAKzE75u', 2, NULL, NULL, NULL, '2025-10-29 12:44:27');
+(13, 'Chantel', 'chantel@gmail.com', '$2y$10$1ObWbz4vVgv99xeZfkJFPOfC8tCaKLetsYMuETjk6NtVvCAKzE75u', 2, NULL, NULL, NULL, '2025-10-29 12:44:27'),
+(14, 'AYA', 'aya@emu.edu.tr', '$2y$10$XJQIy15dKE9o7NjSOqyAy.j61MxEXW0WDL9Xv32NUJlPgZSSUkLJ6', 3, NULL, NULL, NULL, '2025-11-07 22:25:04'),
+(15, 'Aliyu Adamu Musa', '22900908@emu.edu.tr', '$2y$10$hsMICrY6Bm7K3SyToxtFxOcVUPnXLGdUoEFITm1vCfa0E2aKYpCee', 1, NULL, NULL, NULL, '2025-11-07 23:15:46');
 
 -- --------------------------------------------------------
 
@@ -668,7 +674,7 @@ ALTER TABLE `account_blockage`
 -- AUTO_INCREMENT for table `activity_log`
 --
 ALTER TABLE `activity_log`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `book`
@@ -794,7 +800,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `wishlist`
