@@ -66,9 +66,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         /* Centered form styling */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            background-image: url('images/OIP (4).webp');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
             margin: 0;
-            padding-top: 120px; /* space for back button */
+            padding: 0;
         }
 
         form {
@@ -116,6 +120,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border-radius: 6px;
             text-align: center;
         }
+         .event-card {
+            max-width: 600px;
+            margin: 60px auto;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
         .success { background-color: #d4edda; color: #155724; }
         .error { background-color: #f8d7da; color: #721c24; }
         .warning { background-color: #fff3cd; color: #856404; }
@@ -123,7 +136,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-<form method="POST">
+
+<form class="event-card"method="POST">
     <h3>Register New User</h3>
     <input type="text" name="name" placeholder="Full Name" required>
     <input type="email" name="email" placeholder="Email Address" required>
@@ -139,6 +153,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <button type="submit">Register</button>
 </form>
+
 
 </body>
 </html>

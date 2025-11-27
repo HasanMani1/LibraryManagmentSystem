@@ -62,9 +62,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         /* Centered form styling */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            background-image: url('images/saer.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
             margin: 0;
-            padding-top: 120px; /* pushes content below back button */
+            padding: 0;
         }
 
         form {
@@ -112,6 +116,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border-radius: 6px;
             text-align: center;
         }
+        .event-card {
+            max-width: 600px;
+            margin: 60px auto;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
         .success { background-color: #d4edda; color: #155724; }
         .error { background-color: #f8d7da; color: #721c24; }
         .warning { background-color: #fff3cd; color: #856404; }
@@ -120,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 
 <!-- Your form -->
-<form method="POST">
+<form class="event-card" method="POST">
     <h3>Add New Role</h3>
     <input type="text" name="role_name" placeholder="Enter role name" required>
     <button type="submit">Add Role</button>

@@ -1,9 +1,7 @@
 <?php
-include 'db_connect.php'; // your database connection file
+include 'db_connect.php'; 
 session_start();
 
-// OPTIONAL: automatically get the user proposing the event
-// assuming you store username or user_id in $_SESSION
 $proposed_by = $_SESSION['user_id'] ?? null;
 
 if (isset($_POST['submit'])) {
@@ -11,12 +9,10 @@ if (isset($_POST['submit'])) {
     $description = trim($_POST['description']);
     $capacity = intval($_POST['capacity']);
     
-    // if the form includes a "proposed_by" field manually
     if (empty($proposed_by)) {
         $proposed_by = trim($_POST['proposed_by']);
     }
 
-    // ✅ Insert WITHOUT event_id (it’ll be approved later)
     $sql = "INSERT INTO event_proposal (title, description, capacity, proposed_by) 
             VALUES (?, ?, ?, ?)";
 
@@ -36,7 +32,7 @@ if (isset($_POST['submit'])) {
     }
 
     $stmt->close();
-}
+} 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,10 +40,51 @@ if (isset($_POST['submit'])) {
 <meta charset="UTF-8">
 <title>Submit Event Proposal</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+        background-image: url('images/img_14901_3.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+        margin: 0;
+        padding: 0;
+        }
+
+
+        .event-card {
+            max-width: 600px;
+            margin: 60px auto;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+
+        .header-text {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: #2c3e50;
+        }
+
+        .btn-custom {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body class="bg-light p-5">
-<div class="container bg-white p-4 rounded shadow-sm" style="max-width:600px;">
-    <h3 class="text-center mb-4">Submit a New Event Proposal</h3>
+    
+<div class="event-card" >
+
+    <div class="header-text"> New Event Proposal</div>
+
     <form method="POST">
         <div class="mb-3">
             <label class="form-label">Event Title</label>

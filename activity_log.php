@@ -27,10 +27,15 @@ $result = $conn->query($query);
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
 body {
-    background-color: #f5f5f5;
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding-top: 120px;
+            font-family: 'Poppins', sans-serif;
+            font-family: Arial, sans-serif;
+            background-image: url('images/saer.jpg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            background-size: cover;
+            margin: 0;
+            padding-top: 120px;
 }
 .container {
     width: 85%;

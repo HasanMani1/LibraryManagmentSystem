@@ -58,15 +58,33 @@ $conn->close();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f5f5f5;
-            background-image: url('images/library-bg.jpg');
+         body {
+            background-image: url('images/library-books.jpg');
             background-size: cover;
             background-repeat: no-repeat;
-            background-attachment: fixed;
             background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
         }
+        section {
+            background: transparent;
+        }
+        h2 {
+            display: inline-block;                  
+            padding: 12px 25px;                     
+            background: rgba(255, 255, 255, 0.25);  
+            backdrop-filter: blur(10px);            
+            -webkit-backdrop-filter: blur(10px);    
+            border-radius: 12px;                    
+            color: white;                           
+            font-weight: bold;
+        }
+        p {
+            color: white;
+            font-size: 18px;
+        }
+        
 
    .summary-section {
     display: flex;
@@ -129,9 +147,6 @@ $conn->close();
     <nav>
         <ul>
             <li><a href="home.html">HOME</a></li>
-            <li><a href="manage_users.php">MANAGE USERS</a></li>
-            <li><a href="add_role.php">MANAGE ROLES</a></li>
-            <li><a href="activity_log.php">ACTIVITY LOG</a></li>
             <li><a href="event_proposal.php">EVENTS</a></li>
             <li><a href="logout.php">LOGOUT</a></li>
         </ul>

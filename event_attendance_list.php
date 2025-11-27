@@ -31,18 +31,25 @@ $result = $conn->query($sql);
 <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            background-image: url('images/img_14901_3.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
             margin: 0;
-            padding-top: 120px;
+            padding: 0;
         }
 
         .container {
             width: 90%;
             margin: auto;
-            background: #ffffff;
+            background: rgba(255,255,255,0.85);
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        section {
+            background: transparent;
         }
 
         h2 {
@@ -68,8 +75,8 @@ $result = $conn->query($sql);
         tr:hover {
             background-color: #f2f2f2;
         }
-                .alert-success { background-color: #d4edda; color: #155724; }
-               .back-btn {
+        .alert-success { background-color: #d4edda; color: #155724; }
+        .back-btn {
             position: fixed;
             top: 25px;
             left: 25px;
@@ -110,6 +117,7 @@ $result = $conn->query($sql);
         </header>
 
 <section>
+    <br>
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <a href="event_list.php" class="btn btn-secondary back-btn">

@@ -60,9 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // ✅ Fetch user's active borrowings
 $active = [];
-$q = "
-    SELECT 
-        br.borrowing_id,
+$q = "SELECT   br.borrowing_id,
         b.title,
         b.author,
         br.borrow_date,
@@ -90,6 +88,7 @@ while ($r = $res->fetch_assoc()) $active[] = $r;
   <link rel="stylesheet" href="style.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
+  
     h1 {
         text-align: center;
         margin-bottom: 20px;
@@ -110,16 +109,6 @@ while ($r = $res->fetch_assoc()) $active[] = $r;
         box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         text-align: center;
     }
-    button {
-            background: linear-gradient(135deg, #007bff, #00bfff);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: 0.3s ease-in-out;
-        }
 
         button:hover {
             background: linear-gradient(135deg, #0056b3, #0080ff);
@@ -136,7 +125,7 @@ while ($r = $res->fetch_assoc()) $active[] = $r;
 
         .error { background-color: #f8d7da; color: #721c24; }
         .warning { background-color: #fff3cd; color: #856404; }
-               .back-btn {
+        .back-btn {
             position: fixed;
             top: 25px;
             left: 25px;

@@ -33,7 +33,34 @@ $name = $_SESSION['name'];
     <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body style="background-color: #f5f5f5;">
+<style>
+         body {
+            background-image: url('images/library-books.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+        section {
+            background: transparent;
+        }
+        h2 {
+            display: inline-block;                  
+            padding: 12px 25px;                     
+            background: rgba(255, 255, 255, 0.25);  
+            backdrop-filter: blur(10px);            
+            -webkit-backdrop-filter: blur(10px);    
+            border-radius: 12px;                    
+            color: white;                           
+            font-weight: bold;
+        }
+
+
+
+</style>
+<body >
 
 <header>
     <div class="logo">

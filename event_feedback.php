@@ -1,67 +1,152 @@
 <?php
 include 'db_connect.php';
-session_start();
 
-// ✅ Check login
-if (!isset($_SESSION['user_id'])) {
-    echo "<script>alert('Please log in first.'); window.location='sign_up.php';</script>";
-    exit;
-}
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-$user_id = intval($_SESSION['user_id']);
-
-// ✅ Check if event_id is provided
-if (!isset($_GET['event_id']) || !is_numeric($_GET['event_id'])) {
-    echo "<script>alert('Invalid event selected.'); window.location='event_list.php';</script>";
-    exit;
-}
-
-$event_id = intval($_GET['event_id']);
-
-// ✅ Verify registration
-$check = $conn->prepare("SELECT * FROM event_attendance WHERE user_id = ? AND event_id = ?");
-$check->bind_param("ii", $user_id, $event_id);
-$check->execute();
-$registered = $check->get_result();
-
-if ($registered->num_rows == 0) {
-    echo "<script>alert('⚠️ You are not registered for this event.'); window.location='my_events.php';</script>";
-    exit; 
-}
-
-// ✅ Handle feedback submission
+// Handle Form Submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $feedback = trim($_POST['feedback']);
 
-    $sql = "UPDATE event_attendance SET feedback = ? WHERE event_id = ? AND user_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sii", $feedback, $event_id, $user_id);
-    $stmt->execute();
+    $event_name = trim($_POST['event_name']);
+    $rating     = intval($_POST['rating']);
+    $comments   = trim($_POST['comments']);
+    $email      = trim($_POST['email']);
 
-    echo "<script>alert('✅ Thank you for your feedback!'); window.location='my_events.php';</script>";
-    exit;
+    if (empty($event_name) || empty($rating) || empty($comments)) {
+        echo "Missing required fields.";
+        exit;
+    }
+
+    $stmt = $conn->prepare("INSERT INTO event_feedback (event_name, rating, comments, email) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("siss", $event_name, $rating, $comments, $email);
+
+    if ($stmt->execute()) {
+        $message = "Thank you! Your feedback has been saved.";
+    } else {
+        $message = "Database error: " . $conn->error;
+    }
 }
 
-// ✅ Fetch event title safely
-$event_stmt = $conn->prepare("SELECT title FROM event WHERE event_id = ?");
-$event_stmt->bind_param("i", $event_id);
-$event_stmt->execute();
-$event = $event_stmt->get_result()->fetch_assoc();
+// Fetch All Feedback
+$result = $conn->query("SELECT * FROM event_feedback ORDER BY id DESC");
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Submit Feedback</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+   <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>Event Feedback</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('images/img_14901_3.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+        section {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;   
+            align-items: center;        
+            background: transparent;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            background: rgba(255,255,255,0.85);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .header-text {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 700;
+            font-size: 2rem;
+            color: #141313ff;
+        }
+
+        .msg {
+            background: #d4edda;
+            padding: 15px;
+            border-left: 4px solid #28a745;
+            margin-bottom: 20px;
+            width: 60%;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #aaa;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+
+    </style>
 </head>
-<body class="p-4">
-<div class="container">
-    <h3>Feedback for <strong><?= htmlspecialchars($event['title'] ?? 'Unknown Event') ?></strong></h3>
-    <form method="POST">
-        <textarea name="feedback" class="form-control" rows="5" placeholder="Write your feedback here..." required></textarea><br>
-        <button type="submit" class="btn btn-primary">Submit Feedback</button>
-    </form>
-</div>
+
+    <body>
+
+    <?php if (!empty($message)): ?>
+        <div class="msg">
+            <?= $message ?>
+        </div>
+    <?php endif; ?>
+
+    <section>
+        
+        <div class="container">
+
+  
+  <div class="header-text">All Feedback</div>
+    <div class="table-responsive">
+        <table class="table table-bordered text-center">
+            <thead class="table-primary">
+            <tr>
+                <th>ID</th>
+                <th>Event</th>
+                <th>Rating</th>
+                <th>Comments</th>
+                <th>Email</th>
+                <th>Date</th>
+            </tr>
+            </thead>
+
+                <?php while ($row = $result->fetch_assoc()): ?>
+            <tr class="align-bottom">
+                <td><?= $row['id'] ?></td>
+                <td><?= $row['event_name'] ?></td>
+                <td><?= $row['rating'] ?></td>
+                <td><?= $row['comments'] ?></td>
+                <td><?= $row['email'] ?></td>
+                <td><?= $row['created_at'] ?></td>
+            </tr>
+        <?php endwhile; ?>
+        </table>
+    </div>
+    </div>
+ </section>
+
 </body>
 </html>

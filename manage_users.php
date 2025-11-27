@@ -61,7 +61,11 @@ $roles = $conn->query("SELECT role_id, role_name FROM role");
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            background-image: url('images/saer.jpg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            background-size: cover;
             margin: 0;
             padding-top: 120px;
         }

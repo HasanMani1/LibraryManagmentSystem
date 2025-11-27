@@ -64,8 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // ✅ Fetch eligible books (returned by user)
 $books = [];
-$q = "
-    SELECT DISTINCT b.book_id, b.title, b.author
+$q = " SELECT DISTINCT b.book_id, b.title, b.author
     FROM book b
     JOIN book_inventory bi ON b.book_id = bi.book_id
     JOIN borrowing br ON br.inventory_id = bi.inventory_id
