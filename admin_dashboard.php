@@ -208,6 +208,11 @@ $conn->close();
                 <a href="register.php" class="btn btn-primary">Add New User</a>
                 <a href="add_role.php" class="btn btn-success">Manage Roles</a>
                 <a href="manage_users.php" class="btn btn-primary">Manage Users</a>
+                <a href="manage_borrow.php" class="btn btn-primary">Manage Borrow Book</a>
+                <a href="manage_return.php" class="btn btn-primary">Manage Return Book</a>
+                <a href="borrow_book.php" class="btn btn-primary">Borrow Book</a>
+                <a href="return_book.php" class="btn btn-primary">Return Book</a>
+                <a href="rate_book.php" class="btn btn-primary">Rate Book</a>
                 <a href="activity_log.php" class="btn btn-success">Activity Log</a>
                 <a href="logout.php" class="btn btn-danger">Logout</a>
             </div>

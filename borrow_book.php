@@ -4,7 +4,7 @@ include 'db_connect.php';
 include 'back_button.php';
 include 'log_activity.php';
 
-// ✅ Check login (any logged-in user can borrow)
+// ✅ Only logged-in users can borrow
 if (!isset($_SESSION['user_id'])) {
     header("Location: user_login.php");
     exit;
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$book_id || !$due_date) {
         $errors[] = "Please select a book and due date.";
     } else {
-        // Check if a copy is available
+        // Check for available copy
         $q = "SELECT inventory_id FROM book_inventory WHERE book_id = ? AND is_available = 1 LIMIT 1";
         $stmt = $conn->prepare($q);
         $stmt->bind_param("i", $book_id);
@@ -35,14 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $row = $result->fetch_assoc();
             $inventory_id = $row['inventory_id'];
 
-            // Insert into borrowing table
+            // Insert borrowing record
             $q = "INSERT INTO borrowing (user_id, inventory_id, borrow_date, due_date, status_id)
                   VALUES (?, ?, CURDATE(), ?, 1)";
             $stmt = $conn->prepare($q);
             $stmt->bind_param("iis", $user_id, $inventory_id, $due_date);
 
             if ($stmt->execute()) {
-                // Mark that copy as unavailable
+                // Mark copy as unavailable
                 $conn->query("UPDATE book_inventory SET is_available = 0 WHERE inventory_id = $inventory_id");
 
                 // Log activity
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ✅ Fetch list of available books
+// ✅ Fetch available books
 $books = [];
 $q = "
     SELECT b.book_id, b.title, b.author, COUNT(bi.inventory_id) AS available_copies
@@ -69,97 +69,96 @@ $q = "
 $res = $conn->query($q);
 while ($r = $res->fetch_assoc()) $books[] = $r;
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Borrow a Book</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    .container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 80vh;
-        flex-direction: column;
-    }
-    .form {
-        background-color: rgba(255, 255, 255, 0.96);
-        width: 400px;
-        padding: 35px;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        text-align: center;
-    }  
-    button {
-            background: linear-gradient(135deg, #007bff, #00bfff);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: 0.3s ease-in-out;
-        }
-
-        button:hover {
-            background: linear-gradient(135deg, #0056b3, #0080ff);
-            transform: scale(1.05);
-        }
-
-        .alert {
-            width: 400px;
-            margin: 20px auto;
-            padding: 10px;
-            border-radius: 6px;
-            text-align: center;
-        }
-
-        .error { background-color: #f8d7da; color: #721c24; }
-        .warning { background-color: #fff3cd; color: #856404; }
-               .back-btn {
-            position: fixed;
-            top: 25px;
-            left: 25px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: linear-gradient(135deg, #007bff, #00bfff);
-            color: white;
-            font-weight: 600;
-            border: none;
-            border-radius: 50px;
-            padding: 10px 18px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            text-decoration: none;
-            transition: all 0.3s ease-in-out;
-            z-index: 1000;
-        }
-        .back-btn:hover {
-            background: linear-gradient(135deg, #0056b3, #0080ff);
-            transform: scale(1.05);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-            color: #f8f9fa;
-            text-decoration: none;
-        }
-        .back-btn i {
-            font-size: 18px;
-        }
-   
-
-  </style>
+<meta charset="UTF-8">
+<title>Borrow a Book</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('images/saer.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+    padding-top: 120px;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    flex-direction: column;
+}
+.form {
+    background-color: rgba(255,255,255,0.95);
+    width: 400px;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    text-align: center;
+}
+button {
+    background: linear-gradient(135deg, #007bff, #00bfff);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s ease-in-out;
+}
+button:hover {
+    background: linear-gradient(135deg, #0056b3, #0080ff);
+    transform: scale(1.05);
+}
+.alert {
+    width: 400px;
+    margin: 15px auto;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+}
+.alert-success { background-color: #d4edda; color: #155724; }
+.alert-error { background-color: #f8d7da; color: #721c24; }
+.back-btn {
+    position: fixed;
+    top: 25px;
+    left: 25px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #007bff, #00bfff);
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 18px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    z-index: 1000;
+}
+.back-btn:hover {
+    background: linear-gradient(135deg, #0056b3, #0080ff);
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    color: #f8f9fa;
+}
+.back-btn i { font-size: 18px; }
+</style>
 </head>
-<body style="background-color: #f5f5f5;">
+<body>
 
+<a href="admin_dashboard.php" class="back-btn"><i class="bi bi-arrow-left"></i> Back</a>
 
 <div class="container">
-<h1 style="text-align:center;">Borrow a Book</h1>
+<h1 style="font-weight: bold; color: blue;">Borrow a Book</h1>
+
 
 <?php foreach ($errors as $err): ?>
-  <div class="alert alert-danger"><?= htmlspecialchars($err) ?></div>
+  <div class="alert alert-error"><?= htmlspecialchars($err) ?></div>
 <?php endforeach; ?>
 
 <?php if ($success): ?>
@@ -169,7 +168,7 @@ while ($r = $res->fetch_assoc()) $books[] = $r;
 <?php if (empty($books)): ?>
   <p>No books available right now.</p>
 <?php else: ?>
-  <form method="post" class="form">
+<form method="post" class="form">
     <label for="book_id">Choose Book</label>
     <select name="book_id" id="book_id" required>
       <option value="">-- Select --</option>
@@ -183,10 +182,10 @@ while ($r = $res->fetch_assoc()) $books[] = $r;
     <label for="due_date">Due Date</label>
     <input type="date" name="due_date" id="due_date" required min="<?= date('Y-m-d', strtotime('+1 day')) ?>">
 
-    <button type="submit" class="btn btn-primary mt-3">Borrow</button>
-  </form>
+    <button type="submit" class="btn mt-3">Borrow</button>
+</form>
 <?php endif; ?>
 </div>
->
+
 </body>
 </html>
