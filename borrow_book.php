@@ -1,10 +1,9 @@
 <?php
 session_start();
 include 'db_connect.php';
-include 'back_button.php';
 include 'log_activity.php';
 
-// ✅ Only logged-in users can borrow
+// 🔐 Only logged-in users
 if (!isset($_SESSION['user_id'])) {
     header("Location: user_login.php");
     exit;
@@ -23,8 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "Please select a book and due date.";
     } else {
         // Check for available copy
-        $q = "SELECT inventory_id FROM book_inventory WHERE book_id = ? AND is_available = 1 LIMIT 1";
-        $stmt = $conn->prepare($q);
+        $stmt = $conn->prepare("SELECT inventory_id FROM book_inventory WHERE book_id = ? AND is_available = 1 LIMIT 1");
         $stmt->bind_param("i", $book_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -36,9 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $inventory_id = $row['inventory_id'];
 
             // Insert borrowing record
-            $q = "INSERT INTO borrowing (user_id, inventory_id, borrow_date, due_date, status_id)
-                  VALUES (?, ?, CURDATE(), ?, 1)";
-            $stmt = $conn->prepare($q);
+            $stmt = $conn->prepare("INSERT INTO borrowing (user_id, inventory_id, borrow_date, due_date, status_id) VALUES (?, ?, CURDATE(), ?, 1)");
             $stmt->bind_param("iis", $user_id, $inventory_id, $due_date);
 
             if ($stmt->execute()) {
@@ -48,7 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Log activity
                 logActivity($user_id, "Borrowed book copy ID: $inventory_id");
 
-                $success = "Book borrowed successfully!";
+                header("Location: borrow_book.php?success=1");
+                exit;
             } else {
                 $errors[] = "Borrow failed: " . $conn->error;
             }
@@ -58,17 +55,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // ✅ Fetch available books
 $books = [];
-$q = "
+$res = $conn->query("
     SELECT b.book_id, b.title, b.author, COUNT(bi.inventory_id) AS available_copies
     FROM book b
     JOIN book_inventory bi ON b.book_id = bi.book_id
     WHERE bi.is_available = 1
     GROUP BY b.book_id, b.title, b.author
     ORDER BY b.title
-";
-$res = $conn->query($q);
+");
 while ($r = $res->fetch_assoc()) $books[] = $r;
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,19 +82,32 @@ body {
     padding-top: 120px;
 }
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    flex-direction: column;
+    width: 90%;
+    max-width: 500px;
+    margin: 80px auto 50px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-.form {
-    background-color: rgba(255,255,255,0.95);
-    width: 400px;
-    padding: 35px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+h1 {
     text-align: center;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 25px;
+}
+form label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+form select, form input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 button {
     background: linear-gradient(135deg, #007bff, #00bfff);
@@ -107,6 +117,7 @@ button {
     border-radius: 6px;
     cursor: pointer;
     font-size: 16px;
+    width: 100%;
     transition: 0.3s ease-in-out;
 }
 button:hover {
@@ -114,8 +125,8 @@ button:hover {
     transform: scale(1.05);
 }
 .alert {
-    width: 400px;
-    margin: 15px auto;
+    width: 100%;
+    margin-bottom: 15px;
     padding: 10px;
     border-radius: 6px;
     text-align: center;
@@ -154,21 +165,20 @@ button:hover {
 <a href="admin_dashboard.php" class="back-btn"><i class="bi bi-arrow-left"></i> Back</a>
 
 <div class="container">
-<h1 style="font-weight: bold; color: blue;">Borrow a Book</h1>
-
+<h1>📚 Borrow a Book</h1>
 
 <?php foreach ($errors as $err): ?>
   <div class="alert alert-error"><?= htmlspecialchars($err) ?></div>
 <?php endforeach; ?>
 
-<?php if ($success): ?>
-  <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
+<?php if (isset($_GET['success'])): ?>
+  <div class="alert alert-success">✅ Book borrowed successfully!</div>
 <?php endif; ?>
 
 <?php if (empty($books)): ?>
   <p>No books available right now.</p>
 <?php else: ?>
-<form method="post" class="form">
+<form method="post">
     <label for="book_id">Choose Book</label>
     <select name="book_id" id="book_id" required>
       <option value="">-- Select --</option>
@@ -180,9 +190,9 @@ button:hover {
     </select>
 
     <label for="due_date">Due Date</label>
-    <input type="date" name="due_date" id="due_date" required min="<?= date('Y-m-d', strtotime('+1 day')) ?>">
+    <input type="date" name="due_date" id="due_date" required min="<?= date('Y-m-d') ?>">
 
-    <button type="submit" class="btn mt-3">Borrow</button>
+    <button type="submit">Borrow</button>
 </form>
 <?php endif; ?>
 </div>

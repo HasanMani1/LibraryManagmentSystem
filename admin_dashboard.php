@@ -213,6 +213,7 @@ $conn->close();
                 <a href="borrow_book.php" class="btn btn-primary">Borrow Book</a>
                 <a href="return_book.php" class="btn btn-primary">Return Book</a>
                 <a href="rate_book.php" class="btn btn-primary">Rate Book</a>
+                <a href="manage_book.php" class="btn btn-primary">Manage Book</a>
                 <a href="activity_log.php" class="btn btn-success">Activity Log</a>
                 <a href="logout.php" class="btn btn-danger">Logout</a>
             </div>

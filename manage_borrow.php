@@ -1,7 +1,6 @@
 <?php
 session_start();
 include 'db_connect.php';
-include 'back_button.php';
 include 'log_activity.php';
 
 // ✅ Only logged-in users can access
