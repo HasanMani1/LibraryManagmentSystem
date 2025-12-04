@@ -1,11 +1,10 @@
 <?php
 session_start();
 include 'db_connect.php';
-include 'log_activity.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit;
+    header("Location: user_login.php");
+    exit; 
 }
 
 $user_id = $_SESSION['user_id'];

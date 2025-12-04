@@ -26,7 +26,7 @@ if (isset($_POST['submit'])) {
 
     if ($stmt->affected_rows > 0) {
         echo "<script>alert('🎉 Event proposal submitted successfully! Awaiting approval.');</script>";
-        echo "<script>window.location.href='event_proposal.php';</script>";
+        echo "<script>window.location.href='teacher_dashboard.php';</script>";
     } else {
         echo "<script>alert('❌ Something went wrong. Please try again.');</script>";
     }

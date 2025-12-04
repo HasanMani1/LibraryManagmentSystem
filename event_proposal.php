@@ -192,9 +192,16 @@ $result = $conn->query("SELECT * FROM event_proposal ORDER BY proposal_id DESC")
                     <?php if ($row['status'] == 'Pending'): ?>
                         <a href="?approve_id=<?= $row['proposal_id'] ?>" class="btn btn-success btn-sm">Approve</a>
                         <a href="?reject_id=<?= $row['proposal_id'] ?>" class="btn btn-danger btn-sm">Reject</a>
-                    <?php else: ?>
-                        <em>N/A</em>
-                    <?php endif; ?>
+                        <?php elseif ($row['status'] == 'Approved'): ?>
+                            <span class="text-success fw-bold">
+                                <i class="bi bi-check-circle-fill"></i> Approved
+                            </span>
+
+                        <?php else: ?>
+                            <span class="text-danger fw-bold">
+                                <i class="bi bi-x-circle-fill"></i> Rejected
+                            </span>
+                        <?php endif; ?>
                 </td>
             </tr>
             <?php endwhile; ?>

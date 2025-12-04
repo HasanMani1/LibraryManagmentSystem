@@ -50,7 +50,7 @@ $name = $_SESSION['name'];
             <li><a href="#">MANAGE BOOKS</a></li>
             <li><a href="#">BORROW REQUESTS</a></li>
             <li><a href="accepted.php">EVENTS</a></li>
-            <li><a href="create_event.php">REQUEST</a></li>
+            <li><a href="">REQUEST</a></li>
             <li><a href="#">RETURNS</a></li>
             <li><a href="#">DONATIONS</a></li>
             <li><a href="logout.php">LOGOUT</a></li>
@@ -74,6 +74,7 @@ $name = $_SESSION['name'];
                     <li>🧾 View system logs and notifications</li>
                 </ul>
                 <br>
+                <a href="event_proposal.php" class="btn btn-success">Proposed Events</a>
                 <a href="logout.php" class="btn btn-danger">Logout</a>
             </div>
         </div>

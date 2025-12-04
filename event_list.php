@@ -44,7 +44,7 @@ $result = $conn->query("SELECT * FROM event ORDER BY event_id DESC");
             background: transparent;
         }
 
-        .header-text {
+        .header-text { 
             text-align: center;
             margin-bottom: 30px;
             font-weight: 700;
@@ -154,12 +154,6 @@ $result = $conn->query("SELECT * FROM event ORDER BY event_id DESC");
                             onclick="return confirm('Are you sure you want to delete this event?');">
                             <i class="bi bi-trash"></i> Delete
                          </a>
-
-                                 <a href="edit_event.php?id=<?= $row['event_id'] ?>" 
-                                 class="btn btn-warning btn-sm"
-                                 onclick="return confirm('Are you sure you want to edit this event?');">
-                                <i class="bi bi-pencil-square"></i> Edit
-                                </a>
                                 </div>
                         </td>
                 </tr>

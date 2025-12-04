@@ -147,7 +147,6 @@ $conn->close();
     <nav>
         <ul>
             <li><a href="home.html">HOME</a></li>
-            <li><a href="event_proposal.php">EVENTS</a></li>
             <li><a href="logout.php">LOGOUT</a></li>
         </ul>
     </nav>
@@ -215,6 +214,7 @@ $conn->close();
                 <a href="rate_book.php" class="btn btn-primary">Rate Book</a>
                 <a href="manage_book.php" class="btn btn-primary">Manage Book</a>
                 <a href="activity_log.php" class="btn btn-success">Activity Log</a>
+                <a href="event_proposal.php" class="btn btn-success">Proposed Events</a>
                 <a href="logout.php" class="btn btn-danger">Logout</a>
             </div>
         </div>
