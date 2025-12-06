@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 04, 2025 at 01:07 AM
+-- Generation Time: Dec 06, 2025 at 08:44 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -152,7 +152,25 @@ INSERT INTO `activity_log` (`log_id`, `user_id`, `action`, `timestamp`) VALUES
 (112, 8, 'Logged in successfully', '2025-12-04 00:32:48'),
 (113, 8, 'Logged out', '2025-12-04 01:42:16'),
 (114, 8, 'Logged in successfully', '2025-12-04 01:42:30'),
-(115, 8, 'Logged out', '2025-12-04 01:43:19');
+(115, 8, 'Logged out', '2025-12-04 01:43:19'),
+(116, 15, 'Logged in successfully', '2025-12-06 17:25:25'),
+(117, 15, 'Borrowed book copy ID: 1', '2025-12-06 17:44:41'),
+(118, 15, 'Logged in successfully', '2025-12-06 17:45:06'),
+(119, 15, 'Returned book copy ID: 1', '2025-12-06 17:45:54'),
+(120, 15, 'Borrowed book copy ID: 1', '2025-12-06 17:46:21'),
+(121, 15, 'Returned borrow ID: 3', '2025-12-06 17:46:47'),
+(122, 15, 'Requested to borrow book copy ID: 1', '2025-12-06 17:58:47'),
+(123, 15, 'Approved borrow request ID: 4', '2025-12-06 18:05:40'),
+(124, 15, 'Logged in successfully', '2025-12-06 19:07:14'),
+(125, 15, 'Returned book copy ID: 1', '2025-12-06 19:07:34'),
+(126, 15, 'Requested to borrow book copy ID: 1', '2025-12-06 19:08:17'),
+(127, 15, 'Rejected borrow request ID: 5', '2025-12-06 19:10:33'),
+(128, 15, 'Rated book ID: 1 (3 stars)', '2025-12-06 19:35:34'),
+(129, 15, 'Logged in successfully', '2025-12-06 19:36:07'),
+(130, 15, 'Logged in successfully', '2025-12-06 20:09:39'),
+(131, 15, 'Logged in successfully', '2025-12-06 20:25:55'),
+(132, 15, 'Logged in successfully', '2025-12-06 21:17:37'),
+(133, 15, 'Logged in successfully', '2025-12-06 21:22:55');
 
 -- --------------------------------------------------------
 
@@ -185,6 +203,13 @@ CREATE TABLE `book` (
   `category_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `book`
+--
+
+INSERT INTO `book` (`book_id`, `title`, `author`, `isbn`, `book_type`, `availability_status`, `category_id`, `created_at`) VALUES
+(1, 'THE BOOK OF TIME TIME', 'Major', '213-45', 'HARDCOPY', 'Available', NULL, '2025-12-06 17:27:38');
 
 -- --------------------------------------------------------
 
@@ -227,6 +252,20 @@ CREATE TABLE `book_inventory` (
   `is_available` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `book_inventory`
+--
+
+INSERT INTO `book_inventory` (`inventory_id`, `book_id`, `copy_number`, `book_condition`, `is_available`) VALUES
+(1, 1, 1, 'Good', 1),
+(2, 1, 2, 'Good', 1),
+(3, 1, 3, 'Good', 1),
+(4, 1, 4, 'Good', 1),
+(5, 1, 5, 'Good', 1),
+(6, 1, 6, 'Good', 1),
+(7, 1, 7, 'Good', 1),
+(8, 1, 8, 'Good', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -256,6 +295,13 @@ CREATE TABLE `book_rating` (
   `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `book_rating`
+--
+
+INSERT INTO `book_rating` (`rating_id`, `user_id`, `book_id`, `rating_value`, `comment`, `created_at`) VALUES
+(1, 15, 1, 3, 'very good', '2025-12-06 19:35:33');
+
 -- --------------------------------------------------------
 
 --
@@ -273,6 +319,16 @@ CREATE TABLE `borrowing` (
   `status_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `borrowing`
+--
+
+INSERT INTO `borrowing` (`borrowing_id`, `user_id`, `inventory_id`, `borrow_date`, `due_date`, `returned_date`, `qrcode_used`, `status_id`) VALUES
+(2, 15, 1, '2025-12-06 00:00:00', '2025-12-10 00:00:00', '2025-12-06 00:00:00', 0, 2),
+(3, 15, 1, '2025-12-06 00:00:00', '2025-12-13 00:00:00', '2025-12-06 17:46:47', 0, 2),
+(4, 15, 1, '2025-12-06 00:00:00', '2025-12-13 00:00:00', '2025-12-06 00:00:00', 0, 2),
+(5, 15, 1, '2025-12-06 00:00:00', '2025-12-20 00:00:00', NULL, 0, 5);
+
 -- --------------------------------------------------------
 
 --
@@ -283,6 +339,17 @@ CREATE TABLE `borrowing_status` (
   `status_id` int(11) NOT NULL,
   `status_name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `borrowing_status`
+--
+
+INSERT INTO `borrowing_status` (`status_id`, `status_name`) VALUES
+(1, 'Borrowed'),
+(2, 'Returned'),
+(3, 'Overdue'),
+(4, 'Pending Approval'),
+(5, 'Rejected');
 
 -- --------------------------------------------------------
 
@@ -552,7 +619,8 @@ INSERT INTO `user` (`user_id`, `name`, `email`, `password`, `role_id`, `reset_to
 (8, 'Do-it', 'doit@gmail.com', '$2y$10$/.bsuAiznvMpV/C4WFTDKuFDviV.kA9xaS7NX.EWvynnmM5GrY/A2', 1, NULL, NULL, NULL, '2025-10-27 22:36:58'),
 (10, 'Arther', '21900005@emu.edu.tr', '$2y$10$P9e5VZRllI8im8tcEoUKG.lPdMm.5DdUhanijeY.x/iRSj8wZ9NGS', 4, NULL, NULL, NULL, '2025-10-29 11:15:09'),
 (11, 'Arther', '2612345@emu.edu.tr', '$2y$10$C/dl7AAkXJRpSksFW0C1UeeoPK4KSQ.UJ5vFxVyzlBJsIERkLUYh.', 4, NULL, NULL, NULL, '2025-10-29 11:23:31'),
-(14, 'Arther Doit', 'arther@emu.edu.tr', '$2y$10$4hThaUAnfeFp1zPuyDljyu/6YKqTXzLelfu1d0tGG7XDeNbTnlS2C', 3, NULL, NULL, NULL, '2025-12-02 11:24:08');
+(14, 'Arther Doit', 'arther@emu.edu.tr', '$2y$10$4hThaUAnfeFp1zPuyDljyu/6YKqTXzLelfu1d0tGG7XDeNbTnlS2C', 3, NULL, NULL, NULL, '2025-12-02 11:24:08'),
+(15, 'Aliyu Adamu Musa', '22900908@emu.edu.tr', '$2y$10$IyXp2TiA3oaExPLKnbHVXe31EzRCZ2x/wm7c.DPboyslwSJO8R38u', 1, NULL, NULL, NULL, '2025-12-06 17:24:43');
 
 -- --------------------------------------------------------
 
@@ -778,7 +846,7 @@ ALTER TABLE `account_blockage`
 -- AUTO_INCREMENT for table `activity_log`
 --
 ALTER TABLE `activity_log`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
 
 --
 -- AUTO_INCREMENT for table `attendance`
@@ -790,7 +858,7 @@ ALTER TABLE `attendance`
 -- AUTO_INCREMENT for table `book`
 --
 ALTER TABLE `book`
-  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `book_category`
@@ -808,7 +876,7 @@ ALTER TABLE `book_donation`
 -- AUTO_INCREMENT for table `book_inventory`
 --
 ALTER TABLE `book_inventory`
-  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `book_management_log`
@@ -820,19 +888,19 @@ ALTER TABLE `book_management_log`
 -- AUTO_INCREMENT for table `book_rating`
 --
 ALTER TABLE `book_rating`
-  MODIFY `rating_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `rating_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `borrowing`
 --
 ALTER TABLE `borrowing`
-  MODIFY `borrowing_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `borrowing_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `borrowing_status`
 --
 ALTER TABLE `borrowing_status`
-  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `contact_message`
@@ -922,7 +990,7 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `wishlist`

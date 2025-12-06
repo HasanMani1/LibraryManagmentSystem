@@ -213,6 +213,9 @@ $conn->close();
                 <a href="return_book.php" class="btn btn-primary">Return Book</a>
                 <a href="rate_book.php" class="btn btn-primary">Rate Book</a>
                 <a href="manage_book.php" class="btn btn-primary">Manage Book</a>
+                <a href="book.php" class="btn btn-primary">Book</a>
+                <a href="book_donate.php" class="btn btn-primary">Book Donation</a>
+                <a href="manage_donate.php" class="btn btn-primary">Manage Donation</a>
                 <a href="activity_log.php" class="btn btn-success">Activity Log</a>
                 <a href="event_proposal.php" class="btn btn-success">Proposed Events</a>
                 <a href="logout.php" class="btn btn-danger">Logout</a>
