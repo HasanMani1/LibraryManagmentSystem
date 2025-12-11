@@ -98,6 +98,7 @@ $name = $_SESSION['name'];
                     <li>Get reminders or notifications 🔔</li>
                 </ul>
                 <br>
+                <a href="library_hours.php" class="btn btn-success">Library Hours</a>
                 <a href="logout.php" class="btn btn-danger">Logout</a>
             </div>
         </div>
