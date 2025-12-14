@@ -73,12 +73,8 @@ $name = $_SESSION['name'];
 
     <nav>
         <ul>
-            <li><a href="home.html">HOME</a></li>
-            <li><a href="#">BOOKS</a></li>
-            <li><a href="#">E-BOOKS</a></li>
-            <li><a href="#">EVENTS</a></li>
-            <li><a href="track_event_attendance">ATTENDANCE</a></li>
-            <li><a href="logout.php">LOGOUT</a></li>
+          
+        
         </ul>
     </nav>
 </header>
@@ -99,6 +95,9 @@ $name = $_SESSION['name'];
                 </ul>
                 <br>
                 <a href="library_hours.php" class="btn btn-success">Library Hours</a>
+                <a href="contact_us.php" class="btn btn-primary"> 📩 Contact Library</a>
+                <a href="notifications.php" class="btn btn-primary">🔔 View Notifications</a>
+
                 <a href="logout.php" class="btn btn-danger">Logout</a>
             </div>
         </div>

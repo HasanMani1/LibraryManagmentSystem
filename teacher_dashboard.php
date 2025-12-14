@@ -46,10 +46,7 @@ $name = $_SESSION['name'];
 
     <nav>
         <ul>
-            <li><a href="home.html">HOME</a></li>
-            <li><a href="#">BOOKS</a></li>
-            <li><a href="#">RECOMMENDATIONS</a></li>
-            <li><a href="logout.php">LOGOUT</a></li>
+        
         </ul>
     </nav>
 </header>
@@ -71,6 +68,7 @@ $name = $_SESSION['name'];
                 <br> 
                 <a href="create_event.php" class="btn btn-primary">Add New Event</a>
                 <a href="accepted.php" class="btn btn-success">Events</a>
+                <a href="contact_us.php" class="btn btn-primary"> 📩 Contact Library</a>
                 <a href="logout.php" class="btn btn-danger">Logout</a>
             </div>
         </div>

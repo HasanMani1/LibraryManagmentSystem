@@ -46,14 +46,7 @@ $name = $_SESSION['name'];
 
     <nav>
         <ul>
-            <li><a href="home.html">HOME</a></li>
-            <li><a href="#">MANAGE BOOKS</a></li>
-            <li><a href="#">BORROW REQUESTS</a></li>
-            <li><a href="accepted.php">EVENTS</a></li>
-            <li><a href="">REQUEST</a></li>
-            <li><a href="#">RETURNS</a></li>
-            <li><a href="#">DONATIONS</a></li>
-            <li><a href="logout.php">LOGOUT</a></li>
+         
         </ul>
     </nav>
 </header>
@@ -70,11 +63,11 @@ $name = $_SESSION['name'];
                     <li>📖 Manage books and inventory</li>
                     <li>🔄 Handle borrow and return requests</li>
                     <li>📅 Organize and approve book donations</li>
-                    <li>👥 Assist students and teachers with library use</li>
-                    <li>🧾 View system logs and notifications</li>
+                                <li>📅 Organize and check the events</li>
                 </ul>
                 <br>
                 <a href="event_proposal.php" class="btn btn-success">Proposed Events</a>
+                
                 <a href="logout.php" class="btn btn-danger">Logout</a>
             </div>
         </div>

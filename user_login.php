@@ -63,11 +63,7 @@ $conn->close();
 
     <nav>
         <ul>
-            <li><a href="home.html">HOME</a></li>
-            <li><a href="#">BOOKS/E-BOOKS</a></li>
-            <li><a href="user_login.php">LOGIN</a></li>
-            <li><a href="student_registration.html">STUDENT-REGISTRATION</a></li>
-            <li><a href="#">FEEDBACK</a></li>
+       
         </ul>
     </nav>
 </header>

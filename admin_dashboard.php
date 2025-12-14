@@ -146,8 +146,7 @@ $conn->close();
 
     <nav>
         <ul>
-            <li><a href="home.html">HOME</a></li>
-            <li><a href="logout.php">LOGOUT</a></li>
+           
         </ul>
     </nav>
 </header>
@@ -205,7 +204,7 @@ $conn->close();
                 </ul>
                 <br>
                 <a href="register.php" class="btn btn-primary">Add New User</a>
-                <a href="add_role.php" class="btn btn-success">Manage Roles</a>
+                <a href="add_role.php" class="btn btn-primary">Manage Roles</a>
                 <a href="manage_users.php" class="btn btn-primary">Manage Users</a>
                 <a href="manage_borrow.php" class="btn btn-primary">Manage Borrow Book</a>
                 <a href="manage_return.php" class="btn btn-primary">Manage Return Book</a>
@@ -216,8 +215,9 @@ $conn->close();
                 <a href="book.php" class="btn btn-primary">Book</a>
                 <a href="book_donate.php" class="btn btn-primary">Book Donation</a>
                 <a href="manage_donate.php" class="btn btn-primary">Manage Donation</a>
-                <a href="activity_log.php" class="btn btn-success">Activity Log</a>
-                <a href="event_proposal.php" class="btn btn-success">Proposed Events</a>
+                <a href="activity_log.php" class="btn btn-primary">Activity Log</a>
+                <a href="event_proposal.php" class="btn btn-primary">Proposed Events</a>
+                 <a href="view_messages.php" class="btn btn-primary">View Messages</a>
                 <a href="logout.php" class="btn btn-danger">Logout</a>
             </div>
         </div>

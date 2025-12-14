@@ -110,7 +110,7 @@ $result = $conn->query($sql);
             <nav>
             <ul> 
                 <li><a href="admin_dashboard.php">HOME</a></li>
-                <li><a href="notification.php">NOTIFICATIONS</a></li>
+                <li><a href="notifications.php">NOTIFICATIONS</a></li>
                 <li><a href="logout.php">LOGOUT</a></li>
                 </ul>
             </nav>
