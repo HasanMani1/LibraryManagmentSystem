@@ -208,12 +208,7 @@ $conn->close();
                 <a href="manage_users.php" class="btn btn-primary">Manage Users</a>
                 <a href="manage_borrow.php" class="btn btn-primary">Manage Borrow Book</a>
                 <a href="manage_return.php" class="btn btn-primary">Manage Return Book</a>
-                <a href="borrow_book.php" class="btn btn-primary">Borrow Book</a>
-                <a href="return_book.php" class="btn btn-primary">Return Book</a>
-                <a href="rate_book.php" class="btn btn-primary">Rate Book</a>
                 <a href="manage_book.php" class="btn btn-primary">Manage Book</a>
-                <a href="book.php" class="btn btn-primary">Book</a>
-                <a href="book_donate.php" class="btn btn-primary">Book Donation</a>
                 <a href="manage_donate.php" class="btn btn-primary">Manage Donation</a>
                 <a href="activity_log.php" class="btn btn-primary">Activity Log</a>
                 <a href="event_proposal.php" class="btn btn-primary">Proposed Events</a>

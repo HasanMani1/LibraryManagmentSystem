@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'db_connect.php';
+include 'back_button.php';
 include 'log_activity.php';
 
 // 🔐 Only logged-in users
@@ -175,7 +176,6 @@ while ($c = $categories_result->fetch_assoc()) {
 </head>
 <body>
 
-<a href="admin_dashboard.php" class="back-btn"><i class="bi bi-arrow-left"></i> Back</a>
 
 
 <div class="container">

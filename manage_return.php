@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'db_connect.php';
+include 'back_button.php';
 include 'log_activity.php';
 
 // ✅ Only logged-in users can access
@@ -169,7 +170,6 @@ $result = $stmt->get_result();
 </head>
 <body>
 
-<a href="admin_dashboard.php" class="back-btn"><i class="bi bi-arrow-left"></i> Back</a>
 
 <?php if($success): ?>
     <div class="alert alert-success"><?= $success; ?></div>

@@ -1,43 +1,101 @@
 <?php
 session_start();
 include 'db_connect.php';
+include 'back_button.php';
 include 'log_activity.php';
 
-// 🔐 Only admin can access
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: user_login.php");
+// -------------------------
+// ACCESS CONTROL
+// -------------------------
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role_id'], [1, 2])) {
+    header("Location: access_denied.php");
     exit;
 }
 
-// ✅ Handle approve/reject actions
+$approver_id = $_SESSION['user_id'];
+
+// -------------------------
+// APPROVE DONATION
+// -------------------------
 if (isset($_GET['approve'])) {
-    $donation_id = intval($_GET['approve']);
-    $approver_id = $_SESSION['user_id'];
-    $conn->query("UPDATE book_donation 
-                  SET is_approved = 1, status = 'Approved', approver_id = $approver_id, approved_date = NOW()
-                  WHERE donation_id = $donation_id");
-    logActivity($approver_id, "Approved donation ID: $donation_id");
-    header("Location: manage_donate.php?success=1");
+    $donation_id = (int) $_GET['approve'];
+
+    // Get donation (only pending)
+    $stmt = $conn->prepare("
+        SELECT book_title
+        FROM book_donation
+        WHERE donation_id = ? AND status = 'Pending'
+    ");
+    $stmt->bind_param("i", $donation_id);
+    $stmt->execute();
+    $donation = $stmt->get_result()->fetch_assoc();
+
+    if ($donation) {
+
+        // Insert donated book into book table
+        $insertBook = $conn->prepare("
+            INSERT INTO book (title, book_type, category_id)
+            VALUES (?, 'Donated', 1)
+        ");
+        $insertBook->bind_param("s", $donation['book_title']);
+        $insertBook->execute();
+
+        // Update donation status
+        $update = $conn->prepare("
+            UPDATE book_donation
+            SET status = 'Approved',
+                is_approved = 1,
+                approver_id = ?,
+                approved_date = NOW()
+            WHERE donation_id = ?
+        ");
+        $update->bind_param("ii", $approver_id, $donation_id);
+        $update->execute();
+
+        logActivity($approver_id, "Approved donation ID $donation_id and added book");
+    }
+
+    header("Location: manage_donate.php");
     exit;
 }
 
+// -------------------------
+// REJECT DONATION
+// -------------------------
 if (isset($_GET['reject'])) {
-    $donation_id = intval($_GET['reject']);
-    $approver_id = $_SESSION['user_id'];
-    $conn->query("UPDATE book_donation 
-                  SET is_approved = 0, status = 'Rejected', approver_id = $approver_id, approved_date = NOW()
-                  WHERE donation_id = $donation_id");
-    logActivity($approver_id, "Rejected donation ID: $donation_id");
-    header("Location: manage_donate.php?success=1");
+    $donation_id = (int) $_GET['reject'];
+
+    $stmt = $conn->prepare("
+        UPDATE book_donation
+        SET status = 'Rejected',
+            is_approved = 0,
+            approver_id = ?,
+            approved_date = NOW()
+        WHERE donation_id = ? AND status = 'Pending'
+    ");
+    $stmt->bind_param("ii", $approver_id, $donation_id);
+    $stmt->execute();
+
+    logActivity($approver_id, "Rejected donation ID $donation_id");
+
+    header("Location: manage_donate.php");
     exit;
 }
 
-// Fetch all donations
+// -------------------------
+// FETCH DONATIONS
+// -------------------------
 $donations = $conn->query("
-    SELECT bd.*, u.username AS donor_name, a.username AS approver_name
+    SELECT 
+        bd.donation_id,
+        bd.book_title,
+        bd.status,
+        bd.approved_date,
+        u.name AS donor_name,
+        a.name AS approver_name
     FROM book_donation bd
-    LEFT JOIN users u ON bd.donor_id = u.user_id
-    LEFT JOIN users a ON bd.approver_id = a.user_id
+    LEFT JOIN user u ON bd.donor_id = u.user_id
+    LEFT JOIN user a ON bd.approver_id = a.user_id
     ORDER BY bd.donation_id DESC
 ");
 ?>
@@ -45,73 +103,94 @@ $donations = $conn->query("
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Manage Book Donations</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<style>
-body { font-family: Arial, sans-serif; background: #f4f6f9; margin:0; padding:0; }
-.container { width: 95%; margin: 80px auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);}
-h2 { text-align: center; color: #007bff; margin-bottom: 25px; }
-
-table { width: 100%; border-collapse: collapse; }
-th, td { padding: 10px; text-align: center; border-bottom: 1px solid #ddd; }
-th { background-color: #007bff; color: white; }
-tr:hover { background-color: #f2f2f2; }
-
-.btn { padding: 5px 10px; border-radius: 5px; color: white; text-decoration: none; display: inline-block; margin: 2px; }
-.btn-approve { background: #28a745; }
-.btn-reject { background: #dc3545; }
-.btn-approve:hover, .btn-reject:hover { opacity: 0.85; }
-
-.alert-success { background-color: #d4edda; color: #155724; padding: 10px; border-radius: 6px; margin-bottom: 15px; text-align: center; }
-
-.back-btn { display: inline-block; margin-bottom: 15px; padding: 6px 12px; background: #007bff; color: white; border-radius: 5px; text-decoration: none; }
-.back-btn:hover { background: #0056b3; }
-</style>
+    <meta charset="UTF-8">
+    <title>Manage Book Donations</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .back-btn {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #007bff, #00bfff);
+            color: white;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 18px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        .back-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #0080ff);
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            color: #f8f9fa;
+            text-decoration: none;
+        }
+        .back-btn i { font-size: 18px; }
+    </style>
 </head>
-<body>
 
-<div class="container">
-    <a href="admin_dashboard.php" class="back-btn">← Back</a>
-    <h2>📚 Manage Book Donations</h2>
+<body class="bg-light">
 
-    <?php if (isset($_GET['success'])): ?>
-        <div class="alert-success">Action completed successfully!</div>
-    <?php endif; ?>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">📚 Manage Book Donations</h2>
 
-    <table>
-        <thead>
+    <table class="table table-bordered table-hover text-center">
+        <thead class="table-primary">
             <tr>
                 <th>ID</th>
                 <th>Book Title</th>
                 <th>Donor</th>
                 <th>Status</th>
-                <th>Approver</th>
+                <th>Approved By</th>
                 <th>Approved Date</th>
-                <th>Actions</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
         <?php if ($donations->num_rows === 0): ?>
-            <tr><td colspan="7">No donations found.</td></tr>
-        <?php else: ?>
-            <?php while($d = $donations->fetch_assoc()): ?>
             <tr>
-                <td><?= $d['donation_id']; ?></td>
-                <td><?= htmlspecialchars($d['book_title']); ?></td>
-                <td><?= htmlspecialchars($d['donor_name']); ?></td>
-                <td><?= htmlspecialchars($d['status']); ?></td>
-                <td><?= htmlspecialchars($d['approver_name'] ?: '-'); ?></td>
-                <td><?= $d['approved_date'] ?: '-'; ?></td>
-                <td>
-                    <?php if ($d['status'] === 'Pending'): ?>
-                        <a href="manage_donate.php?approve=<?= $d['donation_id']; ?>" class="btn btn-approve">Approve</a>
-                        <a href="manage_donate.php?reject=<?= $d['donation_id']; ?>" class="btn btn-reject">Reject</a>
-                    <?php else: ?>
-                        -
-                    <?php endif; ?>
-                </td>
+                <td colspan="7">No donations found.</td>
             </tr>
+        <?php else: ?>
+            <?php while ($d = $donations->fetch_assoc()): ?>
+                <tr>
+                    <td><?= $d['donation_id']; ?></td>
+                    <td><?= htmlspecialchars($d['book_title']); ?></td>
+                    <td><?= htmlspecialchars($d['donor_name']); ?></td>
+                    <td>
+                        <span class="badge 
+                            <?= $d['status'] === 'Approved' ? 'bg-success' : 
+                                ($d['status'] === 'Rejected' ? 'bg-danger' : 'bg-warning'); ?>">
+                            <?= $d['status']; ?>
+                        </span>
+                    </td>
+                    <td><?= htmlspecialchars($d['approver_name'] ?? '-'); ?></td>
+                    <td><?= $d['approved_date'] ?? '-'; ?></td>
+                    <td>
+                        <?php if ($d['status'] === 'Pending'): ?>
+                            <a href="?approve=<?= $d['donation_id']; ?>" 
+                               class="btn btn-sm btn-success"
+                               onclick="return confirm('Approve this donation?')">
+                                <i class="bi bi-check"></i>
+                            </a>
+                            <a href="?reject=<?= $d['donation_id']; ?>" 
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('Reject this donation?')">
+                                <i class="bi bi-x"></i>
+                            </a>
+                        <?php else: ?>
+                            —
+                        <?php endif; ?>
+                    </td>
+                </tr>
             <?php endwhile; ?>
         <?php endif; ?>
         </tbody>

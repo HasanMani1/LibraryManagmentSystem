@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'db_connect.php';
+include 'back_button.php';
 include 'log_activity.php';
 
 // ✅ Only logged-in users
@@ -162,23 +163,23 @@ while ($r = $result->fetch_assoc()) {
     button:hover {
       transform: scale(1.05);
     }
-     .back-btn {
-        position: fixed;
-        top: 25px;
-        left: 25px;
-        padding: 10px 18px;
-        border-radius: 50px;
-        text-decoration: none;
-        background: linear-gradient(135deg, #007bff, #00bfff);
-        color: white;
-        font-weight: bold;
+
+    .back-btn {
+      position: fixed;
+      top: 25px;
+      left: 25px;
+      padding: 10px 18px;
+      border-radius: 50px;
+      text-decoration: none;
+      background: linear-gradient(135deg, #007bff, #00bfff);
+      color: white;
+      font-weight: bold;
     }
   </style>
 </head>
 
 <body>
 
-  <a href="admin_dashboard.php" class="back-btn"><i class="bi bi-arrow-left"></i> Back</a>
 
 
   <div class="container">

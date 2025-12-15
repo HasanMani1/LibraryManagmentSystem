@@ -67,7 +67,10 @@ $name = $_SESSION['name'];
                 </ul>
                 <br>
                 <a href="event_proposal.php" class="btn btn-success">Proposed Events</a>
-                
+                 <a href="manage_borrow.php" class="btn btn-primary">Manage Borrow Book</a>
+                <a href="manage_return.php" class="btn btn-primary">Manage Return Book</a>
+                <a href="manage_donate.php" class="btn btn-primary">Manage Donation</a>
+                 <a href="manage_book.php" class="btn btn-primary">Manage Book</a>
                 <a href="logout.php" class="btn btn-danger">Logout</a>
             </div>
         </div>

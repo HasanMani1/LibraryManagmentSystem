@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'db_connect.php';
+include 'back_button.php';
 include 'log_activity.php';
 
 // ✅ Only allow logged-in users
@@ -83,6 +84,17 @@ $result = $conn->query($query);
             color: #FFD700;
             font-size: 18px;
         }
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            background: linear-gradient(135deg, #007bff, #00bfff);
+            color: white;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -112,7 +124,7 @@ $result = $conn->query($query);
                         </td>
                         <td><?= $row['total_reviews']; ?></td>
                         <td>
-                            <a class="btn-view" href="view_book_comments.php?book_id=<?= $row['book_id']; ?>">View Comments</a>
+                            <a class="btn-view" href="view_book_comment.php?book_id=<?= $row['book_id']; ?>">View Comments</a>
                         </td>
                     </tr>
                 <?php endwhile; ?>
