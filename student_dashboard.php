@@ -1,6 +1,8 @@
 <?php
+
 session_start();
 $timeout_duration = 900; // 15 minutes
+
 
 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) > $timeout_duration) {
     session_unset();
@@ -95,6 +97,7 @@ $name = $_SESSION['name'];
                 </ul>
                 <br>
                 <a href="library_hours.php" class="btn btn-success">Library Hours</a>
+                <a href="final_event_list.php" class="btn btn-primary">Upcoming Events</a>
                 <a href="contact_us.php" class="btn btn-primary"> 📩 Contact Library</a>
                 <a href="notifications.php" class="btn btn-primary">🔔 View Notifications</a>
                 <a href="book.php" class="btn btn-primary">Books</a>

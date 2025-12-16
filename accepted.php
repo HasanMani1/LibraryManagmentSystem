@@ -2,6 +2,8 @@
 include 'db_connect.php';
 include 'log_activity.php';
 session_start();
+include 'back_button.php';
+
 
 if (isset($_GET['delete'])) {
     $rid = intval($_GET['delete']);
@@ -71,7 +73,7 @@ $result = $conn->query("SELECT * FROM event ORDER BY event_id DESC");
             background-color: #f2f2f2;
         }
                 .alert-success { background-color: #d4edda; color: #155724; }
-               .back-btn {
+     .back-btn {
             position: fixed;
             top: 25px;
             left: 25px;
@@ -88,6 +90,16 @@ $result = $conn->query("SELECT * FROM event ORDER BY event_id DESC");
             text-decoration: none;
             transition: all 0.3s ease-in-out;
             z-index: 1000;
+        }
+        .back-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #0080ff);
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            color: #f8f9fa;
+            text-decoration: none;
+        }
+        .back-btn i {
+            font-size: 18px;
         }
 
 </style>
@@ -112,9 +124,7 @@ $result = $conn->query("SELECT * FROM event ORDER BY event_id DESC");
         <section>
         <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-3">
-    <a href="librarian_dashboard.php" class="btn btn-secondary back-btn">
-        <i class="bi bi-arrow-left"></i> Back
-    </a>
+ 
         <h2>Events</h2>
         </div>
 

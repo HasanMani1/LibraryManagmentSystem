@@ -1,6 +1,8 @@
 <?php
 include 'db_connect.php'; 
+
 session_start();
+include 'back_button.php';
 
 $proposed_by = $_SESSION['user_id'] ?? null;
 
@@ -76,6 +78,34 @@ if (isset($_POST['submit'])) {
             padding: 12px;
             border-radius: 10px;
             font-weight: bold;
+        }
+             .back-btn {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #007bff, #00bfff);
+            color: white;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 18px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        .back-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #0080ff);
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            color: #f8f9fa;
+            text-decoration: none;
+        }
+        .back-btn i {
+            font-size: 18px;
         }
     </style>
 </head>
