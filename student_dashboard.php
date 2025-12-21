@@ -103,6 +103,7 @@ $name = $_SESSION['name'];
                 <a href="book.php" class="btn btn-primary">Books</a>
                 <a href="borrow_book.php" class="btn btn-primary">Borrow Books</a>
                 <a href="return_book.php" class="btn btn-primary">Return Books</a>
+                <a href="borrow_history.php" class="btn btn-primary">Borrow History</a>
                 <a href="rate_book.php" class="btn btn-primary">Rate Books</a>
                 <a href="view_book_ratings.php" class="btn btn-primary">View Books Ratings</a>
                 <a href="book_donate.php" class="btn btn-primary">Donate Books</a>

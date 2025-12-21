@@ -3,6 +3,7 @@ session_start();
 include 'db_connect.php';
 include 'back_button.php';
 include 'log_activity.php';
+include 'notification_helper.php'; // ✅ ADDED
 
 //✅ Ensure the user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -21,8 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (!$borrow_id) {
     $errors[] = "Invalid book selection.";
   } else {
+
     // Check if record exists and not yet returned
-    $q = "SELECT inventory_id, status_id FROM borrowing WHERE borrowing_id = ? AND user_id = ?";
+    $q = "
+      SELECT br.inventory_id, br.status_id, b.title
+      FROM borrowing br
+      JOIN book_inventory bi ON br.inventory_id = bi.inventory_id
+      JOIN book b ON bi.book_id = b.book_id
+      WHERE br.borrowing_id = ? AND br.user_id = ?
+    ";
     $stmt = $conn->prepare($q);
     $stmt->bind_param("ii", $borrow_id, $user_id);
     $stmt->execute();
@@ -33,22 +41,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
       $row = $res->fetch_assoc();
 
-      if ($row['status_id'] == 2) { // assuming 2 = returned
+      if ($row['status_id'] == 2) {
         $errors[] = "Book already returned.";
       } else {
-        $inventory_id = $row['inventory_id'];
 
-        // Update borrowing record
-        $updateBorrow = $conn->prepare("UPDATE borrowing SET returned_date = CURDATE(), status_id = 2 WHERE borrowing_id = ?");
+        $inventory_id = $row['inventory_id'];
+        $book_title   = $row['title'];
+
+        // Update borrowing
+        $updateBorrow = $conn->prepare("
+          UPDATE borrowing
+          SET returned_date = CURDATE(), status_id = 2
+          WHERE borrowing_id = ?
+        ");
         $updateBorrow->bind_param("i", $borrow_id);
 
-        // Mark the book copy as available again
-        $updateInventory = $conn->prepare("UPDATE book_inventory SET is_available = 1 WHERE inventory_id = ?");
+        // Update inventory
+        $updateInventory = $conn->prepare("
+          UPDATE book_inventory
+          SET is_available = 1
+          WHERE inventory_id = ?
+        ");
         $updateInventory->bind_param("i", $inventory_id);
 
         if ($updateBorrow->execute() && $updateInventory->execute()) {
-          // Log user activity
+
+          // Log activity
           logActivity($user_id, "Returned book copy ID: $inventory_id");
+
+          // 🔔 NOTIFY ADMINS & LIBRARIANS
+          $admins = $conn->query("
+            SELECT user_id FROM user WHERE role_id IN (1,2)
+          ");
+
+          while ($admin = $admins->fetch_assoc()) {
+            createNotification(
+              $admin['user_id'],
+              "Book Returned",
+              "User ID $user_id has returned the book: '$book_title'."
+            );
+          }
+
           $success = "Book returned successfully.";
         } else {
           $errors[] = "Return failed: " . $conn->error;
@@ -58,18 +91,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 }
 
-// ✅ Fetch user's active borrowings
+// ✅ Fetch user's active borrowings (UNCHANGED)
 $active = [];
-$q = "SELECT   br.borrowing_id,
-        b.title,
-        b.author,
-        br.borrow_date,
-        br.due_date
-    FROM borrowing br
-    JOIN book_inventory bi ON br.inventory_id = bi.inventory_id
-    JOIN book b ON bi.book_id = b.book_id
-    WHERE br.user_id = ? AND br.status_id = 1  -- assuming 1 = borrowed
-    ORDER BY br.due_date
+$q = "
+  SELECT br.borrowing_id, b.title, b.author, br.borrow_date, br.due_date
+  FROM borrowing br
+  JOIN book_inventory bi ON br.inventory_id = bi.inventory_id
+  JOIN book b ON bi.book_id = b.book_id
+  WHERE br.user_id = ? AND br.status_id = 1
+  ORDER BY br.due_date
 ";
 $stmt = $conn->prepare($q);
 $stmt->bind_param("i", $user_id);
@@ -78,6 +108,7 @@ $res = $stmt->get_result();
 
 while ($r = $res->fetch_assoc()) $active[] = $r;
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
