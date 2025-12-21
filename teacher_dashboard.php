@@ -67,7 +67,7 @@ $name = $_SESSION['name'];
                 </ul>
                 <br> 
                 <a href="create_event.php" class="btn btn-primary">Add New Event</a>
-                <a href="accepted.php" class="btn btn-success">Events</a>
+                <a href="accepted.php" class="btn btn-primary">Events</a>
                  <a href="book.php" class="btn btn-primary">Books</a>
                 <a href="borrow_book.php" class="btn btn-primary">Borrow Books</a>
                 <a href="return_book.php" class="btn btn-primary">Return Books</a>
@@ -75,6 +75,8 @@ $name = $_SESSION['name'];
                 <a href="book_donate.php" class="btn btn-primary">Donate Books</a>
                 <a href="view_book_ratings.php" class="btn btn-primary">View Book Ratings</a>
                 <a href="contact_us.php" class="btn btn-primary"> 📩 Contact Library</a>
+                 <a href="wishlist.php" class="btn btn-primary">Wishlist</a>
+                   <a href="teacher_recommendations.php" class="btn btn-primary">My Recommendations</a>
                 <a href="logout.php" class="btn btn-danger">Logout</a>
             </div>
         </div>

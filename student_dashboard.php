@@ -96,7 +96,7 @@ $name = $_SESSION['name'];
                     <li>Get reminders or notifications 🔔</li>
                 </ul>
                 <br>
-                <a href="library_hours.php" class="btn btn-success">Library Hours</a>
+                <a href="library_hours.php" class="btn btn-primary">Library Hours</a>
                 <a href="final_event_list.php" class="btn btn-primary">Upcoming Events</a>
                 <a href="contact_us.php" class="btn btn-primary"> 📩 Contact Library</a>
                 <a href="notifications.php" class="btn btn-primary">🔔 View Notifications</a>
@@ -106,6 +106,8 @@ $name = $_SESSION['name'];
                 <a href="rate_book.php" class="btn btn-primary">Rate Books</a>
                 <a href="view_book_ratings.php" class="btn btn-primary">View Books Ratings</a>
                 <a href="book_donate.php" class="btn btn-primary">Donate Books</a>
+                <a href="wishlist.php" class="btn btn-primary">Wishlist</a>
+                <a href="recommended_books.php" class="btn btn-primary">Recommended Books</a>
                 <a href="logout.php" class="btn btn-danger">Logout</a>
             </div>
         </div>
