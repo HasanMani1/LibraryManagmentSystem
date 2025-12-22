@@ -68,20 +68,45 @@ if (isset($_GET['approve_id'])) {
 // ==========================
 // REJECT EVENT PROPOSAL
 // ==========================
+// ==========================
+// REJECT EVENT PROPOSAL
+// ==========================
 if (isset($_GET['reject_id'])) {
     $proposal_id = intval($_GET['reject_id']);
 
+    // 1️⃣ Fetch proposal info
     $stmt = $conn->prepare(
-        "UPDATE event_proposal
-         SET status = 'Rejected'
+        "SELECT title, proposed_by
+         FROM event_proposal
          WHERE proposal_id = ?"
     );
     $stmt->bind_param("i", $proposal_id);
     $stmt->execute();
+    $proposal = $stmt->get_result()->fetch_assoc();
     $stmt->close();
 
+    if ($proposal) {
+
+        // 2️⃣ Update status
+        $stmt = $conn->prepare(
+            "UPDATE event_proposal
+             SET status = 'Rejected'
+             WHERE proposal_id = ?"
+        );
+        $stmt->bind_param("i", $proposal_id);
+        $stmt->execute();
+        $stmt->close();
+
+        // 🔔 3️⃣ Notify the teacher
+        createNotification(
+            $proposal['proposed_by'],
+            "Event Proposal Rejected",
+            "Your event proposal '{$proposal['title']}' has been rejected."
+        );
+    }
+
     echo "<script>
-        alert('❌ Event proposal rejected.');
+        alert('❌ Event proposal rejected and teacher notified.');
         window.location='event_proposal.php';
     </script>";
     exit;
