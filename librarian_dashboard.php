@@ -1,6 +1,6 @@
 <?php
-include 'db_connect.php';
 session_start();
+include 'db_connect.php';
 $timeout_duration = 900; // 15 minutes
 
 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) > $timeout_duration) {
@@ -22,7 +22,7 @@ if ($_SESSION['role_id'] != 2) {
     exit;
 }
 
-$name = $_SESSION['name'];
+$name = $_SESSION['name']; 
 ?>
 
 <!DOCTYPE html>

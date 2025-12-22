@@ -12,20 +12,17 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 4) {
 $user_id = $_SESSION['user_id'];
 
 // Fetch recommended books
-$stmt = $conn->prepare("
-    SELECT 
+$stmt = $conn->prepare("SELECT 
         r.rec_id,
         b.book_id,
         b.title,
         b.author,
         b.isbn,
-        u.name AS teacher_name
-    FROM recommendation r
+        u.name AS teacher_name FROM recommendation r
     JOIN book b ON r.book_id = b.book_id
     JOIN user u ON r.suggested_by = u.user_id
     WHERE r.display_on_dashboard = 1
-    ORDER BY r.rec_id DESC
-");
+    ORDER BY r.rec_id DESC");
 $stmt->execute();
 $result = $stmt->get_result();
 ?>

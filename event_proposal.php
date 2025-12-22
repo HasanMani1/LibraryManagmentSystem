@@ -2,111 +2,129 @@
 session_start();
 include 'db_connect.php';
 include 'log_activity.php';
+include 'notification_helper.php';
+include 'back_button.php';
 
-
-// Approve action
+// ==========================
+// APPROVE EVENT PROPOSAL
+// ==========================
 if (isset($_GET['approve_id'])) {
     $proposal_id = intval($_GET['approve_id']);
 
     // 1️⃣ Fetch proposal details
-    $query = "SELECT title, description, capacity, proposed_by FROM event_proposal WHERE proposal_id = ?";
-    $stmt = $conn->prepare($query);
+    $stmt = $conn->prepare(
+        "SELECT title, description, capacity, proposed_by
+         FROM event_proposal
+         WHERE proposal_id = ?"
+    );
     $stmt->bind_param("i", $proposal_id);
     $stmt->execute();
     $result = $stmt->get_result();
     $proposal = $result->fetch_assoc();
+    $stmt->close();
 
     if ($proposal) {
+
         // 2️⃣ Insert into event table
-        $insert = $conn->prepare("INSERT INTO event (title, description, capacity) VALUES (?, ?, ?)");
-        $insert->bind_param("ssi", $proposal['title'], $proposal['description'], $proposal['capacity']);
-        $insert->execute();
+        $stmt = $conn->prepare(
+            "INSERT INTO event (title, description, capacity)
+             VALUES (?, ?, ?)"
+        );
+        $stmt->bind_param(
+            "ssi",
+            $proposal['title'],
+            $proposal['description'],
+            $proposal['capacity']
+        );
+        $stmt->execute();
+        $new_event_id = $stmt->insert_id;
+        $stmt->close();
 
-        $new_event_id = $insert->insert_id;
+        // 3️⃣ Update proposal status
+        $stmt = $conn->prepare(
+            "UPDATE event_proposal
+             SET status = 'Approved', event_id = ?, created_at = NOW()
+             WHERE proposal_id = ?"
+        );
+        $stmt->bind_param("ii", $new_event_id, $proposal_id);
+        $stmt->execute();
+        $stmt->close();
 
-        // 3️⃣ Update proposal status + link to event_id
-        $update = $conn->prepare("UPDATE event_proposal SET status = 'Approved', event_id = ?, created_at = NOW() WHERE proposal_id = ?");
-        $update->bind_param("ii", $new_event_id, $proposal_id);
-        $update->execute();
+        // 🔔 4️⃣ Notify ONLY the teacher who proposed the event
+        createNotification(
+            $proposal['proposed_by'],
+            "Approved Library Event",
+            "Your proposed library event '{$proposal['title']}' has been approved."
+        );
 
-        echo "<script>alert('✅ Event approved successfully!'); window.location='event_proposal.php';</script>";
+        echo "<script>
+            alert('✅ Event approved and teacher notified.');
+            window.location='event_proposal.php';
+        </script>";
+        exit;
     }
 }
 
-// Reject action
+// ==========================
+// REJECT EVENT PROPOSAL
+// ==========================
 if (isset($_GET['reject_id'])) {
     $proposal_id = intval($_GET['reject_id']);
-    $stmt = $conn->prepare("UPDATE event_proposal SET status='Rejected' WHERE proposal_id=?");
+
+    $stmt = $conn->prepare(
+        "UPDATE event_proposal
+         SET status = 'Rejected'
+         WHERE proposal_id = ?"
+    );
     $stmt->bind_param("i", $proposal_id);
     $stmt->execute();
-    echo "<script>alert('❌ Event proposal rejected.'); window.location='event_proposal.php';</script>";
+    $stmt->close();
+
+    echo "<script>
+        alert('❌ Event proposal rejected.');
+        window.location='event_proposal.php';
+    </script>";
+    exit;
 }
 
-// Fetch all proposals
-$result = $conn->query("SELECT * FROM event_proposal ORDER BY proposal_id DESC");
+// ==========================
+// FETCH ALL PROPOSALS
+// ==========================
+$result = $conn->query(
+    "SELECT * FROM event_proposal ORDER BY proposal_id DESC"
+);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Approved Events</title>
+<title>Event Proposals</title>
+
 <link rel="stylesheet" href="style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
 <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-image: url('images/img_14901_3.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-attachment: fixed;
-            margin: 0;
-            padding: 0;
+body {
+    background-image: url('images/img_14901_3.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+}
 
-        }
-        section {
-            background: transparent;
-        }
-
-        .container {
-            width: 90%;
-            margin: auto;
-            background: rgba(255,255,255,0.85);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .header-text {
-            text-align: center;
-            margin-bottom: 30px;
-            font-weight: 700;
-            font-size: 2rem;
-            color: #141313ff;
-        }
-
-         table {
+.container {
+    margin-top: 40px;
+    background: rgba(255,255,255,0.9);
+    padding: 30px;
+    border-radius: 10px;}
+    
+        .btn-custom {
             width: 100%;
-            border-collapse: collapse;
-        }
-
-        table th, table td {
             padding: 12px;
-            border-bottom: 1px solid #ddd;
-            text-align: center;
+            border-radius: 10px;
+            font-weight: bold;
         }
-
-        th {
-            background-color: #007bff;
-            color: white;
-        }
-
-        tr:hover {
-            background-color: #f2f2f2;
-        }
-        .alert-success { background-color: #d4edda; color: #155724; }
-        .back-btn {
+             .back-btn {
             position: fixed;
             top: 25px;
             left: 25px;
@@ -124,97 +142,68 @@ $result = $conn->query("SELECT * FROM event_proposal ORDER BY proposal_id DESC")
             transition: all 0.3s ease-in-out;
             z-index: 1000;
         }
+        .back-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #0080ff);
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            color: #f8f9fa;
+            text-decoration: none;
+        }
+        .back-btn i {
+            font-size: 18px;
+        }
 
 </style>
 </head>
 
- <body>
-        <header>
-        <div class="logo">
-            <img src="images/emu-dau-logo.png" alt="EMU Logo">
-            <div class="head">
-                <h4 style="color: white; padding-left:80px;">EASTERN MEDITERRANEAN UNIVERSITY</h4>
-                <h4 style="color: white; padding-left:80px;">ONLINE LIBRARY MANAGEMENT SYSTEM</h4>
-                </div>
-        </div>
-            <nav>
-            <ul> 
-                <li><a href="admin_dashboard.php">HOME</a></li>
-                <li><a href="event_list.php">EVENTS</a></li>
-                <li><a href="event_feedback.php">FEEDBACK</a></li>
-                <li><a href="logout.php">LOGOUT</a></li>
-                </ul>
-            </nav>
-        </header>
-    <section> 
-        <br>
-<div class="container">
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <a href="admin_dashboard.php" class="btn btn-secondary back-btn">
-        <i class="bi bi-arrow-left"></i> Back
-    </a>
-   
-</div>
+<body>
 
- <div class="header-text">Event Proposals</div>
+<div class="container">
+<h2 class="text-center mb-4">Event Proposals</h2>
 
 <table class="table table-bordered text-center">
+<thead class="table-primary">
+<tr>
+    <th>ID</th>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Capacity</th>
+    <th>Proposed By</th>
+    <th>Status</th>
+    <th>Action</th>
+</tr>
+</thead>
 
-        <thead class="table-primary">
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Capacity</th>
-                <th>Proposed By</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php while($row = $result->fetch_assoc()): ?>
-            <tr>
-                <td><?= $row['proposal_id'] ?></td>
-                <td><?= htmlspecialchars($row['title']) ?></td>
-                <td><?= htmlspecialchars($row['description']) ?></td>
-                <td><?= $row['capacity'] ?></td>
-                <td><?= htmlspecialchars($row['proposed_by']) ?></td>
-                <td>
-                    <?php if ($row['status'] == 'Approved'): ?>
-                        <span class="badge bg-success">Approved</span>
-                    <?php elseif ($row['status'] == 'Rejected'): ?>
-                        <span class="badge bg-danger">Rejected</span>
-                    <?php else: ?>
-                        <span class="badge bg-warning text-dark">Pending</span>
-                    <?php endif; ?>
-                </td>
-                <td>
-                    <?php if ($row['status'] == 'Pending'): ?>
-                        <a href="?approve_id=<?= $row['proposal_id'] ?>" class="btn btn-success btn-sm">Approve</a>
-                        <a href="?reject_id=<?= $row['proposal_id'] ?>" class="btn btn-danger btn-sm">Reject</a>
-                        <?php elseif ($row['status'] == 'Approved'): ?>
-                            <span class="text-success fw-bold">
-                                <i class="bi bi-check-circle-fill"></i> Approved
-                            </span>
-
-                        <?php else: ?>
-                            <span class="text-danger fw-bold">
-                                <i class="bi bi-x-circle-fill"></i> Rejected
-                            </span>
-                        <?php endif; ?>
-                </td>
-            </tr>
-            <?php endwhile; ?>
-        </tbody>
-    </table>
+<tbody>
+<?php while ($row = $result->fetch_assoc()): ?>
+<tr>
+    <td><?= $row['proposal_id']; ?></td>
+    <td><?= htmlspecialchars($row['title']); ?></td>
+    <td><?= htmlspecialchars($row['description']); ?></td>
+    <td><?= $row['capacity']; ?></td>
+    <td><?= htmlspecialchars($row['proposed_by']); ?></td>
+    <td>
+        <?php if ($row['status'] === 'Approved'): ?>
+            <span class="badge bg-success">Approved</span>
+        <?php elseif ($row['status'] === 'Rejected'): ?>
+            <span class="badge bg-danger">Rejected</span>
+        <?php else: ?>
+            <span class="badge bg-warning text-dark">Pending</span>
+        <?php endif; ?>
+    </td>
+    <td>
+        <?php if ($row['status'] === 'Pending'): ?>
+            <a href="?approve_id=<?= $row['proposal_id']; ?>" class="btn btn-success btn-sm">Approve</a>
+            <a href="?reject_id=<?= $row['proposal_id']; ?>" class="btn btn-danger btn-sm">Reject</a>
+        <?php else: ?>
+            —
+        <?php endif; ?>
+    </td>
+</tr>
+<?php endwhile; ?>
+</tbody>
+</table>
 </div>
-                    </section>
-    <footer>
-    <p style="color: white; text-align:center;">
-        <br><br>Email: &nbsp;library@emu.edu.tr <br><br>
-        Tel: &nbsp;+90 392 630 xxxx <br><br>
-        Fax: &nbsp;+90 392 630 xxxx <br><br>
-    </p>
-</footer>
+
 </body>
 </html>

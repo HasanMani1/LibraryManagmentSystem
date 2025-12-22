@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       }
     }
   }
-}
+} 
 
 // ✅ Fetch user's active borrowings (UNCHANGED)
 $active = [];

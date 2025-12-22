@@ -15,6 +15,19 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: user_login.php");
     exit;
 }
+$admin_id = $_SESSION['user_id'];
+
+$unread_count = 0; // safety net
+
+$result = $conn->query(
+    "SELECT COUNT(*) AS total 
+     FROM notification 
+     WHERE user_id = $admin_id AND is_read = 0"
+);
+
+if ($result) {
+    $unread_count = $result->fetch_assoc()['total'];
+}
 
 // ✅ Restrict access: only admins (role_id = 1)
 if ($_SESSION['role_id'] != 1) {
@@ -207,6 +220,7 @@ $conn->close();
                 <a href="add_role.php" class="btn btn-primary">Manage Roles</a>
                 <a href="manage_users.php" class="btn btn-primary">Manage Users</a>
                 <a href="manage_borrow.php" class="btn btn-primary">Manage Borrow Book</a>
+                 <a href="notifications.php" class="btn btn-primary">🔔 View Notifications</a>
                 <a href="manage_return.php" class="btn btn-primary">Manage Return Book</a>
                 <a href="manage_book.php" class="btn btn-primary">Manage Book</a>
                 <a href="manage_donate.php" class="btn btn-primary">Manage Donation</a>

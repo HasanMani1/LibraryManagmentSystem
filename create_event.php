@@ -1,9 +1,10 @@
 <?php
 include 'db_connect.php'; 
-
+include 'notification_helper.php';
 session_start();
 include 'back_button.php';
 
+$ADMIN_USER_ID = 1;
 $proposed_by = $_SESSION['user_id'] ?? null;
 
 if (isset($_POST['submit'])) {
@@ -27,6 +28,12 @@ if (isset($_POST['submit'])) {
     $stmt->execute();
 
     if ($stmt->affected_rows > 0) {
+            createNotification(
+            $ADMIN_USER_ID,
+            "New Event Proposal Submitted",
+            "A new event proposal titled '{$title}' has been submitted and is awaiting approval."
+        );
+
         echo "<script>alert('🎉 Event proposal submitted successfully! Awaiting approval.');</script>";
         echo "<script>window.location.href='teacher_dashboard.php';</script>";
     } else {
