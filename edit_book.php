@@ -2,7 +2,9 @@
 session_start();
 include 'db_connect.php';
 
-// Check login
+// ----------------------
+// AUTH CHECK
+// ----------------------
 if (!isset($_SESSION['user_id'])) {
     header("Location: user_login.php");
     exit;
@@ -14,53 +16,75 @@ if (!isset($_GET['id'])) {
 
 $book_id = intval($_GET['id']);
 $success = "";
-$error = "";
+$error   = "";
 
-// Fetch book
-$book = $conn->query("SELECT * FROM book WHERE book_id = $book_id")->fetch_assoc();
+// ----------------------
+// FETCH BOOK
+// ----------------------
+$bookResult = $conn->query("SELECT * FROM book WHERE book_id = $book_id");
+$book = $bookResult->fetch_assoc();
+
 if (!$book) {
     die("Book not found.");
 }
 
-// Fetch categories
-$categories = $conn->query("SELECT category_id, category_name FROM book_category");
+// ----------------------
+// FETCH CATEGORIES
+// ----------------------
+$categories = $conn->query(
+    "SELECT category_id, category_name FROM book_category"
+);
 
-// Count existing copies
+// ----------------------
+// COUNT EXISTING COPIES
+// ----------------------
 $copyResult = $conn->query("
     SELECT COUNT(*) AS total 
     FROM book_inventory 
     WHERE book_id = $book_id
 ");
-$currentCopies = $copyResult->fetch_assoc()['total'];
+$currentCopies = (int)$copyResult->fetch_assoc()['total'];
 
-// Update book
+// ----------------------
+// UPDATE BOOK
+// ----------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $title       = trim($_POST['title']);
-    $author      = trim($_POST['author']);
-    $isbn        = trim($_POST['isbn']);
-    $book_type   = trim($_POST['book_type']);
-    $category_id = ($_POST['category_id'] !== "") ? intval($_POST['category_id']) : null;
-    $availability = trim($_POST['availability_status']);
-    $newCopies   = intval($_POST['copies']);
+    $title        = trim($_POST['title']);
+    $author       = trim($_POST['author']);
+    $isbn         = trim($_POST['isbn']);
+    $book_type    = $_POST['book_type'] ?? '';
+    $category_id  = ($_POST['category_id'] !== '') ? intval($_POST['category_id']) : null;
+    $availability = $_POST['availability_status'] ?? '';
+    $newCopies    = intval($_POST['copies']);
 
-    if ($title === "") {
+    // ----------------------
+    // VALIDATION
+    // ----------------------
+    $allowedTypes = ['Ebook', 'Hardcopy'];
+
+    if ($title === '') {
         $error = "Title cannot be empty.";
+    } elseif (!in_array($book_type, $allowedTypes)) {
+        $error = "Invalid book type selected.";
     } elseif ($newCopies < $currentCopies) {
         $error = "You cannot reduce the number of copies.";
     } else {
 
-        // Update book details
+        // ----------------------
+        // UPDATE BOOK TABLE
+        // ----------------------
         $stmt = $conn->prepare("
             UPDATE book SET 
-                title=?, 
-                author=?, 
-                isbn=?, 
-                book_type=?, 
-                category_id=?, 
-                availability_status=?
-            WHERE book_id=?
+                title = ?, 
+                author = ?, 
+                isbn = ?, 
+                book_type = ?, 
+                category_id = ?, 
+                availability_status = ?
+            WHERE book_id = ?
         ");
+
         $stmt->bind_param(
             "ssssisi",
             $title,
@@ -74,11 +98,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($stmt->execute()) {
 
-            // Add new copies if increased
+            // ----------------------
+            // ADD NEW COPIES (IF INCREASED)
+            // ----------------------
             if ($newCopies > $currentCopies) {
                 for ($i = $currentCopies + 1; $i <= $newCopies; $i++) {
                     $conn->query("
-                        INSERT INTO book_inventory (book_id, copy_number, book_condition, is_available)
+                        INSERT INTO book_inventory 
+                        (book_id, copy_number, book_condition, is_available)
                         VALUES ($book_id, $i, 'Good', 1)
                     ");
                 }
@@ -99,6 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
 <meta charset="UTF-8">
 <title>Edit Book</title>
+
 <style>
 body {
     font-family: Arial, sans-serif;
@@ -110,7 +138,7 @@ body {
     background: #fff;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,.1);
 }
 h2 {
     text-align: center;
@@ -154,6 +182,7 @@ button {
 }
 </style>
 </head>
+
 <body>
 
 <a href="manage_book.php" class="back-btn">← Back</a>
@@ -161,10 +190,16 @@ button {
 <div class="container">
 <h2>Edit Book</h2>
 
-<?php if ($success): ?><div class="alert-success"><?= $success ?></div><?php endif; ?>
-<?php if ($error): ?><div class="alert-error"><?= $error ?></div><?php endif; ?>
+<?php if ($success): ?>
+    <div class="alert-success"><?= $success ?></div>
+<?php endif; ?>
+
+<?php if ($error): ?>
+    <div class="alert-error"><?= $error ?></div>
+<?php endif; ?>
 
 <form method="POST">
+
     <label>Title</label>
     <input type="text" name="title" value="<?= htmlspecialchars($book['title']) ?>" required>
 
@@ -175,14 +210,17 @@ button {
     <input type="text" name="isbn" value="<?= htmlspecialchars($book['isbn']) ?>">
 
     <label>Book Type</label>
-    <input type="text" name="book_type" value="<?= htmlspecialchars($book['book_type']) ?>">
+    <select name="book_type" required>
+        <option value="Ebook" <?= $book['book_type'] === 'Ebook' ? 'selected' : '' ?>>Ebook</option>
+        <option value="Hardcopy" <?= $book['book_type'] === 'Hardcopy' ? 'selected' : '' ?>>Hardcopy</option>
+    </select>
 
     <label>Category</label>
     <select name="category_id">
         <option value="">-- Select Category --</option>
         <?php while ($c = $categories->fetch_assoc()): ?>
             <option value="<?= $c['category_id'] ?>"
-                <?= ($book['category_id'] == $c['category_id']) ? 'selected' : '' ?>>
+                <?= $book['category_id'] == $c['category_id'] ? 'selected' : '' ?>>
                 <?= htmlspecialchars($c['category_name']) ?>
             </option>
         <?php endwhile; ?>
@@ -190,14 +228,15 @@ button {
 
     <label>Availability Status</label>
     <select name="availability_status">
-        <option value="Available" <?= $book['availability_status']=='Available'?'selected':'' ?>>Available</option>
-        <option value="Unavailable" <?= $book['availability_status']=='Unavailable'?'selected':'' ?>>Unavailable</option>
+        <option value="Available" <?= $book['availability_status'] === 'Available' ? 'selected' : '' ?>>Available</option>
+        <option value="Unavailable" <?= $book['availability_status'] === 'Unavailable' ? 'selected' : '' ?>>Unavailable</option>
     </select>
 
     <label>Total Copies</label>
     <input type="number" name="copies" min="<?= $currentCopies ?>" value="<?= $currentCopies ?>" required>
 
     <button type="submit">Save Changes</button>
+
 </form>
 </div>
 

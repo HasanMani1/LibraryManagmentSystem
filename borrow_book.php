@@ -20,64 +20,90 @@ $pending_status_id = 4;
    HANDLE BORROW REQUEST
    ========================= */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $user_id = $_SESSION['user_id'];
-    $book_id = intval($_POST['book_id']);
+    $user_id  = $_SESSION['user_id'];
+    $book_id  = intval($_POST['book_id']);
     $due_date = $_POST['due_date'];
 
     if (!$book_id || !$due_date) {
         $errors[] = "Please select a book and due date.";
     } else {
 
-        // ✅ Select ONLY available copy
-        $stmt = $conn->prepare("
-            SELECT inventory_id 
-            FROM book_inventory 
-            WHERE book_id = ? AND is_available = 1 
-            LIMIT 1
+        // ❌ BLOCK EBOOKS
+        $typeStmt = $conn->prepare("
+            SELECT book_type 
+            FROM book 
+            WHERE book_id = ?
         ");
-        $stmt->bind_param("i", $book_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $typeStmt->bind_param("i", $book_id);
+        $typeStmt->execute();
+        $typeRes = $typeStmt->get_result();
 
-        if ($result->num_rows === 0) {
-            $errors[] = "This book is currently unavailable.";
+        if ($typeRes->num_rows === 0) {
+            $errors[] = "Invalid book selected.";
         } else {
-            $inventory_id = $result->fetch_assoc()['inventory_id'];
+            $bookType = $typeRes->fetch_assoc()['book_type'];
+            if ($bookType !== 'Hardcopy') {
+                $errors[] = "E-books cannot be borrowed.";
+            }
+        }
 
-            // Insert borrow request
+        // Continue only if no errors
+        if (empty($errors)) {
+
+            // ✅ Select available copy
             $stmt = $conn->prepare("
-                INSERT INTO borrowing 
-                (user_id, inventory_id, borrow_date, due_date, status_id)
-                VALUES (?, ?, CURDATE(), ?, ?)
+                SELECT inventory_id 
+                FROM book_inventory 
+                WHERE book_id = ? AND is_available = 1
+                LIMIT 1
             ");
-            $stmt->bind_param("iisi", $user_id, $inventory_id, $due_date, $pending_status_id);
+            $stmt->bind_param("i", $book_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-            if ($stmt->execute()) {
-                logActivity($user_id, "Requested to borrow inventory ID: $inventory_id");
-                header("Location: borrow_book.php?requested=1");
-                exit;
+            if ($result->num_rows === 0) {
+                $errors[] = "This book is currently unavailable.";
             } else {
-                $errors[] = "Request failed. Please try again.";
+                $inventory_id = $result->fetch_assoc()['inventory_id'];
+
+                $stmt = $conn->prepare("
+                    INSERT INTO borrowing 
+                    (user_id, inventory_id, borrow_date, due_date, status_id)
+                    VALUES (?, ?, CURDATE(), ?, ?)
+                ");
+                $stmt->bind_param("iisi", $user_id, $inventory_id, $due_date, $pending_status_id);
+
+                if ($stmt->execute()) {
+                    logActivity($user_id, "Requested to borrow inventory ID: $inventory_id");
+                    header("Location: borrow_book.php?requested=1");
+                    exit;
+                } else {
+                    $errors[] = "Request failed. Please try again.";
+                }
             }
         }
     }
 }
 
 /* =========================
-   FETCH AVAILABLE BOOKS ONLY
+   FETCH BORROWABLE BOOKS
+   (HARDCOPY ONLY)
    ========================= */
 $books = [];
 $res = $conn->query("
     SELECT DISTINCT b.book_id, b.title, b.author
     FROM book b
     JOIN book_inventory bi ON b.book_id = bi.book_id
-    WHERE bi.is_available = 1
+    WHERE 
+        bi.is_available = 1
+        AND b.book_type = 'Hardcopy'
     ORDER BY b.title
 ");
 while ($r = $res->fetch_assoc()) {
     $books[] = $r;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -86,7 +112,7 @@ while ($r = $res->fetch_assoc()) {
     <title>Borrow a Book</title>
 
     <style>
-        /* YOUR ORIGINAL CSS — UNCHANGED */
+        /* ===== YOUR ORIGINAL DESIGN — UNCHANGED ===== */
         body {
             font-family: Arial, sans-serif;
             background-image: url('images/saer.jpg');
@@ -145,16 +171,15 @@ while ($r = $res->fetch_assoc()) {
             margin-bottom: 15px;
         }
 
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-        }
-
         .alert-error {
             background: #f8d7da;
             color: #721c24;
         }
 
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+        }
         .back-btn {
             position: fixed;
             top: 25px;
@@ -171,11 +196,18 @@ while ($r = $res->fetch_assoc()) {
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             text-decoration: none;
             transition: all 0.3s ease-in-out;
+            z-index: 1000;
         }
 
         .back-btn:hover {
             background: linear-gradient(135deg, #0056b3, #0080ff);
             transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            color: #f8f9fa;
+        }
+
+        .back-btn i {
+            font-size: 18px;
         }
     </style>
 </head>
@@ -196,7 +228,7 @@ while ($r = $res->fetch_assoc()) {
         <?php endif; ?>
 
         <form method="post">
-            <label for="book_id">Choose Book</label>
+            <label>Choose Book</label>
             <select name="book_id" required>
                 <option value="">-- Select --</option>
                 <?php foreach ($books as $b): ?>
@@ -206,12 +238,11 @@ while ($r = $res->fetch_assoc()) {
                 <?php endforeach; ?>
             </select>
 
-            <label for="due_date">Due Date</label>
+            <label>Due Date</label>
             <input type="date" name="due_date" required min="<?= date('Y-m-d') ?>">
 
             <button type="submit">Submit Request</button>
         </form>
-
     </div>
 
 </body>

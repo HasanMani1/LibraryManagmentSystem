@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 23, 2025 at 06:45 PM
+-- Generation Time: Dec 23, 2025 at 10:29 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -439,7 +439,16 @@ INSERT INTO `activity_log` (`log_id`, `user_id`, `action`, `timestamp`) VALUES
 (399, 10, 'Logged in successfully', '2025-12-23 19:35:59'),
 (400, 10, 'Logged out', '2025-12-23 19:36:22'),
 (401, 8, 'Logged in successfully', '2025-12-23 19:36:31'),
-(402, 8, 'Logged out', '2025-12-23 19:37:36');
+(402, 8, 'Logged out', '2025-12-23 19:37:36'),
+(403, 17, 'Logged in successfully', '2025-12-23 22:10:38'),
+(404, 15, 'Logged in successfully', '2025-12-23 22:43:18'),
+(405, 15, 'Logged out', '2025-12-23 23:16:24'),
+(406, 17, 'Logged in successfully', '2025-12-23 23:16:38'),
+(407, 17, 'Logged out', '2025-12-23 23:19:58'),
+(408, 15, 'Logged in successfully', '2025-12-23 23:20:30'),
+(409, 15, 'Logged out', '2025-12-23 23:21:01'),
+(410, 17, 'Logged in successfully', '2025-12-23 23:21:08'),
+(411, 17, 'Logged in successfully', '2025-12-23 23:21:09');
 
 -- --------------------------------------------------------
 
@@ -467,7 +476,7 @@ CREATE TABLE `book` (
   `title` varchar(255) NOT NULL,
   `author` varchar(150) DEFAULT NULL,
   `isbn` varchar(50) DEFAULT NULL,
-  `book_type` varchar(100) DEFAULT NULL,
+  `book_type` enum('Ebook','Hardcopy') NOT NULL,
   `availability_status` varchar(50) DEFAULT 'Available',
   `category_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp()
@@ -478,9 +487,9 @@ CREATE TABLE `book` (
 --
 
 INSERT INTO `book` (`book_id`, `title`, `author`, `isbn`, `book_type`, `availability_status`, `category_id`, `created_at`) VALUES
-(1, 'THE BOOK OF TIME TIME', 'Major', '213-45', 'HARDCOPY', 'Available', 52, '2025-12-06 17:27:38'),
-(3, 'The What', 'Miles', '213-43', 'Donated', 'Available', 1, '2025-12-21 21:04:27'),
-(4, 'The Leadership Pipeline', NULL, NULL, 'Donated', 'Available', 1, '2025-12-22 12:39:20');
+(1, 'THE BOOK OF TIME TIME', 'Major', '213-45', 'Hardcopy', 'Available', 52, '2025-12-06 17:27:38'),
+(3, 'The What', 'Miles', '213-43', 'Ebook', 'Available', 1, '2025-12-21 21:04:27'),
+(4, 'The Leadership Pipeline', 'Tim John', '324-11', 'Hardcopy', 'Available', 1, '2025-12-22 12:39:20');
 
 -- --------------------------------------------------------
 
@@ -617,7 +626,8 @@ INSERT INTO `book_inventory` (`inventory_id`, `book_id`, `copy_number`, `book_co
 (8, 1, 8, 'Good', 1),
 (9, 3, 1, 'Good', 0),
 (10, 3, 2, 'Good', 0),
-(11, 3, 3, 'Good', 1);
+(11, 3, 3, 'Good', 1),
+(12, 4, 1, 'Good', 1);
 
 -- --------------------------------------------------------
 
@@ -1324,7 +1334,7 @@ ALTER TABLE `account_blockage`
 -- AUTO_INCREMENT for table `activity_log`
 --
 ALTER TABLE `activity_log`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=403;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=412;
 
 --
 -- AUTO_INCREMENT for table `attendance`
@@ -1354,7 +1364,7 @@ ALTER TABLE `book_donation`
 -- AUTO_INCREMENT for table `book_inventory`
 --
 ALTER TABLE `book_inventory`
-  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `book_management_log`
