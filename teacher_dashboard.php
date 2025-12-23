@@ -66,9 +66,7 @@ $name = $_SESSION['name'];
                     <li>See reminders and notifications 🔔</li>
                 </ul>
                 <br> 
-                <a href="create_event.php" class="btn btn-primary">Add New Event</a>
-                <a href="accepted.php" class="btn btn-primary">Events</a>
-                  <a href="notifications.php" class="btn btn-primary">🔔 View Notifications</a>
+            
                  <a href="book.php" class="btn btn-primary">Books</a>
                 <a href="borrow_book.php" class="btn btn-primary">Borrow Books</a>
                 <a href="return_book.php" class="btn btn-primary">Return Books</a>

@@ -66,11 +66,13 @@ $name = $_SESSION['name'];
                                 <li>📅 Organize and check the events</li>
                 </ul>
                 <br>
-                <a href="event_proposal.php" class="btn btn-primary">Proposed Events</a>
+                <a href="create_event.php" class="btn btn-primary">Add New Event</a>
+                <a href="accepted.php" class="btn btn-primary">Events</a>
                  <a href="manage_borrow.php" class="btn btn-primary">Manage Borrow Book</a>
                 <a href="manage_return.php" class="btn btn-primary">Manage Return Book</a>
                 <a href="manage_donate.php" class="btn btn-primary">Manage Donation</a>
                  <a href="manage_book.php" class="btn btn-primary">Manage Book</a>
+                 <a href="notifications.php" class="btn btn-primary">🔔 View Notifications</a>
                  <a href="manage_capacity.php"class="btn btn-primary">🏢 Manage Capacity</a>
                  <?php if ($_SESSION['role_id'] == 2): ?>
     <a href="librarian_user_search.php" class="btn btn-primary">

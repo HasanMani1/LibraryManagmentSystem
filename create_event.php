@@ -1,7 +1,7 @@
 <?php
+session_start();
 include 'db_connect.php'; 
 include 'notification_helper.php';
-session_start();
 include 'back_button.php';
 
 $ADMIN_USER_ID = 1;
@@ -35,7 +35,7 @@ if (isset($_POST['submit'])) {
         );
 
         echo "<script>alert('🎉 Event proposal submitted successfully! Awaiting approval.');</script>";
-        echo "<script>window.location.href='teacher_dashboard.php';</script>";
+        echo "<script>window.location.href='librarian_dashboard.php';</script>";
     } else {
         echo "<script>alert('❌ Something went wrong. Please try again.');</script>";
     }
