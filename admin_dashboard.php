@@ -227,6 +227,7 @@ $conn->close();
                 <a href="activity_log.php" class="btn btn-primary">Activity Log</a>
                 <a href="event_proposal.php" class="btn btn-primary">Proposed Events</a>
                  <a href="view_messages.php" class="btn btn-primary">View Messages</a>
+                <a href="manage_capacity.php" class="btn btn-primary">🏢 Manage Capacity</a>
                 <a href="logout.php" class="btn btn-danger">Logout</a>
             </div>
         </div>

@@ -109,6 +109,7 @@ $name = $_SESSION['name'];
                 <a href="book_donate.php" class="btn btn-primary">Donate Books</a>
                 <a href="wishlist.php" class="btn btn-primary">Wishlist</a>
                 <a href="recommended_books.php" class="btn btn-primary">Recommended Books</a>
+                <a href="view_capacity.php"class="btn btn-primary">🏢 Library Capacity</a>
                 <a href="logout.php" class="btn btn-danger">Logout</a>
             </div>
         </div>
