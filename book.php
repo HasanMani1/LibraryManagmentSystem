@@ -1,10 +1,10 @@
 <?php
 session_start();
-include 'db_connect.php';
-include 'back_button.php';
-include 'log_activity.php';
+require_once 'db_connect.php';
+require_once 'back_button.php';
+require_once 'log_activity.php';
 
-// 🔐 Only logged-in users
+// 🔐 Auth check
 if (!isset($_SESSION['user_id'])) {
     header("Location: user_login.php");
     exit;
@@ -12,11 +12,10 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 $role_id = $_SESSION['role_id']; // 3 = Teacher, 4 = Student
-
-$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$search  = trim($_GET['search'] ?? '');
 
 // ----------------------
-// FETCH BOOKS
+// Fetch books
 // ----------------------
 $sql = "
     SELECT 
@@ -66,17 +65,14 @@ $result = $stmt->get_result();
             transition: all 0.3s ease-in-out;
             z-index: 1000;
         }
-
         .back-btn:hover {
             background: linear-gradient(135deg, #0056b3, #0080ff);
             transform: scale(1.05);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
             color: #f8f9fa;
+            text-decoration: none;
         }
-
-        .back-btn i {
-            font-size: 18px;
-        }
+        .back-btn i { font-size: 18px; }
     </style>
 </head>
 
@@ -85,139 +81,111 @@ $result = $stmt->get_result();
     <div class="container mt-5">
         <h2 class="text-center mb-4">📚 Books</h2>
 
-        <!-- SEARCH -->
-        <form method="GET" class="d-flex mb-3">
-            <input type="text"
-                name="search"
-                class="form-control me-2"
-                placeholder="Search by title or author..."
-                value="<?= htmlspecialchars($search); ?>">
+        <!-- Search -->
+        <form method="get" class="d-flex mb-3">
+            <input type="text" name="search" class="form-control me-2"
+                placeholder="Search title or author"
+                value="<?= htmlspecialchars($search) ?>">
             <button class="btn btn-primary">
                 <i class="bi bi-search"></i> Search
             </button>
         </form>
 
-        <table class="table table-bordered table-hover text-center align-middle">
+        <table class="table table-bordered table-hover align-middle text-center">
             <thead class="table-primary">
                 <tr>
-                    <th>ID</th>
                     <th>Title</th>
                     <th>Author</th>
                     <th>ISBN</th>
                     <th>Type</th>
                     <th>Category</th>
-                    <th>Availability</th>
-                    <th>Action</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
 
             <tbody>
                 <?php if ($result->num_rows === 0): ?>
                     <tr>
-                        <td colspan="8">No books found.</td>
+                        <td colspan="7">No books found.</td>
                     </tr>
-                <?php else: ?>
-                    <?php while ($b = $result->fetch_assoc()): ?>
-
-                        <?php
-                        // ----------------------
-                        // WISHLIST CHECK
-                        // ----------------------
-                        $isWishlisted = false;
-                        if (in_array($role_id, [3, 4])) {
-                            $w = $conn->prepare(
-                                "SELECT wishlist_id FROM wishlist WHERE user_id = ? AND book_id = ?"
-                            );
-                            $w->bind_param("ii", $user_id, $b['book_id']);
-                            $w->execute();
-                            $w->store_result();
-                            $isWishlisted = $w->num_rows > 0;
-                            $w->close();
-                        }
-
-                        // ----------------------
-                        // RECOMMEND CHECK (Teacher)
-                        // ----------------------
-                        $isRecommended = false;
-                        if ($role_id == 3) {
-                            $r = $conn->prepare(
-                                "SELECT rec_id FROM recommendation WHERE suggested_by = ? AND book_id = ?"
-                            );
-                            $r->bind_param("ii", $user_id, $b['book_id']);
-                            $r->execute();
-                            $r->store_result();
-                            $isRecommended = $r->num_rows > 0;
-                            $r->close();
-                        }
-                        ?>
-
-                        <tr>
-                            <td><?= $b['book_id']; ?></td>
-                            <td><?= htmlspecialchars($b['title']); ?></td>
-                            <td><?= htmlspecialchars($b['author']); ?></td>
-                            <td><?= htmlspecialchars($b['isbn']); ?></td>
-
-                            <!-- BOOK TYPE -->
-                            <td>
-                                <span class="badge bg-info">
-                                    <?= htmlspecialchars($b['book_type']); ?>
-                                </span>
-                            </td>
-
-                            <td><?= $b['category_id']; ?></td>
-
-                            <!-- AVAILABILITY -->
-                            <td>
-                                <?php if ($b['availability_status'] === 'Available'): ?>
-                                    <span class="badge bg-success">Available</span>
-                                <?php else: ?>
-                                    <span class="badge bg-danger">Not Available</span>
-                                <?php endif; ?>
-                            </td>
-
-                            <!-- ACTIONS -->
-                            <td>
-
-                                <!-- WISHLIST -->
-                                <?php if (in_array($role_id, [3, 4]) && $b['availability_status'] === 'Available'): ?>
-                                    <?php if ($isWishlisted): ?>
-                                        <span class="text-success fw-semibold me-2">
-                                            <i class="bi bi-check-circle-fill"></i> In Wishlist
-                                        </span>
-                                    <?php else: ?>
-                                        <form method="POST"
-                                            action="add_to_wishlist.php"
-                                            class="d-inline me-2"
-                                            onsubmit="return confirm('Add this book to your wishlist?');">
-                                            <input type="hidden" name="book_id" value="<?= $b['book_id']; ?>">
-                                            <button class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-heart"></i> Wishlist
-                                            </button>
-                                        </form>
-                                    <?php endif; ?>
-                                <?php endif; ?>
-
-                                <!-- RECOMMEND (Teacher) -->
-                                <?php if ($role_id == 3 && $b['availability_status'] === 'Available'): ?>
-                                    <?php if ($isRecommended): ?>
-                                        <span class="text-success fw-semibold">
-                                            <i class="bi bi-check-circle-fill"></i> Recommended
-                                        </span>
-                                    <?php else: ?>
-                                        <form method="POST" action="add_recommendation.php" class="d-inline">
-                                            <input type="hidden" name="book_id" value="<?= $b['book_id']; ?>">
-                                            <button class="btn btn-sm btn-outline-warning">
-                                                ⭐ Recommend
-                                            </button>
-                                        </form>
-                                    <?php endif; ?>
-                                <?php endif; ?>
-
-                            </td>
-                        </tr>
-
-                    <?php endwhile; ?>
                 <?php endif; ?>
+
+                <?php while ($b = $result->fetch_assoc()): ?>
+
+                    <?php
+                    // Wishlist check
+                    $isWishlisted = false;
+                    if (in_array($role_id, [3, 4])) {
+                        $w = $conn->prepare(
+                            "SELECT wishlist_id FROM wishlist WHERE user_id = ? AND book_id = ?"
+                        );
+                        $w->bind_param("ii", $user_id, $b['book_id']);
+                        $w->execute();
+                        $w->store_result();
+                        $isWishlisted = $w->num_rows > 0;
+                        $w->close();
+                    }
+                    ?>
+
+                    <tr>
+                        <td>
+                            <a href="detail.php?book_id=<?= $b['book_id'] ?>" class="fw-semibold text-decoration-none">
+                                <?= htmlspecialchars($b['title']) ?>
+                            </a>
+                        </td>
+                        <td><?= htmlspecialchars($b['author']) ?></td>
+                        <td><?= htmlspecialchars($b['isbn']) ?></td>
+
+                        <td>
+                            <span class="badge bg-info">
+                                <?= htmlspecialchars($b['book_type']) ?>
+                            </span>
+                        </td>
+
+                        <td><?= (int)$b['category_id'] ?></td>
+
+                        <td>
+                            <?php if ($b['availability_status'] === 'Available'): ?>
+                                <span class="badge bg-success">Available</span>
+                            <?php else: ?>
+                                <span class="badge bg-danger">Unavailable</span>
+                            <?php endif; ?>
+                        </td>
+
+                        <td>
+                            <!-- Wishlist -->
+                            <?php if (in_array($role_id, [3, 4]) && $b['availability_status'] === 'Available'): ?>
+                                <?php if ($isWishlisted): ?>
+                                    <span class="text-success fw-semibold me-2">
+                                        <i class="bi bi-check-circle-fill"></i> Wishlisted
+                                    </span>
+                                <?php else: ?>
+                                    <form method="post" action="add_to_wishlist.php" class="d-inline">
+                                        <input type="hidden" name="book_id" value="<?= $b['book_id'] ?>">
+                                        <button class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-heart"></i>
+                                        </button>
+                                    </form>
+                                <?php endif; ?>
+                            <?php endif; ?>
+
+                            <!-- Borrow -->
+                            <?php if (
+                                in_array($role_id, [3, 4]) &&
+                                $b['availability_status'] === 'Available' &&
+                                $b['book_type'] === 'Hardcopy'
+                            ): ?>
+                                <a href="borrow_book.php?book_id=<?= $b['book_id'] ?>"
+                                    class="btn btn-sm btn-outline-success ms-1"
+                                    onclick="return confirm('Borrow this book?');">
+                                    <i class="bi bi-journal-arrow-up"></i>
+                                </a>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+
+                <?php endwhile; ?>
             </tbody>
         </table>
     </div>

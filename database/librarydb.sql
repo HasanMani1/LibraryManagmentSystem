@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 23, 2025 at 10:29 PM
+-- Generation Time: Dec 24, 2025 at 10:22 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -448,7 +448,13 @@ INSERT INTO `activity_log` (`log_id`, `user_id`, `action`, `timestamp`) VALUES
 (408, 15, 'Logged in successfully', '2025-12-23 23:20:30'),
 (409, 15, 'Logged out', '2025-12-23 23:21:01'),
 (410, 17, 'Logged in successfully', '2025-12-23 23:21:08'),
-(411, 17, 'Logged in successfully', '2025-12-23 23:21:09');
+(411, 17, 'Logged in successfully', '2025-12-23 23:21:09'),
+(412, 17, 'Logged in successfully', '2025-12-23 23:50:07'),
+(413, 17, 'Logged in successfully', '2025-12-24 21:50:40'),
+(414, 15, 'Logged in successfully', '2025-12-24 22:11:45'),
+(415, 15, 'Logged in successfully', '2025-12-24 22:12:02'),
+(416, 17, 'Logged in successfully', '2025-12-24 22:51:00'),
+(417, 17, 'Logged in successfully', '2025-12-24 23:11:33');
 
 -- --------------------------------------------------------
 
@@ -477,6 +483,8 @@ CREATE TABLE `book` (
   `author` varchar(150) DEFAULT NULL,
   `isbn` varchar(50) DEFAULT NULL,
   `book_type` enum('Ebook','Hardcopy') NOT NULL,
+  `description` text DEFAULT NULL,
+  `cover_image` varchar(255) DEFAULT NULL,
   `availability_status` varchar(50) DEFAULT 'Available',
   `category_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp()
@@ -486,10 +494,11 @@ CREATE TABLE `book` (
 -- Dumping data for table `book`
 --
 
-INSERT INTO `book` (`book_id`, `title`, `author`, `isbn`, `book_type`, `availability_status`, `category_id`, `created_at`) VALUES
-(1, 'THE BOOK OF TIME TIME', 'Major', '213-45', 'Hardcopy', 'Available', 52, '2025-12-06 17:27:38'),
-(3, 'The What', 'Miles', '213-43', 'Ebook', 'Available', 1, '2025-12-21 21:04:27'),
-(4, 'The Leadership Pipeline', 'Tim John', '324-11', 'Hardcopy', 'Available', 1, '2025-12-22 12:39:20');
+INSERT INTO `book` (`book_id`, `title`, `author`, `isbn`, `book_type`, `description`, `cover_image`, `availability_status`, `category_id`, `created_at`) VALUES
+(1, 'THE BOOK OF TIME TIME', 'Major', '213-45', 'Hardcopy', NULL, NULL, 'Available', 52, '2025-12-06 17:27:38'),
+(3, 'The What', 'Miles', '213-43', 'Ebook', NULL, NULL, 'Available', 1, '2025-12-21 21:04:27'),
+(4, 'The Leadership Pipeline', 'Tim John', '324-11', 'Hardcopy', NULL, NULL, 'Available', 1, '2025-12-22 12:39:20'),
+(5, 'STATE OF THE WALLET', 'DAINEL TANASE', '322-11', 'Ebook', 'Help in finance', 'uploads/books/694c5216548dc.png', 'Available', 11, '2025-12-24 22:50:30');
 
 -- --------------------------------------------------------
 
@@ -627,7 +636,9 @@ INSERT INTO `book_inventory` (`inventory_id`, `book_id`, `copy_number`, `book_co
 (9, 3, 1, 'Good', 0),
 (10, 3, 2, 'Good', 0),
 (11, 3, 3, 'Good', 1),
-(12, 4, 1, 'Good', 1);
+(12, 4, 1, 'Good', 1),
+(13, 5, 1, 'Good', 1),
+(14, 5, 2, 'Good', 1);
 
 -- --------------------------------------------------------
 
@@ -1149,6 +1160,7 @@ ALTER TABLE `attendance`
 ALTER TABLE `book`
   ADD PRIMARY KEY (`book_id`),
   ADD UNIQUE KEY `isbn` (`isbn`),
+  ADD UNIQUE KEY `isbn_2` (`isbn`),
   ADD KEY `category_id` (`category_id`);
 
 --
@@ -1334,7 +1346,7 @@ ALTER TABLE `account_blockage`
 -- AUTO_INCREMENT for table `activity_log`
 --
 ALTER TABLE `activity_log`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=412;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=418;
 
 --
 -- AUTO_INCREMENT for table `attendance`
@@ -1346,7 +1358,7 @@ ALTER TABLE `attendance`
 -- AUTO_INCREMENT for table `book`
 --
 ALTER TABLE `book`
-  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `book_category`
@@ -1364,7 +1376,7 @@ ALTER TABLE `book_donation`
 -- AUTO_INCREMENT for table `book_inventory`
 --
 ALTER TABLE `book_inventory`
-  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `book_management_log`

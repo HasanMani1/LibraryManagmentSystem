@@ -17,7 +17,7 @@ $error   = "";
 // LOAD CATEGORIES
 // ----------------------
 $categories = $conn->query(
-    "SELECT category_id, category_name FROM book_category"
+    "SELECT category_id, category_name FROM book_category ORDER BY category_name"
 );
 
 // ----------------------
@@ -29,60 +29,107 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $author      = trim($_POST['author']);
     $isbn        = trim($_POST['isbn']);
     $book_type   = $_POST['book_type'] ?? '';
-    $category_id = ($_POST['category_id'] !== '') ? intval($_POST['category_id']) : null;
+    $description = trim($_POST['description']);
+    $category_id = intval($_POST['category_id']);
     $copies      = intval($_POST['copies']);
+
+    $allowedTypes = ['Ebook', 'Hardcopy'];
 
     // ----------------------
     // VALIDATION
     // ----------------------
-    $allowedTypes = ['Ebook', 'Hardcopy'];
-
-    if ($title === '') {
-        $error = "Title is required.";
+    if ($title === '' || $author === '' || $isbn === '' || $description === '') {
+        $error = "All fields are required.";
     } elseif (!in_array($book_type, $allowedTypes)) {
-        $error = "Invalid book type selected.";
+        $error = "Invalid book type.";
+    } elseif ($category_id < 1) {
+        $error = "Category is required.";
     } elseif ($copies < 1) {
         $error = "At least one copy is required.";
     } else {
 
         // ----------------------
-        // INSERT BOOK
+        // ISBN UNIQUENESS
         // ----------------------
-        $stmt = $conn->prepare("
-            INSERT INTO book 
-                (title, author, isbn, book_type, category_id, availability_status, created_at)
-            VALUES 
-                (?, ?, ?, ?, ?, 'Available', NOW())
-        ");
+        $check = $conn->prepare("SELECT book_id FROM book WHERE isbn = ?");
+        $check->bind_param("s", $isbn);
+        $check->execute();
+        $check->store_result();
 
-        $stmt->bind_param(
-            "ssssi",
-            $title,
-            $author,
-            $isbn,
-            $book_type,
-            $category_id
-        );
-
-        if ($stmt->execute()) {
-
-            $book_id = $conn->insert_id;
+        if ($check->num_rows > 0) {
+            $error = "A book with this ISBN already exists.";
+        } else {
 
             // ----------------------
-            // INSERT INVENTORY COPIES
+            // IMAGE UPLOAD
             // ----------------------
-            for ($i = 1; $i <= $copies; $i++) {
-                $conn->query("
-                    INSERT INTO book_inventory 
-                        (book_id, copy_number, book_condition, is_available)
-                    VALUES 
-                        ($book_id, $i, 'Good', 1)
-                ");
+            $imagePath = null;
+
+            if (!empty($_FILES['cover_image']['name'])) {
+                $ext = strtolower(pathinfo($_FILES['cover_image']['name'], PATHINFO_EXTENSION));
+                $allowedExt = ['jpg', 'jpeg', 'png'];
+
+                if (!in_array($ext, $allowedExt)) {
+                    $error = "Only JPG and PNG images are allowed.";
+                } else {
+                    if (!is_dir("uploads/books")) {
+                        mkdir("uploads/books", 0777, true);
+                    }
+                    $imagePath = "uploads/books/" . uniqid() . "." . $ext;
+                    move_uploaded_file($_FILES['cover_image']['tmp_name'], $imagePath);
+                }
             }
 
-            $success = "Book added successfully!";
-        } else {
-            $error = "Failed to add book.";
+            if ($error === "") {
+
+                // ----------------------
+                // AUTO AVAILABILITY
+                // ----------------------
+                $availability = ($copies > 0) ? 'Available' : 'Not Available';
+
+                // ----------------------
+                // INSERT BOOK
+                // ----------------------
+                $stmt = $conn->prepare("
+                    INSERT INTO book 
+                        (title, author, isbn, book_type, description, cover_image, category_id, availability_status, created_at)
+                    VALUES 
+                        (?, ?, ?, ?, ?, ?, ?, ?, NOW())
+                ");
+
+                $stmt->bind_param(
+                    "ssssssis",
+                    $title,
+                    $author,
+                    $isbn,
+                    $book_type,
+                    $description,
+                    $imagePath,
+                    $category_id,
+                    $availability
+                );
+
+                if ($stmt->execute()) {
+
+                    $book_id = $conn->insert_id;
+
+                    // ----------------------
+                    // INVENTORY COPIES
+                    // ----------------------
+                    for ($i = 1; $i <= $copies; $i++) {
+                        $conn->query("
+                            INSERT INTO book_inventory 
+                                (book_id, copy_number, book_condition, is_available)
+                            VALUES 
+                                ($book_id, $i, 'Good', 1)
+                        ");
+                    }
+
+                    $success = "Book added successfully.";
+                } else {
+                    $error = "Failed to save book.";
+                }
+            }
         }
     }
 }
@@ -93,43 +140,49 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <head>
     <meta charset="UTF-8">
-    <title>Add New Book</title>
+    <title>Add Book</title>
 
     <style>
         body {
-            font-family: Arial, sans-serif;
             background: #f4f6f9;
+            font-family: Arial, sans-serif;
         }
 
         .container {
-            max-width: 600px;
-            margin: 80px auto;
+            max-width: 650px;
+            margin: 70px auto;
             background: #fff;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
         }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #007bff;
+        label {
+            font-weight: 600;
+            margin-top: 12px;
+            display: block;
         }
 
         input,
-        select {
+        select,
+        textarea {
             width: 100%;
             padding: 8px;
-            margin-bottom: 15px;
+            margin-top: 5px;
+        }
+
+        textarea {
+            resize: vertical;
         }
 
         button {
-            width: 100%;
+            margin-top: 15px;
             padding: 10px;
             background: #28a745;
-            color: white;
+            color: #fff;
             border: none;
             border-radius: 5px;
+            width: 100%;
         }
 
         .alert-success {
@@ -151,7 +204,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             top: 25px;
             left: 25px;
             background: #007bff;
-            color: white;
+            color: #fff;
             padding: 10px 18px;
             border-radius: 50px;
             text-decoration: none;
@@ -174,16 +227,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="alert-error"><?= $error ?></div>
         <?php endif; ?>
 
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
 
             <label>Title</label>
             <input type="text" name="title" required>
 
             <label>Author</label>
-            <input type="text" name="author">
+            <input type="text" name="author" required>
 
             <label>ISBN</label>
-            <input type="text" name="isbn">
+            <input type="text" name="isbn" required>
 
             <label>Book Type</label>
             <select name="book_type" required>
@@ -193,14 +246,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </select>
 
             <label>Category</label>
-            <select name="category_id">
-                <option value="">-- Select Category (Optional) --</option>
+            <select name="category_id" required>
+                <option value="">-- Select Category --</option>
                 <?php while ($c = $categories->fetch_assoc()): ?>
                     <option value="<?= $c['category_id'] ?>">
                         <?= htmlspecialchars($c['category_name']) ?>
                     </option>
                 <?php endwhile; ?>
             </select>
+
+            <label>Description</label>
+            <textarea name="description" rows="4" required></textarea>
+
+            <label>Cover Image</label>
+            <input type="file" name="cover_image" accept="image/*">
 
             <label>Number of Copies</label>
             <input type="number" name="copies" min="1" required>

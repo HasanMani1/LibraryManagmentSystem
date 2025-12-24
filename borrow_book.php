@@ -1,7 +1,6 @@
 <?php
 session_start();
 include 'db_connect.php';
-include 'back_button.php';
 include 'log_activity.php';
 
 // 🔐 Only logged-in users
@@ -10,18 +9,24 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+$user_id = $_SESSION['user_id'];
 $errors = [];
 $success = "";
 
 // 🚦 Pending approval status ID
 $pending_status_id = 4;
 
+// Auto-selected book (from Books page)
+$selected_book_id = isset($_GET['book_id']) && ctype_digit($_GET['book_id'])
+    ? (int)$_GET['book_id']
+    : null;
+
 /* =========================
    HANDLE BORROW REQUEST
    ========================= */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $user_id  = $_SESSION['user_id'];
-    $book_id  = intval($_POST['book_id']);
+
+    $book_id  = (int)$_POST['book_id'];
     $due_date = $_POST['due_date'];
 
     if (!$book_id || !$due_date) {
@@ -47,7 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        // Continue only if no errors
         if (empty($errors)) {
 
             // ✅ Select available copy
@@ -64,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($result->num_rows === 0) {
                 $errors[] = "This book is currently unavailable.";
             } else {
+
                 $inventory_id = $result->fetch_assoc()['inventory_id'];
 
                 $stmt = $conn->prepare("
@@ -99,6 +104,7 @@ $res = $conn->query("
         AND b.book_type = 'Hardcopy'
     ORDER BY b.title
 ");
+
 while ($r = $res->fetch_assoc()) {
     $books[] = $r;
 }
@@ -112,7 +118,7 @@ while ($r = $res->fetch_assoc()) {
     <title>Borrow a Book</title>
 
     <style>
-        /* ===== YOUR ORIGINAL DESIGN — UNCHANGED ===== */
+        /* ===== ORIGINAL DESIGN — RESTORED ===== */
         body {
             font-family: Arial, sans-serif;
             background-image: url('images/saer.jpg');
@@ -198,21 +204,21 @@ while ($r = $res->fetch_assoc()) {
             transition: all 0.3s ease-in-out;
             z-index: 1000;
         }
-
         .back-btn:hover {
             background: linear-gradient(135deg, #0056b3, #0080ff);
             transform: scale(1.05);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
             color: #f8f9fa;
+            text-decoration: none;
         }
-
-        .back-btn i {
-            font-size: 18px;
-        }
+        .back-btn i { font-size: 18px; }
     </style>
 </head>
 
 <body>
+
+    
+    <a href="book.php" class="back-btn">←Go Back</a>
 
     <div class="container">
         <h1>📚 Borrow a Book</h1>
@@ -232,7 +238,8 @@ while ($r = $res->fetch_assoc()) {
             <select name="book_id" required>
                 <option value="">-- Select --</option>
                 <?php foreach ($books as $b): ?>
-                    <option value="<?= $b['book_id'] ?>">
+                    <option value="<?= $b['book_id'] ?>"
+                        <?= $selected_book_id === (int)$b['book_id'] ? 'selected' : '' ?>>
                         <?= htmlspecialchars($b['title']) ?> — <?= htmlspecialchars($b['author']) ?>
                     </option>
                 <?php endforeach; ?>
