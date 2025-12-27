@@ -58,8 +58,75 @@ $name = $_SESSION['name'];
             color: white;                           
             font-weight: bold;
         }
+        /* Hover dropdowns */
+        .navbar .dropdown:hover > .dropdown-menu {
+            display: block;
+            margin-top: 0;
+        }
+
+        /* Keep dropdowns positioned correctly */
+        .navbar {
+            position: relative;
+            z-index: 1000;
+        }
+
+        .dropdown-menu {
+            max-height: 350px;
+            overflow-y: auto;
+}
+/* Dropdown container – frosted glass */
+.custom-navbar .dropdown-menu {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    padding: 6px 0;
+    min-width: 200px;
+    overflow: auto;
+}
+
+/* Make dropdown items full-width blocks */
+.custom-navbar .dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    font-weight: 500;
+    font-size: small;
+    color: #1f2d3d;
+    transition: background 0.15s ease, color 0.15s ease;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+/* Uniform hover area */
+.custom-navbar .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.75);
+    color: #0b4a8b;
+    box-shadow: inset 0 0 0 1px rgba(11, 74, 139, 0.12);
+}
 
 
+/* Smooth dropdown appearance */
+.navbar .dropdown-menu {
+    animation: dropdownFade 0.2s ease-out;
+}
+
+@keyframes dropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.dropdown-divider {
+    margin: 6px 12px;
+    opacity: 0.3;
+}
 
 </style>
 <body >
@@ -73,12 +140,78 @@ $name = $_SESSION['name'];
         </div>
     </div>
 
-    <nav>
-        <ul>
-          
-        
-        </ul>
-    </nav>
+        <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+    <div class="container-fluid">
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#studentNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="studentNavbar">
+            <ul class="navbar-nav ms-auto">
+
+                <!-- EVENTS -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button">
+                        Events
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="final_event_list.php">Upcoming Events</a></li>
+                    </ul>
+                </li>
+
+                <!-- BOOKS -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button">
+                        Books
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="book.php">Books</a></li>
+                        <li><a class="dropdown-item" href="borrow_book.php">Borrow Books</a></li>
+                        <li><a class="dropdown-item" href="return_book.php">Return Books</a></li>
+                        <li><a class="dropdown-item" href="borrow_history.php">Borrow History</a></li>
+                        <li><a class="dropdown-item" href="rate_book.php">Rate Books</a></li>
+                        <li><a class="dropdown-item" href="view_book_ratings.php">View Book Ratings</a></li>
+                        <li><a class="dropdown-item" href="book_donate.php">Donate Books</a></li>
+                        <li><a class="dropdown-item" href="recommended_books.php">Recommended Books</a></li>
+                    </ul>
+                </li>
+
+                <!-- NOTIFICATIONS -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button">
+                        Notifications
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="notifications.php">View Notifications</a></li>
+                        <li><a class="dropdown-item" href="library_hours.php">Library Hours</a></li>
+                        <li><a class="dropdown-item" href="view_capacity.php">Library Capacity</a></li>
+                    </ul>
+                </li>
+
+                <!-- CONTACT -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button">
+                        Contact
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="contact_us.php">Contact Library</a></li>
+                    </ul>
+                </li>
+
+                <!-- SIGN OUT -->
+                <li class="nav-item">
+                    <a class="nav-link text-danger fw-bold" href="logout.php">
+                        SignOut
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
 </header>
 
 <section style="padding: 40px; text-align:center;">
@@ -95,22 +228,7 @@ $name = $_SESSION['name'];
                     <li>Rate and review books ⭐</li>
                     <li>Get reminders or notifications 🔔</li>
                 </ul>
-                <br>
-                <a href="library_hours.php" class="btn btn-primary">Library Hours</a>
-                <a href="final_event_list.php" class="btn btn-primary">Upcoming Events</a>
-                <a href="contact_us.php" class="btn btn-primary"> 📩 Contact Library</a>
-                <a href="notifications.php" class="btn btn-primary">🔔 View Notifications</a>
-                <a href="book.php" class="btn btn-primary">Books</a>
-                <a href="borrow_book.php" class="btn btn-primary">Borrow Books</a>
-                <a href="return_book.php" class="btn btn-primary">Return Books</a>
-                <a href="borrow_history.php" class="btn btn-primary">Borrow History</a>
-                <a href="rate_book.php" class="btn btn-primary">Rate Books</a>
-                <a href="view_book_ratings.php" class="btn btn-primary">View Books Ratings</a>
-                <a href="book_donate.php" class="btn btn-primary">Donate Books</a>
-                <a href="wishlist.php" class="btn btn-primary">Wishlist</a>
-                <a href="recommended_books.php" class="btn btn-primary">Recommended Books</a>
-                <a href="view_capacity.php"class="btn btn-primary">🏢 Library Capacity</a>
-                <a href="logout.php" class="btn btn-danger">Logout</a>
+
             </div>
         </div>
     </div>
@@ -123,6 +241,7 @@ $name = $_SESSION['name'];
         Fax: &nbsp; +90 392 630 xxxx <br><br>
     </p>
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

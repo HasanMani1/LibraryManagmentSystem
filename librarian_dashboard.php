@@ -33,7 +33,99 @@ $name = $_SESSION['name'];
     <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body style="background-color: #f5f5f5;">
+<style> 
+         body {
+            background-image: url('images/library-books.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+        section {
+            background: transparent;
+        }
+        h2 {
+            display: inline-block;                  
+            padding: 12px 25px;                     
+            background: rgba(255, 255, 255, 0.25);  
+            backdrop-filter: blur(10px);            
+            -webkit-backdrop-filter: blur(10px);    
+            border-radius: 12px;                    
+            color: white;                           
+            font-weight: bold;
+        }
+        /* Hover dropdowns */
+        .navbar .dropdown:hover > .dropdown-menu {
+            display: block;
+            margin-top: 0;
+        }
+
+        /* Keep dropdowns positioned correctly */
+        .navbar {
+            position: relative;
+            z-index: 1000;
+        }
+
+        .dropdown-menu {
+            max-height: 350px;
+            overflow-y: auto;
+}
+/* Dropdown container – frosted glass */
+.custom-navbar .dropdown-menu {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    padding: 6px 0;
+    min-width: 200px;
+    overflow: auto;
+}
+
+/* Make dropdown items full-width blocks */
+.custom-navbar .dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    font-weight: 500;
+    font-size: small;
+    color: #1f2d3d;
+    transition: background 0.15s ease, color 0.15s ease;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+/* Uniform hover area */
+.custom-navbar .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.75);
+    color: #0b4a8b;
+    box-shadow: inset 0 0 0 1px rgba(11, 74, 139, 0.12);
+}
+
+
+/* Smooth dropdown appearance */
+.navbar .dropdown-menu {
+    animation: dropdownFade 0.2s ease-out;
+}
+
+@keyframes dropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.dropdown-divider {
+    margin: 6px 12px;
+    opacity: 0.3;
+}
+</style>
 
 <header>
     <div class="logo">
@@ -44,11 +136,81 @@ $name = $_SESSION['name'];
         </div>
     </div>
 
-    <nav>
-        <ul>
-         
-        </ul>
-    </nav>
+        <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+    <div class="container-fluid">
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#librarianNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="labrarianNavbar">
+            <ul class="navbar-nav ms-auto">
+
+                <!-- EVENTS -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button">
+                        Events
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="accepted.php">Upcoming Events</a></li>
+                    </ul>
+                </li>
+
+                <!-- BOOKS -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button">
+                        Books
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="manage_borrow.php">Manage Borrow Books</a></li>
+                        <li><a class="dropdown-item" href="manage_return.php">Manage Return Books</a></li>
+                        <li><a class="dropdown-item" href="manage_book.php">Manage Book</a></li>
+                        <li><a class="dropdown-item" href="rate_book.php">Rate Books</a></li>
+                        <li><a class="dropdown-item" href="view_book_ratings.php">View Book Ratings</a></li>
+                        <li><a class="dropdown-item" href="manage_donate.php">Donations</a></li>
+                        <li><a class="dropdown-item" href="recommended_books.php">Recommended Books</a></li>
+                    </ul>
+                </li>
+
+                <!-- NOTIFICATIONS -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button">
+                        Notifications
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="notifications.php">View Notifications</a></li>
+                    </ul>
+                </li>
+
+                <!-- CONTACT -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button">
+                        Capacity
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="manage_capacity.php">Capacity Update</a></li>
+                    </ul>
+                </li>
+                 <!-- SEARCH -->
+                <li >
+                 <?php if ($_SESSION['role_id'] == 2): ?>
+                        <a href="librarian_user_search.php" >
+                            🔍 
+                        </a>
+                    <?php endif; ?>
+                </li>
+
+                <!-- SIGN OUT -->
+                <li class="nav-item">
+                    <a class="nav-link text-danger fw-bold" href="logout.php">
+                        SignOut
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
 </header>
 
 <section style="padding: 40px; text-align:center;">
@@ -62,25 +224,11 @@ $name = $_SESSION['name'];
                 <ul style="text-align:left; display:inline-block;">
                     <li>📖 Manage books and inventory</li>
                     <li>🔄 Handle borrow and return requests</li>
+                    <li>Propose or view library events 📅</li> 
                     <li>📅 Organize and approve book donations</li>
-                                <li>📅 Organize and check the events</li>
+                     <li>📅 Organize and check the events</li>
                 </ul>
-                <br>
-                <a href="create_event.php" class="btn btn-primary">Add New Event</a>
-                <a href="accepted.php" class="btn btn-primary">Events</a>
-                 <a href="manage_borrow.php" class="btn btn-primary">Manage Borrow Book</a>
-                <a href="manage_return.php" class="btn btn-primary">Manage Return Book</a>
-                <a href="manage_donate.php" class="btn btn-primary">Manage Donation</a>
-                 <a href="manage_book.php" class="btn btn-primary">Manage Book</a>
-                 <a href="notifications.php" class="btn btn-primary">🔔 View Notifications</a>
-                 <a href="manage_capacity.php"class="btn btn-primary">🏢 Manage Capacity</a>
-                 <?php if ($_SESSION['role_id'] == 2): ?>
-    <a href="librarian_user_search.php" class="btn btn-primary">
-        🔍 Search Borrowers
-    </a>
-<?php endif; ?>
 
-                <a href="logout.php" class="btn btn-danger">Logout</a>
             </div>
         </div>
     </div>
@@ -93,6 +241,7 @@ $name = $_SESSION['name'];
         Fax: &nbsp;+90 392 630 xxxx <br><br>
     </p>
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

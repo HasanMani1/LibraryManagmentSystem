@@ -1,71 +1,4 @@
-html,
-body,
-div,
-span,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-abbr,
-address,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-samp,
-small,
-strong,
-sub,
-sup,
-var,
-b,
-i,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section,
-summary,
-time,
-mark,
-audio,
+
 video {
     margin: 0;
     padding: 0;
@@ -80,16 +13,7 @@ body {
     line-height: 1;
 }
 
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
+
 section {
     display: block;
 }
@@ -219,14 +143,23 @@ footer {
 .head {
     margin-top: -60px;
     margin-left: 20px;
+    height: 80px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5%;
 }
 
-li a {
+
+
+.head ul li a:hover {
     color: white;
     text-decoration: none;
     font-family: "Mulish";
     font-size: large;
     font-weight: 900;
+    transition: all 0.3s;
 }
 
 nav {
@@ -347,4 +280,56 @@ form .login {
     opacity: .7;
     color: white;
     padding: 20px;
+}
+/* Ensure navbar dropdowns behave properly */
+.navbar {
+    position: relative;
+    z-index: 1000;
+}
+
+.navbar .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: auto;
+    right: 0;
+    margin-top: 5px;
+    min-width: 220px;
+    z-index: 1050;
+}
+
+/* Prevent dropdowns from stretching */
+.dropdown-menu {
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+/* Smooth appearance */
+.dropdown-menu {
+    animation: fadeDown 0.2s ease-in-out;
+}
+
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Enable hover-based dropdowns */
+.navbar .dropdown:hover > .dropdown-menu {
+    display: block;
+    margin-top: 0;
+}
+
+/* Prevent click-only behavior conflicts */
+.navbar .dropdown-toggle::after {
+    transition: transform 0.2s ease;
+}
+
+/* Optional: subtle arrow movement on hover */
+.navbar .dropdown:hover .dropdown-toggle::after {
+    transform: rotate(180deg);
 }

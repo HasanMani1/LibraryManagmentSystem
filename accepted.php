@@ -33,9 +33,11 @@ $result = $conn->query("SELECT * FROM event ORDER BY event_id DESC");
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
-        body {
+         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            background-image: url('images/saer.jpg');
+            background-size: cover;
+            background-attachment: fixed;
             margin: 0;
             padding-top: 120px;
         }
@@ -106,21 +108,7 @@ $result = $conn->query("SELECT * FROM event ORDER BY event_id DESC");
 </head>
 
  <body>
-        <header>
-        <div class="logo">
-            <img src="images/emu-dau-logo.png" alt="EMU Logo">
-            <div class="head">
-                <h4 style="color: white; padding-left:80px;">EASTERN MEDITERRANEAN UNIVERSITY</h4>
-                <h4 style="color: white; padding-left:80px;">ONLINE LIBRARY MANAGEMENT SYSTEM</h4>
-                </div>
-        </div>
-            <nav>
-            <ul> 
-                <li><a href="admin_dashboard.php">HOME</a></li>
-                <li><a href="logout.php">LOGOUT</a></li>
-                </ul>
-            </nav>
-        </header>
+
         <section>
         <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-3">

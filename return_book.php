@@ -120,6 +120,7 @@ while ($r = $res->fetch_assoc()) $active[] = $r;
   <link rel="stylesheet" href="style.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
+
     h1 {
       text-align: center;
       margin-bottom: 20px;
