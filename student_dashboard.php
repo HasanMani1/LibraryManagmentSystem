@@ -3,7 +3,6 @@
 session_start();
 $timeout_duration = 900; // 15 minutes
 
-
 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) > $timeout_duration) {
     session_unset();
     session_destroy();
@@ -11,7 +10,18 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) >
     exit;
 }
 $_SESSION['LAST_ACTIVITY'] = time();
+
 include 'db_connect.php';
+// ✅ Fetch upcoming approved events (limit 4)
+$sqlEvents = "
+    SELECT title, description, capacity
+    FROM event
+    WHERE LOWER(TRIM(status)) = 'approved'
+    ORDER BY created_at DESC
+    LIMIT 4
+";
+$eventsResult = $conn->query($sqlEvents);
+
 // ✅ Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: student_login.php");
@@ -33,9 +43,17 @@ $name = $_SESSION['name'];
 <head>
     <meta charset="UTF-8">
     <title>Student Dashboard</title>
+
+    <!-- Existing CSS -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- Footer CSS -->
+    <link rel="stylesheet" href="css/footer.css">
+
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <style>
     body {
         background-image: url('images/library-books.jpg');
@@ -63,12 +81,11 @@ $name = $_SESSION['name'];
     }
 
     /* Hover dropdowns */
-    .navbar .dropdown:hover>.dropdown-menu {
+    .navbar .dropdown:hover > .dropdown-menu {
         display: block;
         margin-top: 0;
     }
 
-    /* Keep dropdowns positioned correctly */
     .navbar {
         position: relative;
         z-index: 1000;
@@ -79,7 +96,6 @@ $name = $_SESSION['name'];
         overflow-y: auto;
     }
 
-    /* Dropdown container – frosted glass */
     .custom-navbar .dropdown-menu {
         background: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(10px);
@@ -90,9 +106,13 @@ $name = $_SESSION['name'];
         padding: 6px 0;
         min-width: 200px;
         overflow: auto;
+         min-width: 220px;          /* ensure enough width */
+    max-width: 260px;
+      text-align: left;
+          overflow-x: hidden;
+
     }
 
-    /* Make dropdown items full-width blocks */
     .custom-navbar .dropdown-item {
         display: block;
         width: 100%;
@@ -103,17 +123,15 @@ $name = $_SESSION['name'];
         transition: background 0.15s ease, color 0.15s ease;
         border-radius: 8px;
         box-sizing: border-box;
+            white-space: nowrap;  
     }
 
-    /* Uniform hover area */
     .custom-navbar .dropdown-item:hover {
         background: rgba(255, 255, 255, 0.75);
         color: #0b4a8b;
         box-shadow: inset 0 0 0 1px rgba(11, 74, 139, 0.12);
     }
 
-
-    /* Smooth dropdown appearance */
     .navbar .dropdown-menu {
         animation: dropdownFade 0.2s ease-out;
     }
@@ -123,7 +141,6 @@ $name = $_SESSION['name'];
             opacity: 0;
             transform: translateY(-8px);
         }
-
         to {
             opacity: 1;
             transform: translateY(0);
@@ -134,122 +151,196 @@ $name = $_SESSION['name'];
         margin: 6px 12px;
         opacity: 0.3;
     }
+    /* ===== DASHBOARD CARD ===== */
+.dashboard-card {
+    width: 75%;
+    box-shadow: 0 0 15px rgba(0,0,0,0.15);
+    border-radius: 14px;
+}
+
+/* Dashboard list */
+.dashboard-list {
+    text-align: left;
+    display: inline-block;
+    margin: 0 auto;
+    padding-left: 0;
+}
+
+.dashboard-list li {
+    margin-bottom: 6px;
+}
+
+/* Events inside dashboard card */
+.events-inside-card {
+    margin-top: 10px;
+}
+
+.event-row {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    background: #f9fafb;
+    text-align: left;
+}
+
+.event-title {
+    font-weight: 700;
+    color: #024187;
+    margin-bottom: 4px;
+}
+
+.event-desc {
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    color: #374151;
+}
+
+.event-capacity {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #024187;
+}
+
 </style>
 
 <body>
 
-    <header>
-        <div class="logo">
-            <img src="images/emu-dau-logo.png" alt="EMU Logo">
-            <div class="head">
-                <h4 style="color: white; padding-left:80px;">EASTERN MEDITERRANEAN UNIVERSITY</h4>
-                <h4 style="color: white; padding-left:80px;">ONLINE LIBRARY MANAGEMENT SYSTEM</h4>
+<header>
+    <div class="logo">
+        <img src="images/emu-dau-logo.png" alt="EMU Logo">
+        <div class="head">
+            <h4 style="color: white; padding-left:80px;">EASTERN MEDITERRANEAN UNIVERSITY</h4>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+        <div class="container-fluid">
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#studentNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="studentNavbar">
+                <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button">Events</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="final_event_list.php">Upcoming Events</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button">Books</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="book.php">Books</a></li>
+                            <li><a class="dropdown-item" href="borrow_book.php">Borrow Books</a></li>
+                            <li><a class="dropdown-item" href="return_book.php">Return Books</a></li>
+                            <li><a class="dropdown-item" href="borrow_history.php">Borrow History</a></li>
+                            <li><a class="dropdown-item" href="rate_book.php">Rate Books</a></li>
+                            <li><a class="dropdown-item" href="view_book_ratings.php">View Book Ratings</a></li>
+                            <li><a class="dropdown-item" href="book_donate.php">Donate Books</a></li>
+                            <li><a class="dropdown-item" href="recommended_books.php">Recommended Books</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button">Notifications</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="notifications.php">View Notifications</a></li>
+                            <li><a class="dropdown-item" href="library_hours.php">Library Hours</a></li>
+                            <li><a class="dropdown-item" href="view_capacity.php">Library Capacity</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button">Contact</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="contact_us.php">Contact Library</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-danger fw-bold" href="logout.php">Logout</a>
+                    </li>
+
+                </ul>
             </div>
         </div>
+    </nav>
+</header>
 
-        <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
-            <div class="container-fluid">
+<section style="padding: 40px; text-align:center;">
+    <div class="container">
+        <h2>🎓 Welcome, <?php echo htmlspecialchars($name); ?>!</h2>
+        <hr>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#studentNavbar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+      <div class="card mx-auto mt-4 dashboard-card">
+    <div class="card-body">
 
-                <div class="collapse navbar-collapse" id="studentNavbar">
-                    <ul class="navbar-nav ms-auto">
+        <!-- DASHBOARD INFO -->
+        <hr class="my-4">
 
-                        <!-- EVENTS -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button">
-                                Events
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="final_event_list.php">Upcoming Events</a></li>
-                            </ul>
-                        </li>
+        <!-- UPCOMING EVENTS -->
+        <h5 class="text-center mb-3">📅 Upcoming Library Events</h5>
 
-                        <!-- BOOKS -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button">
-                                Books
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="book.php">Books</a></li>
-                                <li><a class="dropdown-item" href="borrow_book.php">Borrow Books</a></li>
-                                <li><a class="dropdown-item" href="return_book.php">Return Books</a></li>
-                                <li><a class="dropdown-item" href="borrow_history.php">Borrow History</a></li>
-                                <li><a class="dropdown-item" href="rate_book.php">Rate Books</a></li>
-                                <li><a class="dropdown-item" href="view_book_ratings.php">View Book Ratings</a></li>
-                                <li><a class="dropdown-item" href="book_donate.php">Donate Books</a></li>
-                                <li><a class="dropdown-item" href="recommended_books.php">Recommended Books</a></li>
-                            </ul>
-                        </li>
-
-                        <!-- NOTIFICATIONS -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button">
-                                Notifications
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="notifications.php">View Notifications</a></li>
-                                <li><a class="dropdown-item" href="library_hours.php">Library Hours</a></li>
-                                <li><a class="dropdown-item" href="view_capacity.php">Library Capacity</a></li>
-                            </ul>
-                        </li>
-
-                        <!-- CONTACT -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button">
-                                Contact
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="contact_us.php">Contact Library</a></li>
-                            </ul>
-                        </li>
-
-                        <!-- SIGN OUT -->
-                        <li class="nav-item">
-                            <a class="nav-link text-danger fw-bold" href="logout.php">
-                                SignOut
-                            </a>
-                        </li>
-
-                    </ul>
-                </div>
+        <?php if ($eventsResult && $eventsResult->num_rows > 0): ?>
+            <div class="events-inside-card">
+                <?php while ($event = $eventsResult->fetch_assoc()): ?>
+                    <div class="event-row">
+                        <h6 class="event-title">
+                            <?= htmlspecialchars($event['title']); ?>
+                        </h6>
+                        <p class="event-desc">
+                            <?= htmlspecialchars($event['description']); ?>
+                        </p>
+                        <span class="event-capacity">
+                            Capacity: <?= htmlspecialchars($event['capacity']); ?>
+                        </span>
+                    </div>
+                <?php endwhile; ?>
             </div>
-        </nav>
+        <?php else: ?>
+            <p class="text-muted text-center mb-0">
+                No upcoming events at the moment.
+            </p>
+        <?php endif; ?>
 
+    </div>
+</div>
 
-    </header>
+    </div>
+</section>
 
-    <section style="padding: 40px; text-align:center;">
-        <div class="container">
-            <h2>🎓 Welcome, <?php echo htmlspecialchars($name); ?>!</h2>
-            <hr>
-            <div class="card mx-auto mt-4" style="width: 60%; box-shadow: 0 0 10px #ccc; border-radius:10px;">
-                <div class="card-body">
-                    <h4 class="card-title">Student Dashboard</h4>
-                    <p class="card-text">From here, you’ll be able to:</p>
-                    <ul style="text-align:left; display:inline-block;">
-                        <li>View and borrow books 📚</li>
-                        <li>Check your borrowed history 🕓</li>
-                        <li>Rate and review books ⭐</li>
-                        <li>Get reminders or notifications 🔔</li>
-                    </ul>
+<!-- ✅ GLOBAL FOOTER -->
+<footer class="site-footer">
+    <div class="footer-container">
 
-                </div>
-            </div>
+        <div class="footer-left">
+            <p>
+                Email: library@emu.edu.tr<br>
+                Tel: +90 392 630 xxxx<br>
+                Fax: +90 392 630 xxxx
+            </p>
         </div>
-    </section>
 
-    <footer>
-        <p style="color: white; text-align:center;">
-            <br><br>Email: &nbsp; library@emu.edu.tr <br><br>
-            Tel: &nbsp; +90 392 630 xxxx <br><br>
-            Fax: &nbsp; +90 392 630 xxxx <br><br>
-        </p>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <div class="footer-center">
+            © <?php echo date("Y"); ?> Eastern Mediterranean University Library
+        </div>
+
+        <div class="footer-right">
+            <a href="https://students.emu.edu.tr/" target="_blank">
+                students.emu.edu.tr
+            </a>
+        </div>
+
+    </div>
+</footer>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 
 </body>
-
 </html>

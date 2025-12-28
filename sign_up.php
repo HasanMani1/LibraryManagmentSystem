@@ -59,6 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/footer.css">
     <?php if (!empty($redirect) && $redirect === true): ?>
         <meta http-equiv="refresh" content="3;url=user_login.php">
     <?php endif; ?>
@@ -96,6 +97,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .signup-form input {
             margin-bottom: 15px;
             border-radius: 8px;
+              border: 2px solid #94a3b8;
+
         }
 
         .signup-form .btn-primary {
@@ -125,26 +128,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     </style>
 </head>
-<body>
+<body class="login-page">
 
 <header>
     <div class="logo">
         <img src="images/emu-dau-logo.png" alt="EMU Logo">
         <div class="head">
             <h4 style="color: white; padding-left:80px;">EASTERN MEDITERRANEAN UNIVERSITY</h4>
-            <h4 style="color: white; padding-left:80px;">ONLINE LIBRARY MANAGEMENT SYSTEM</h4>
+          
         </div>
     </div>
 
-    <nav>
-        <ul>
-            <li><a href="home.html">HOME</a></li>
-            <li><a href="#">BOOKS/E-BOOKS</a></li>
-            <li><a href="user_login.php">LOGIN</a></li>
-            <li><a href="sign_up.php">SIGN-UP</a></li>
-            <li><a href="#">FEEDBACK</a></li>
-        </ul>
-    </nav>
+
 </header>
 
 <section>
@@ -165,13 +160,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </section>
 
-<footer>
-    <p style="text-align:center;">
-        Email: &nbsp;library@emu.edu.tr <br>
-        Tel: &nbsp;+90 392 630 xxxx <br>
-        Fax: &nbsp;+90 392 630 xxxx
-    </p>
-</footer>
 
+<footer class="site-footer">
+    <div class="footer-container">
+
+        <div class="footer-left">
+            <p>
+                Email: library@emu.edu.tr<br>
+                Tel: +90 392 630 xxxx<br>
+                Fax: +90 392 630 xxxx
+            </p>
+        </div>
+
+        <div class="footer-center">
+            © <?php echo date("Y"); ?> Eastern Mediterranean University Library
+        </div>
+
+        <div class="footer-right">
+            <a href="https://students.emu.edu.tr/" target="_blank">
+                students.emu.edu.tr
+            </a>
+        </div>
+
+    </div>
+</footer>
 </body>
 </html>

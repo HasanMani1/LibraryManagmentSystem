@@ -1,0 +1,52 @@
+/* ===== Global Footer (Always Visible) ===== */
+
+.site-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #e5e7eb;
+    font-size: 0.9rem;
+    z-index: 999;
+}
+
+/* Footer layout */
+.footer-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 14px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Left section */
+.footer-left p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* Center section */
+.footer-center {
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Right section */
+.footer-right a {
+    color: #60a5fa;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.footer-right a:hover {
+    text-decoration: underline;
+}
+
+/* Prevent page content from hiding behind footer */
+body {
+    padding-bottom: 80px;
+}

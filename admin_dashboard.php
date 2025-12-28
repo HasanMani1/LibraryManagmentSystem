@@ -70,6 +70,7 @@ $conn->close();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="css/footer.css">
     <style>
          body {
             background-image: url('images/library-books.jpg');
@@ -153,7 +154,7 @@ $conn->close();
         <img src="images/emu-dau-logo.png" alt="EMU Logo">
         <div class="head">
             <h4 style="color: white; padding-left:80px;">EASTERN MEDITERRANEAN UNIVERSITY</h4>
-            <h4 style="color: white; padding-left:80px;">ONLINE LIBRARY MANAGEMENT SYSTEM</h4>
+        
         </div>
     </div>
 
@@ -207,14 +208,7 @@ $conn->close();
         <div class="card mx-auto mt-4" style="width: 70%; box-shadow: 0 0 10px #ccc; border-radius:10px;">
             <div class="card-body">
                 <h4 class="card-title">Admin Dashboard</h4>
-                <p class="card-text">As an Admin, you have full control over the system:</p>
-                <ul style="text-align:left; display:inline-block;">
-                    <li>👥 Manage Users and Roles</li>
-                    <li>📚 Approve and Manage Book Donations</li>
-                    <li>📅 Approve or Reject Events</li>
-                    <li>💾 Backup & Restore Database</li>
-                    <li>🔍 View Activity Logs and Reports</li>
-                </ul>
+            
                 <br>
                 <a href="register.php" class="btn btn-primary">Add New User</a>
                 <a href="add_role.php" class="btn btn-primary">Manage Roles</a>
@@ -233,14 +227,30 @@ $conn->close();
         </div>
     </div>
 </section>
+<footer class="site-footer">
+    <div class="footer-container">
 
-<footer>
-    <p style="color: white; text-align:center;">
-        <br><br>Email: &nbsp;library@emu.edu.tr <br><br>
-        Tel: &nbsp;+90 392 630 xxxx <br><br>
-        Fax: &nbsp;+90 392 630 xxxx <br><br>
-    </p>
+        <div class="footer-left">
+            <p>
+                Email: library@emu.edu.tr<br>
+                Tel: +90 392 630 xxxx<br>
+                Fax: +90 392 630 xxxx
+            </p>
+        </div>
+
+        <div class="footer-center">
+            © <?php echo date("Y"); ?> Eastern Mediterranean University Library
+        </div>
+
+        <div class="footer-right">
+            <a href="https://students.emu.edu.tr/" target="_blank">
+                students.emu.edu.tr
+            </a>
+        </div>
+
+    </div>
 </footer>
+
 
 </body>
 </html>

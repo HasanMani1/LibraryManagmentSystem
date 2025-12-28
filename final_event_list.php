@@ -121,13 +121,7 @@ footer {
     </div>
 </div>
 
-<footer>
-    <p>
-        Email: library@emu.edu.tr<br><br>
-        Tel: +90 392 630 xxxx<br><br>
-        Fax: +90 392 630 xxxx
-    </p>
-</footer>
+
 
 </body>
 </html>

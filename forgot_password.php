@@ -62,62 +62,130 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .back-btn i {
             font-size: 18px;
         }
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-    padding-top: 120px;
-}
-form {
-    background: #fff;
-    width: 400px;
-    margin: auto;
+
+/* =====================================================
+   RESET PASSWORD FORM – FORM ONLY
+   ===================================================== */
+
+.reset-wrapper {
+    background: #ffffff;
+    width: 420px;
     padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
     text-align: center;
 }
-h3 { margin-bottom: 20px; }
-input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0 20px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+
+/* Title */
+.reset-wrapper h3 {
+    margin-bottom: 22px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #024187; /* EMU blue */
 }
-button {
-    background: linear-gradient(135deg, #007bff, #00bfff);
+
+/* Inputs */
+/* Inputs – visible borders even when not focused */
+.reset-wrapper input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border-radius: 8px;
+
+    /* 🔥 stronger default border */
+    border: 2px solid #94a3b8;
+
+    font-size: 15px;
+    background-color: #ffffff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Focus state – EMU blue */
+.reset-wrapper input:focus {
+    outline: none;
+    border-color: #024187;
+    box-shadow: 0 0 0 3px rgba(2, 65, 135, 0.18);
+}
+
+
+/* Button */
+.reset-wrapper button {
+    width: 100%;
+    background: #024187;
     border: none;
     color: white;
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
+    padding: 12px;
+    border-radius: 8px;
     font-size: 16px;
-    transition: 0.3s;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
 }
-button:hover {
-    background: linear-gradient(135deg, #0056b3, #0080ff);
-    transform: scale(1.05);
+
+.reset-wrapper button:hover {
+    background: #013366;
+    transform: translateY(-1px);
 }
+
+/* Links inside form */
+.reset-wrapper a {
+    color: #024187;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.reset-wrapper a:hover {
+    text-decoration: underline;
+}
+
+/* Alerts (kept consistent) */
 .alert {
-    width: 400px;
+    width: 420px;
     margin: 20px auto;
-    padding: 10px;
-    border-radius: 6px;
+    padding: 12px;
+    border-radius: 8px;
     text-align: center;
+    font-weight: 500;
 }
-.success { background-color: #d4edda; color: #155724; }
-.error { background-color: #f8d7da; color: #721c24; }
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+/* ===== CENTER FORM ON PAGE ===== */
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;   /* horizontal center */
+    align-items: center;       /* vertical center */
+}
+
+
 </style>
 </head>
 <body>
 
-<form method="POST">
+<form method="POST" class="reset-wrapper">
     <h3>Reset Your Password</h3>
+
     <input type="email" name="email" placeholder="Enter your registered email" required>
     <input type="password" name="new_password" placeholder="Enter new password" required>
+
     <button type="submit">Reset Password</button>
-    <p style="margin-top:15px;">Remembered it? <a href="user_login.php" style="color:#007bff;">Login</a></p>
+
+    <p style="margin-top:15px;">
+        Remembered it?
+        <a href="user_login.php">Login</a>
+    </p>
 </form>
 
 </body>
+
 </html>

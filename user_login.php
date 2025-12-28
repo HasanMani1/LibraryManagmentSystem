@@ -48,16 +48,16 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+     <link rel="stylesheet" href="css/footer.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>User Login</title>
 </head>
-<body>
+<body class="login-page">
 <header>
     <div class="logo">
         <img src="images/emu-dau-logo.png" alt="EMU Logo">
         <div class="head">
             <h4 style="color: white; padding-left:80px;">EASTERN MEDITERRANEAN UNIVERSITY</h4>
-            <h4 style="color: white; padding-left:80px;">ONLINE LIBRARY MANAGEMENT SYSTEM</h4>
         </div>
     </div>
 
@@ -73,8 +73,8 @@ $conn->close();
         <div class="std_log_in">
             <br><br><br>
             <div class="box1">
-                <h1 style="text-align: center; font-size: 35px; font-family: Lucida Console;">Library Management System</h1><br>
-                <h1 style="text-align: center; font-size: 25px;">User Login Form</h1>
+                <h1 style="text-align: center; font-size: 35px; font-family: times 'Times New Roman', Times, serif;">Library Management System</h1><br>
+                <h1 style="text-align: center; font-size: 25px;">User Login</h1>
 
                 <?php if (!empty($error)): ?>
                     <div class="alert alert-danger" style="width: 60%; margin:auto;"><?= $error; ?></div>
@@ -97,13 +97,29 @@ $conn->close();
         </div>
     </center>
 </section>
+<footer class="site-footer">
+    <div class="footer-container">
 
-<footer>
-    <p style="color: white; text-align:center;">
-        <br><br>Email: &nbsp;library@emu.edu.tr <br><br>
-        Tel: &nbsp;+90 392 630 xxxx <br><br>
-        Fax: &nbsp;+90 392 630 xxxx <br><br>
-    </p>
+        <div class="footer-left">
+            <p>
+                Email: library@emu.edu.tr<br>
+                Tel: +90 392 630 xxxx<br>
+                Fax: +90 392 630 xxxx
+            </p>
+        </div>
+
+        <div class="footer-center">
+            © <?php echo date("Y"); ?> Eastern Mediterranean University Library
+        </div>
+
+        <div class="footer-right">
+            <a href="https://students.emu.edu.tr/" target="_blank">
+                students.emu.edu.tr
+            </a>
+        </div>
+
+    </div>
 </footer>
+
 </body>
 </html>

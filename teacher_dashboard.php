@@ -31,6 +31,7 @@ $name = $_SESSION['name'];
     <meta charset="UTF-8">
     <title>Teacher Dashboard</title>
     <link rel="stylesheet" href="style.css">
+      <link rel="stylesheet" href="css/footer.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <style> 
@@ -132,7 +133,6 @@ $name = $_SESSION['name'];
         <img src="images/emu-dau-logo.png" alt="EMU Logo">
         <div class="head">
             <h4 style="color: white; padding-left:80px;">EASTERN MEDITERRANEAN UNIVERSITY</h4>
-            <h4 style="color: white; padding-left:80px;">ONLINE LIBRARY MANAGEMENT SYSTEM</h4>
         </div>
     </div>
 
@@ -184,7 +184,7 @@ $name = $_SESSION['name'];
                 <!-- SIGN OUT -->
                 <li class="nav-item">
                     <a class="nav-link text-danger fw-bold" href="logout.php">
-                        SignOut
+                        Logout
                     </a>
                 </li>
 
@@ -211,12 +211,28 @@ $name = $_SESSION['name'];
     </div>
 </section>
 
-<footer>
-    <p style="color: white; text-align:center;">
-        <br><br>Email: &nbsp;library@emu.edu.tr <br><br>
-        Tel: &nbsp;+90 392 630 xxxx <br><br>
-        Fax: &nbsp;+90 392 630 xxxx <br><br>
-    </p>
+<footer class="site-footer">
+    <div class="footer-container">
+
+        <div class="footer-left">
+            <p>
+                Email: library@emu.edu.tr<br>
+                Tel: +90 392 630 xxxx<br>
+                Fax: +90 392 630 xxxx
+            </p>
+        </div>
+
+        <div class="footer-center">
+            © <?php echo date("Y"); ?> Eastern Mediterranean University Library
+        </div>
+
+        <div class="footer-right">
+            <a href="https://students.emu.edu.tr/" target="_blank">
+                students.emu.edu.tr
+            </a>
+        </div>
+
+    </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
