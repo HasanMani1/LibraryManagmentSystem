@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Fetch wishlist books for this user
+// Fetch wishlist books
 $sql = "
     SELECT 
         w.wishlist_id,
@@ -35,13 +35,29 @@ $result = $stmt->get_result();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>My Wishlist</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-</head>
-<style>    .back-btn {
+
+    <style>
+        /* PAGE LAYOUT FOR FOOTER */
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        /* Back button (unchanged) */
+        .back-btn {
             position: fixed;
             top: 25px;
             left: 25px;
@@ -59,6 +75,7 @@ $result = $stmt->get_result();
             transition: all 0.3s ease-in-out;
             z-index: 1000;
         }
+
         .back-btn:hover {
             background: linear-gradient(135deg, #0056b3, #0080ff);
             transform: scale(1.05);
@@ -66,55 +83,84 @@ $result = $stmt->get_result();
             color: #f8f9fa;
             text-decoration: none;
         }
-        .back-btn i { font-size: 18px; }</style>
+
+        .back-btn i {
+            font-size: 18px;
+        }
+
+        /* FOOTER — SAME AS ALL OTHER PAGES */
+        footer {
+            width: 100%;
+            background-color: #024187;
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
 <body class="bg-light">
 
-<div class="container mt-5">
-    <h2 class="text-center mb-4">
-        <i class="bi bi-heart-fill text-danger"></i> My Wishlist
-    </h2>
+    <div class="main-content">
 
-    <table class="table table-bordered table-hover text-center align-middle">
-        <thead class="table-primary">
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>ISBN</th>
-                <th>Type</th>
-                <th>Category</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
+        <div class="container mt-5">
+            <h2 class="text-center mb-4">
+                <i class="bi bi-heart-fill text-danger"></i> My Wishlist
+            </h2>
 
-        <?php if ($result->num_rows === 0): ?>
-            <tr>
-                <td colspan="7">Your wishlist is empty.</td>
-            </tr>
-        <?php else: ?>
-            <?php while ($b = $result->fetch_assoc()): ?>
-                <tr>
-                    <td><?= $b['book_id']; ?></td>
-                    <td><?= htmlspecialchars($b['title']); ?></td>
-                    <td><?= htmlspecialchars($b['author']); ?></td>
-                    <td><?= htmlspecialchars($b['isbn']); ?></td>
-                    <td><?= htmlspecialchars($b['book_type']); ?></td>
-                    <td><?= $b['category_id']; ?></td>
-                    <td>
-                        <a href="remove_from_wishlist.php?id=<?= $b['wishlist_id']; ?>"
-                           class="btn btn-sm btn-outline-danger"
-                           onclick="return confirm('Remove this book from your wishlist?');">
-                            <i class="bi bi-trash"></i> Remove
-                        </a>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-        <?php endif; ?>
+            <table class="table table-bordered table-hover text-center align-middle">
+                <thead class="table-primary">
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>ISBN</th>
+                        <th>Type</th>
+                        <th>Category</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-        </tbody>
-    </table>
-</div>
+                    <?php if ($result->num_rows === 0): ?>
+                        <tr>
+                            <td colspan="7">Your wishlist is empty.</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php while ($b = $result->fetch_assoc()): ?>
+                            <tr>
+                                <td><?= $b['book_id']; ?></td>
+                                <td><?= htmlspecialchars($b['title']); ?></td>
+                                <td><?= htmlspecialchars($b['author']); ?></td>
+                                <td><?= htmlspecialchars($b['isbn']); ?></td>
+                                <td><?= htmlspecialchars($b['book_type']); ?></td>
+                                <td><?= $b['category_id']; ?></td>
+                                <td>
+                                    <a href="remove_from_wishlist.php?id=<?= $b['wishlist_id']; ?>"
+                                        class="btn btn-sm btn-outline-danger"
+                                        onclick="return confirm('Remove this book from your wishlist?');">
+                                        <i class="bi bi-trash"></i> Remove
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php endif; ?>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>
+            Email: library@emu.edu.tr<br><br>
+            Tel: +90 392 630 xxxx<br><br>
+            Fax: +90 392 630 xxxx
+        </p>
+    </footer>
 
 </body>
+
 </html>

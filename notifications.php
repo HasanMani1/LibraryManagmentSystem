@@ -2,7 +2,7 @@
 session_start();
 include 'db_connect.php';
 include 'back_button.php';
-include 'back_button.php';
+
 // Only logged-in users
 if (!isset($_SESSION['user_id'])) {
     header("Location: user_login.php");
@@ -27,12 +27,33 @@ $result = $conn->query(
 );
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Notifications</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-     .back-btn {
+    <meta charset="UTF-8">
+    <title>Notifications</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Layout for sticky footer */
+        body {
+            background-image: url('images/saer.jpg');
+            background-size: cover;
+
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+
+            padding-top: 140px;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        /* Back button (unchanged) */
+        .back-btn {
             position: fixed;
             top: 25px;
             left: 25px;
@@ -50,6 +71,7 @@ $result = $conn->query(
             transition: all 0.3s ease-in-out;
             z-index: 1000;
         }
+
         .back-btn:hover {
             background: linear-gradient(135deg, #0056b3, #0080ff);
             transform: scale(1.05);
@@ -57,49 +79,68 @@ $result = $conn->query(
             color: #f8f9fa;
             text-decoration: none;
         }
-        .back-btn i {
-            font-size: 18px;
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
         }
-body {
-    background-image: url('images/saer.jpg');
-    background-size: cover;
-    padding-top: 140px;
-}
-.container {
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-}
-.unread {
-    background-color: #f8f9fa;
-    font-weight: 600;
-}
-</style>
+
+        .unread {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        /* FOOTER — SAME AS OTHER PAGES */
+        footer {
+            width: 100%;
+            background-color: #024187;
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="container">
-<h3>🔔 Notifications</h3>
+<div class="main-content">
 
-<?php if ($result->num_rows === 0): ?>
-<div class="alert alert-info">No notifications yet.</div>
-<?php else: ?>
-<ul class="list-group">
-<?php while ($row = $result->fetch_assoc()): ?>
-<li class="list-group-item <?= $row['is_read'] ? '' : 'unread'; ?>">
-    <strong><?= htmlspecialchars($row['title']); ?></strong><br>
-    <?= htmlspecialchars($row['message']); ?><br>
-    <small><?= date("d M Y H:i", strtotime($row['created_at'])); ?></small>
-    <?php if (!$row['is_read']): ?>
-        <a href="?read=<?= $row['notification_id']; ?>" class="btn btn-sm btn-primary float-end">
-            Mark as read
-        </a>
-    <?php endif; ?>
-</li>
-<?php endwhile; ?>
-</ul>
-<?php endif; ?>
+    <div class="container">
+        <h3>🔔 Notifications</h3>
+
+        <?php if ($result->num_rows === 0): ?>
+            <div class="alert alert-info">No notifications yet.</div>
+        <?php else: ?>
+            <ul class="list-group">
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <li class="list-group-item <?= $row['is_read'] ? '' : 'unread'; ?>">
+                        <strong><?= htmlspecialchars($row['title']); ?></strong><br>
+                        <?= htmlspecialchars($row['message']); ?><br>
+                        <small><?= date("d M Y H:i", strtotime($row['created_at'])); ?></small>
+
+                        <?php if (!$row['is_read']): ?>
+                            <a href="?read=<?= $row['notification_id']; ?>" 
+                               class="btn btn-sm btn-primary float-end">
+                                Mark as read
+                            </a>
+                        <?php endif; ?>
+                    </li>
+                <?php endwhile; ?>
+            </ul>
+        <?php endif; ?>
+    </div>
+
 </div>
+
+<footer>
+    <p>
+        Email: library@emu.edu.tr<br><br>
+        Tel: +90 392 630 xxxx<br><br>
+        Fax: +90 392 630 xxxx
+    </p>
+</footer>
 
 </body>
 </html>

@@ -3,7 +3,6 @@ session_start();
 include 'db_connect.php';
 include 'back_button.php';
 
-
 if (!isset($_SESSION['user_id'])) {
     header("Location: user_login.php");
     exit;
@@ -49,12 +48,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Donate a Book</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
             background: #f4f6f9;
             margin: 0;
-            padding: 0;
+
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-content {
+            flex: 1;
         }
 
         .container {
@@ -93,7 +100,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             cursor: pointer;
             width: 100%;
             font-size: 16px;
-            transition: 0.2s ease;
         }
 
         button:hover {
@@ -122,74 +128,78 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             position: fixed;
             top: 25px;
             left: 25px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
             background: linear-gradient(135deg, #007bff, #00bfff);
             color: white;
             font-weight: 600;
-            border: none;
             border-radius: 50px;
             padding: 10px 18px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             text-decoration: none;
-            transition: all 0.3s ease-in-out;
             z-index: 1000;
         }
 
-        .back-btn:hover {
-            background: linear-gradient(135deg, #0056b3, #0080ff);
-            transform: scale(1.05);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-            color: #f8f9fa;
-        }
-
-        .back-btn i {
-            font-size: 18px;
+        footer {
+            width: 100%;
+            background-color: #024187;
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            font-size: 14px;
         }
     </style>
 </head>
 
 <body>
 
+    <div class="main-content">
+        <div class="container">
+            <h2>📖 Donate a Book</h2>
 
-    <div class="container">
-        <h2>📖 Donate a Book</h2>
+            <?php if ($success): ?>
+                <div class="alert-success"><?= htmlspecialchars($success) ?></div>
+            <?php endif; ?>
 
-        <?php if ($success): ?>
-            <div class="alert-success"><?= $success ?></div>
-        <?php endif; ?>
-        <?php if ($error): ?>
-            <div class="alert-error"><?= $error ?></div>
-        <?php endif; ?>
+            <?php if ($error): ?>
+                <div class="alert-error"><?= htmlspecialchars($error) ?></div>
+            <?php endif; ?>
 
-        <form method="POST">
-            <label>Title</label>
-            <input type="text" name="title" required>
+            <form method="POST">
+                <label>Title</label>
+                <input type="text" name="title" required>
 
-            <label>Author</label>
-            <input type="text" name="author">
+                <label>Author</label>
+                <input type="text" name="author">
 
-            <label>ISBN</label>
-            <input type="text" name="isbn">
+                <label>ISBN</label>
+                <input type="text" name="isbn">
 
-            <label>Book Type</label>
-            <input type="text" name="book_type" placeholder="e.g. Hardcover, eBook, PDF">
+                <label>Book Type</label>
+                <input type="text" name="book_type" placeholder="e.g. Hardcover, eBook, PDF">
 
-            <label>Category</label>
-            <select name="category_id">
-                <option value="">-- Select Category (Optional) --</option>
-                <?php while ($c = $categories->fetch_assoc()): ?>
-                    <option value="<?= $c['category_id'] ?>"><?= htmlspecialchars($c['category_name']) ?></option>
-                <?php endwhile; ?>
-            </select>
+                <label>Category</label>
+                <select name="category_id">
+                    <option value="">-- Select Category (Optional) --</option>
+                    <?php while ($c = $categories->fetch_assoc()): ?>
+                        <option value="<?= $c['category_id'] ?>">
+                            <?= htmlspecialchars($c['category_name']) ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
 
-            <label>Number of Copies</label>
-            <input type="number" name="copies" min="1" required>
+                <label>Number of Copies</label>
+                <input type="number" name="copies" min="1" required>
 
-            <button type="submit">Submit Donation</button>
-        </form>
+                <button type="submit">Submit Donation</button>
+            </form>
+        </div>
     </div>
+
+    <footer>
+        <p>
+            Email: library@emu.edu.tr<br><br>
+            Tel: +90 392 630 xxxx<br><br>
+            Fax: +90 392 630 xxxx
+        </p>
+    </footer>
 
 </body>
 

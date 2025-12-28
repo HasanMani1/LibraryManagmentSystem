@@ -31,12 +31,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Contact Us</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-     .back-btn {
+    <meta charset="UTF-8">
+    <title>Contact Us</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Layout for footer */
+        body {
+            background-image: url('images/saer.jpg');
+            background-size: cover;
+
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+
+            padding-top: 120px;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        /* Back button (unchanged) */
+        .back-btn {
             position: fixed;
             top: 25px;
             left: 25px;
@@ -54,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             transition: all 0.3s ease-in-out;
             z-index: 1000;
         }
+
         .back-btn:hover {
             background: linear-gradient(135deg, #0056b3, #0080ff);
             transform: scale(1.05);
@@ -61,40 +83,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: #f8f9fa;
             text-decoration: none;
         }
-        .back-btn i {
-            font-size: 18px;
+
+        .form-box {
+            width: 50%;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
         }
-body {
-    background-image: url('images/saer.jpg');
-    background-size: cover;
-    padding-top: 120px;
-}
-.form-box {
-    width: 50%;
-    margin: auto;
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-}
-</style>
+
+        /* FOOTER — SAME AS ALL OTHER PAGES */
+        footer {
+            width: 100%;
+            background-color: #024187;
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="form-box">
-<h3>📩 Contact Us</h3>
+    <div class="main-content">
 
-<?php if ($success): ?>
-<div class="alert alert-success">✅ Message sent successfully!</div>
-<?php endif; ?>
+        <div class="form-box">
+            <h3>📩 Contact Us</h3>
 
-<form method="POST">
-    <input class="form-control mb-2" name="name" placeholder="Your Name" required value="<?= htmlspecialchars($name) ?>">
-    <input class="form-control mb-2" name="email" type="email" placeholder="Your Email" required value="<?= htmlspecialchars($email) ?>">
-    <input class="form-control mb-2" name="subject" placeholder="Subject" required>
-    <textarea class="form-control mb-2" name="message" rows="5" placeholder="Message" required></textarea>
-    <button class="btn btn-primary">Send Message</button>
-</form>
-</div>
+            <?php if ($success): ?>
+                <div class="alert alert-success">✅ Message sent successfully!</div>
+            <?php endif; ?>
+
+            <form method="POST">
+                <input class="form-control mb-2" name="name" placeholder="Your Name" required value="<?= htmlspecialchars($name) ?>">
+                <input class="form-control mb-2" name="email" type="email" placeholder="Your Email" required value="<?= htmlspecialchars($email) ?>">
+                <input class="form-control mb-2" name="subject" placeholder="Subject" required>
+                <textarea class="form-control mb-2" name="message" rows="5" placeholder="Message" required></textarea>
+                <button class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>
+            Email: library@emu.edu.tr<br><br>
+            Tel: +90 392 630 xxxx<br><br>
+            Fax: +90 392 630 xxxx
+        </p>
+    </footer>
 
 </body>
+
 </html>

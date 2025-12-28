@@ -3,7 +3,7 @@ include 'db_connect.php';
 include 'back_button.php';
 
 $sql = "SELECT title, description, capacity FROM event
-    ORDER BY event_id DESC";
+        ORDER BY event_id DESC";
 $result = $conn->query($sql);
 ?>
 <!DOCTYPE html>
@@ -21,6 +21,14 @@ body {
     background-size: cover;
     padding-top: 140px;
     font-family: 'Poppins', sans-serif;
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1;
 }
 
 .container {
@@ -49,70 +57,77 @@ body {
     padding: 8px 12px;
 }
 
-     .back-btn {
-            position: fixed;
-            top: 25px;
-            left: 25px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: linear-gradient(135deg, #007bff, #00bfff);
-            color: white;
-            font-weight: 600;
-            border: none;
-            border-radius: 50px;
-            padding: 10px 18px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            text-decoration: none;
-            transition: all 0.3s ease-in-out;
-            z-index: 1000;
-        }
-        .back-btn:hover {
-            background: linear-gradient(135deg, #0056b3, #0080ff);
-            transform: scale(1.05);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-            color: #f8f9fa;
-            text-decoration: none;
-        }
-        .back-btn i {
-            font-size: 18px;
-        }
+.back-btn {
+    position: fixed;
+    top: 25px;
+    left: 25px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #007bff, #00bfff);
+    color: white;
+    font-weight: 600;
+    border-radius: 50px;
+    padding: 10px 18px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    z-index: 1000;
+}
+
+footer {
+    width: 100%;
+    background-color: #024187;
+    color: white;
+    padding: 25px 0;
+    text-align: center;
+    font-size: 14px;
+}
 </style>
 </head>
 
 <body>
 
-<div class="container">
-    <h3 class="mb-4 text-center">📚 Upcoming Library Events</h3>
+<div class="main-content">
+    <div class="container">
+        <h3 class="mb-4 text-center">📚 Upcoming Library Events</h3>
 
-    <div class="row g-4">
-        <?php if ($result && $result->num_rows > 0): ?>
-            <?php while ($row = $result->fetch_assoc()): ?>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">
-                                <?= htmlspecialchars($row['title']) ?>
-                            </h5>
+        <div class="row g-4">
+            <?php if ($result && $result->num_rows > 0): ?>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">
+                                    <?= htmlspecialchars($row['title']) ?>
+                                </h5>
 
-                            <p class="card-text flex-grow-1">
-                                <?= htmlspecialchars($row['description']) ?>
-                            </p>
+                                <p class="card-text flex-grow-1">
+                                    <?= htmlspecialchars($row['description']) ?>
+                                </p>
 
-                            <span class="badge bg-secondary capacity-badge align-self-start">
-                                Capacity: <?= $row['capacity'] ?>
-                            </span>
+                                <span class="badge bg-secondary capacity-badge align-self-start">
+                                    Capacity: <?= $row['capacity'] ?>
+                                </span>
+                            </div>
                         </div>
                     </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <div class="alert alert-info text-center">
+                    No active events at the moment.
                 </div>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <div class="alert alert-info text-center">
-                No active events at the moment.
-            </div>
-        <?php endif; ?>
+            <?php endif; ?>
+        </div>
     </div>
 </div>
+
+<footer>
+    <p>
+        Email: library@emu.edu.tr<br><br>
+        Tel: +90 392 630 xxxx<br><br>
+        Fax: +90 392 630 xxxx
+    </p>
+</footer>
 
 </body>
 </html>

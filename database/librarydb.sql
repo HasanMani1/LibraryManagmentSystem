@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 24, 2025 at 10:22 PM
+-- Generation Time: Dec 28, 2025 at 04:14 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -454,7 +454,18 @@ INSERT INTO `activity_log` (`log_id`, `user_id`, `action`, `timestamp`) VALUES
 (414, 15, 'Logged in successfully', '2025-12-24 22:11:45'),
 (415, 15, 'Logged in successfully', '2025-12-24 22:12:02'),
 (416, 17, 'Logged in successfully', '2025-12-24 22:51:00'),
-(417, 17, 'Logged in successfully', '2025-12-24 23:11:33');
+(417, 17, 'Logged in successfully', '2025-12-24 23:11:33'),
+(418, 17, 'Logged in successfully', '2025-12-28 13:09:15'),
+(419, 17, 'Logged in successfully', '2025-12-28 14:03:20'),
+(420, 17, 'Logged in successfully', '2025-12-28 15:06:34'),
+(421, 17, 'Logged in successfully', '2025-12-28 16:12:28'),
+(422, 17, 'Logged out', '2025-12-28 16:46:50'),
+(423, 16, 'Logged in successfully', '2025-12-28 16:46:57'),
+(424, 16, 'Logged out', '2025-12-28 16:55:48'),
+(425, 17, 'Logged in successfully', '2025-12-28 16:55:55'),
+(426, 17, 'Logged out', '2025-12-28 17:10:58'),
+(427, 16, 'Logged in successfully', '2025-12-28 17:11:06'),
+(428, 16, 'Logged out', '2025-12-28 17:11:13');
 
 -- --------------------------------------------------------
 
@@ -1346,7 +1357,7 @@ ALTER TABLE `account_blockage`
 -- AUTO_INCREMENT for table `activity_log`
 --
 ALTER TABLE `activity_log`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=418;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=429;
 
 --
 -- AUTO_INCREMENT for table `attendance`

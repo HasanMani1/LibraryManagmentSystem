@@ -19,13 +19,12 @@ $success = "";
 // ----------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $book_id = intval($_POST['book_id']);
-  $rating_value = intval($_POST['rating']); // matches DB
+  $rating_value = intval($_POST['rating']);
   $comment = trim($_POST['comment']);
 
   if (!$book_id || !$rating_value) {
     $errors[] = "Please select a book and provide a rating.";
   } else {
-    // Check if user already rated this book
     $stmtCheck = $conn->prepare("SELECT COUNT(*) AS cnt FROM book_rating WHERE user_id = ? AND book_id = ?");
     $stmtCheck->bind_param("ii", $user_id, $book_id);
     $stmtCheck->execute();
@@ -34,15 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($exists > 0) {
       $errors[] = "You have already rated this book.";
     } else {
-      // Get latest returned borrowing for this book
       $stmtBorrow = $conn->prepare("
-                SELECT br.borrowing_id
-                FROM borrowing br
-                JOIN book_inventory bi ON br.inventory_id = bi.inventory_id
-                WHERE br.user_id = ? AND bi.book_id = ? AND br.status_id = 2
-                ORDER BY br.borrow_date DESC
-                LIMIT 1
-            ");
+        SELECT br.borrowing_id
+        FROM borrowing br
+        JOIN book_inventory bi ON br.inventory_id = bi.inventory_id
+        WHERE br.user_id = ? AND bi.book_id = ? AND br.status_id = 2
+        ORDER BY br.borrow_date DESC
+        LIMIT 1
+      ");
       $stmtBorrow->bind_param("ii", $user_id, $book_id);
       $stmtBorrow->execute();
       $borrowRow = $stmtBorrow->get_result()->fetch_assoc();
@@ -50,18 +48,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       if (!$borrowRow) {
         $errors[] = "This book is not eligible for rating (not returned).";
       } else {
-        // Insert rating
         $stmtInsert = $conn->prepare("
-                    INSERT INTO book_rating (user_id, book_id, rating_value, comment, created_at)
-                    VALUES (?, ?, ?, ?, NOW())
-                ");
+          INSERT INTO book_rating (user_id, book_id, rating_value, comment, created_at)
+          VALUES (?, ?, ?, ?, NOW())
+        ");
         $stmtInsert->bind_param("iiis", $user_id, $book_id, $rating_value, $comment);
 
         if ($stmtInsert->execute()) {
           logActivity($user_id, "Rated book ID: $book_id ($rating_value stars)");
           $success = "Thank you for rating this book!";
         } else {
-          $errors[] = "Failed to submit rating: " . $conn->error;
+          $errors[] = "Failed to submit rating.";
         }
       }
     }
@@ -69,16 +66,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // ----------------------
-// FETCH DISTINCT RETURNED BOOKS FOR DROPDOWN
+// FETCH RETURNED BOOKS
 // ----------------------
 $books = [];
 $stmt = $conn->prepare("
-    SELECT DISTINCT b.book_id, b.title, b.author
-    FROM borrowing br
-    JOIN book_inventory bi ON br.inventory_id = bi.inventory_id
-    JOIN book b ON bi.book_id = b.book_id
-    WHERE br.user_id = ? AND br.status_id = 2
-    ORDER BY b.title ASC
+  SELECT DISTINCT b.book_id, b.title, b.author
+  FROM borrowing br
+  JOIN book_inventory bi ON br.inventory_id = bi.inventory_id
+  JOIN book b ON bi.book_id = b.book_id
+  WHERE br.user_id = ? AND br.status_id = 2
+  ORDER BY b.title ASC
 ");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -95,18 +92,26 @@ while ($r = $result->fetch_assoc()) {
   <meta charset="UTF-8">
   <title>Rate Returned Books</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
   <style>
     body {
       background-color: #f5f5f5;
       font-family: Arial, sans-serif;
+      margin: 0;
+
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .main-content {
+      flex: 1;
     }
 
     .container {
       width: 90%;
       max-width: 700px;
-      margin: 50px auto;
+      margin: 60px auto;
       background: #fff;
       padding: 30px;
       border-radius: 10px;
@@ -116,10 +121,6 @@ while ($r = $result->fetch_assoc()) {
     h1 {
       text-align: center;
       margin-bottom: 30px;
-    }
-
-    .alert {
-      text-align: center;
     }
 
     form {
@@ -142,7 +143,6 @@ while ($r = $result->fetch_assoc()) {
       font-size: 28px;
       color: #ccc;
       cursor: pointer;
-      transition: color 0.3s;
     }
 
     .stars input:checked~label,
@@ -157,11 +157,6 @@ while ($r = $result->fetch_assoc()) {
       color: white;
       padding: 10px;
       border-radius: 6px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      transform: scale(1.05);
     }
 
     .back-btn {
@@ -170,58 +165,75 @@ while ($r = $result->fetch_assoc()) {
       left: 25px;
       padding: 10px 18px;
       border-radius: 50px;
-      text-decoration: none;
       background: linear-gradient(135deg, #007bff, #00bfff);
       color: white;
       font-weight: bold;
+      text-decoration: none;
+    }
+
+    footer {
+      width: 100%;
+      background-color: #024187;
+      color: white;
+      padding: 25px 0;
+      text-align: center;
+      font-size: 14px;
     }
   </style>
 </head>
 
 <body>
 
+  <div class="main-content">
+    <div class="container">
+      <h1>Rate Returned Books</h1>
 
+      <?php foreach ($errors as $err): ?>
+        <div class="alert alert-danger"><?= htmlspecialchars($err) ?></div>
+      <?php endforeach; ?>
 
-  <div class="container">
-    <h1>Rate Returned Books</h1>
+      <?php if ($success): ?>
+        <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
+      <?php endif; ?>
 
-    <?php foreach ($errors as $err): ?>
-      <div class="alert alert-danger"><?= htmlspecialchars($err) ?></div>
-    <?php endforeach; ?>
+      <?php if (empty($books)): ?>
+        <p>You have no returned books to rate.</p>
+      <?php else: ?>
+        <form method="POST">
+          <label>Select Book</label>
+          <select name="book_id" class="form-control" required>
+            <option value="">-- Select --</option>
+            <?php foreach ($books as $b): ?>
+              <option value="<?= $b['book_id'] ?>">
+                <?= htmlspecialchars($b['title']) ?> — <?= htmlspecialchars($b['author']) ?>
+              </option>
+            <?php endforeach; ?>
+          </select>
 
-    <?php if ($success): ?>
-      <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
-    <?php endif; ?>
+          <label>Rating</label>
+          <div class="stars">
+            <?php for ($i = 5; $i >= 1; $i--): ?>
+              <input type="radio" id="star<?= $i ?>" name="rating" value="<?= $i ?>" required>
+              <label for="star<?= $i ?>">★</label>
+            <?php endfor; ?>
+          </div>
 
-    <?php if (empty($books)): ?>
-      <p>You have no returned books to rate.</p>
-    <?php else: ?>
-      <form method="POST">
-        <label for="book_id">Select Book</label>
-        <select name="book_id" id="book_id" class="form-control" required>
-          <option value="">-- Select --</option>
-          <?php foreach ($books as $b): ?>
-            <option value="<?= $b['book_id'] ?>">
-              <?= htmlspecialchars($b['title']) ?> — <?= htmlspecialchars($b['author']) ?>
-            </option>
-          <?php endforeach; ?>
-        </select>
+          <label>Comment (Optional)</label>
+          <textarea name="comment" rows="4" class="form-control"></textarea>
 
-        <label>Rating</label>
-        <div class="stars">
-          <?php for ($i = 5; $i >= 1; $i--): ?>
-            <input type="radio" id="star<?= $i ?>" name="rating" value="<?= $i ?>" required>
-            <label for="star<?= $i ?>">★</label>
-          <?php endfor; ?>
-        </div>
-
-        <label for="comment">Comment (Optional)</label>
-        <textarea name="comment" id="comment" rows="4" class="form-control" placeholder="Write your review..."></textarea>
-
-        <button type="submit">Submit Rating</button>
-      </form>
-    <?php endif; ?>
+          <button type="submit">Submit Rating</button>
+        </form>
+      <?php endif; ?>
+    </div>
   </div>
+
+  <footer>
+    <p>
+      Email: library@emu.edu.tr<br><br>
+      Tel: +90 392 630 xxxx<br><br>
+      Fax: +90 392 630 xxxx
+    </p>
+  </footer>
 
 </body>
 

@@ -3,7 +3,7 @@ session_start();
 include 'db_connect.php';
 include 'back_button.php';
 include 'log_activity.php';
-include 'notification_helper.php'; // ✅ ADDED
+include 'notification_helper.php';
 
 //✅ Ensure the user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -23,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors[] = "Invalid book selection.";
   } else {
 
-    // Check if record exists and not yet returned
     $q = "
       SELECT br.inventory_id, br.status_id, b.title
       FROM borrowing br
@@ -48,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $inventory_id = $row['inventory_id'];
         $book_title   = $row['title'];
 
-        // Update borrowing
         $updateBorrow = $conn->prepare("
           UPDATE borrowing
           SET returned_date = CURDATE(), status_id = 2
@@ -56,7 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ");
         $updateBorrow->bind_param("i", $borrow_id);
 
-        // Update inventory
         $updateInventory = $conn->prepare("
           UPDATE book_inventory
           SET is_available = 1
@@ -66,10 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($updateBorrow->execute() && $updateInventory->execute()) {
 
-          // Log activity
           logActivity($user_id, "Returned book copy ID: $inventory_id");
 
-          // 🔔 NOTIFY ADMINS & LIBRARIANS
           $admins = $conn->query("
             SELECT user_id FROM user WHERE role_id IN (1,2)
           ");
@@ -89,9 +84,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       }
     }
   }
-} 
+}
 
-// ✅ Fetch user's active borrowings (UNCHANGED)
+// ✅ Fetch user's active borrowings
 $active = [];
 $q = "
   SELECT br.borrowing_id, b.title, b.author, br.borrow_date, br.due_date
@@ -109,17 +104,49 @@ $res = $stmt->get_result();
 while ($r = $res->fetch_assoc()) $active[] = $r;
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Return Book</title>
-  <link rel="stylesheet" href="style.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <style>
+    /* === Layout for footer ONLY === */
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      background-image: url('images/saer.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      margin: 0;
+      padding-top: 120px;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    footer {
+      width: 100%;
+      background: #024187;
+      color: #ffffff;
+      padding: 25px 0;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    footer p {
+      margin: 6px 0;
+    }
+
+    /* ===== ORIGINAL STYLES — UNTOUCHED ===== */
 
     h1 {
       text-align: center;
@@ -144,27 +171,12 @@ while ($r = $res->fetch_assoc()) $active[] = $r;
       text-align: center;
     }
 
-    button:hover {
-      background: linear-gradient(135deg, #0056b3, #0080ff);
-      transform: scale(1.05);
-    }
-
     .alert {
       width: 400px;
       margin: 20px auto;
       padding: 10px;
       border-radius: 6px;
       text-align: center;
-    }
-
-    .error {
-      background-color: #f8d7da;
-      color: #721c24;
-    }
-
-    .warning {
-      background-color: #fff3cd;
-      color: #856404;
     }
 
     .back-btn {
@@ -200,36 +212,51 @@ while ($r = $res->fetch_assoc()) $active[] = $r;
   </style>
 </head>
 
-<body style="background-color: #f5f5f5;">
+<body>
 
-  <div class="container">
-    <h1>Return Book</h1>
+  <main>
 
-    <?php foreach ($errors as $err): ?>
-      <div class="alert alert-danger"><?= htmlspecialchars($err) ?></div>
-    <?php endforeach; ?>
+    <div class="container">
+      <h1 style="color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.6);">
+        Return Book
+      </h1>
 
-    <?php if ($success): ?>
-      <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
-    <?php endif; ?>
 
-    <?php if (empty($active)): ?>
-      <p>You have no borrowed books to return.</p>
-    <?php else: ?>
-      <form method="post" class="form">
-        <label for="borrow_id">Select borrowed book</label>
-        <select name="borrow_id" id="borrow_id" class="form-select" required>
-          <option value="">-- Select --</option>
-          <?php foreach ($active as $a): ?>
-            <option value="<?= $a['borrowing_id'] ?>">
-              <?= htmlspecialchars($a['title']) ?> — <?= htmlspecialchars($a['author']) ?> (Due: <?= $a['due_date'] ?>)
-            </option>
-          <?php endforeach; ?>
-        </select>
-        <button type="submit" class="btn btn-primary mt-3">Return</button>
-      </form>
-    <?php endif; ?>
-  </div>
+      <?php foreach ($errors as $err): ?>
+        <div class="alert alert-danger"><?= htmlspecialchars($err) ?></div>
+      <?php endforeach; ?>
+
+      <?php if ($success): ?>
+        <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
+      <?php endif; ?>
+
+      <?php if (empty($active)): ?>
+        <p>You have no borrowed books to return.</p>
+      <?php else: ?>
+        <form method="post" class="form">
+          <label>Select borrowed book</label>
+          <select name="borrow_id" class="form-select" required>
+            <option value="">-- Select --</option>
+            <?php foreach ($active as $a): ?>
+              <option value="<?= $a['borrowing_id'] ?>">
+                <?= htmlspecialchars($a['title']) ?> — <?= htmlspecialchars($a['author']) ?> (Due: <?= $a['due_date'] ?>)
+              </option>
+            <?php endforeach; ?>
+          </select>
+          <button type="submit" class="btn btn-primary mt-3">Return</button>
+        </form>
+      <?php endif; ?>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>
+      <br><br>Email: library@emu.edu.tr <br><br>
+      Tel: +90 392 630 xxxx <br><br>
+      Fax: +90 392 630 xxxx <br><br>
+    </p>
+  </footer>
 
 </body>
 

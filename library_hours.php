@@ -2,7 +2,6 @@
 include 'db_connect.php';
 include 'back_button.php';
 
-
 $query = "SELECT * FROM library_hours ORDER BY id ASC";
 $result = $conn->query($query);
 ?>
@@ -11,9 +10,30 @@ $result = $conn->query($query);
 <head>
     <meta charset="UTF-8">
     <title>Library Hours</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
-             .back-btn {
+        /* Layout fix for sticky footer */
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: #f2f2f2;
+            margin: 0;
+
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+
+            color: #222;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+        }
+
+        /* Back button */
+        .back-btn {
             position: fixed;
             top: 25px;
             left: 25px;
@@ -31,6 +51,7 @@ $result = $conn->query($query);
             transition: all 0.3s ease-in-out;
             z-index: 1000;
         }
+
         .back-btn:hover {
             background: linear-gradient(135deg, #0056b3, #0080ff);
             transform: scale(1.05);
@@ -38,16 +59,7 @@ $result = $conn->query($query);
             color: #f8f9fa;
             text-decoration: none;
         }
-        .back-btn i {
-            font-size: 18px;
-        }
-        body {
-            font-family: "Segoe UI", sans-serif;
-            background: #f2f2f2;
-            margin: 0;
-            padding: 30px;
-            color: #222;
-        }
+
         .container {
             max-width: 650px;
             margin: auto;
@@ -56,68 +68,95 @@ $result = $conn->query($query);
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
+
         h1 {
             text-align: center;
             margin-bottom: 20px;
             font-weight: 600;
             letter-spacing: 1px;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
         }
+
         th, td {
             padding: 12px;
             text-align: center;
             border-bottom: 1px solid #ccc;
         }
+
         th {
             background: #444;
             color: white;
         }
+
         tr:hover {
             background-color: #f9f9f9;
         }
+
         .closed {
             color: crimson;
             font-weight: bold;
         }
- 
+
+        /* FOOTER — SAME AS OTHER PAGES */
+        footer {
+            width: 100%;
+            background-color: #024187;
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            font-size: 14px;
+        }
     </style>
 </head>
+
 <body>
 
-<div class="container">
-    <h1>Library Hours</h1>
-    <table>
-        <tr>
-            <th>Day</th>
-            <th>Opens</th>
-            <th>Closes</th>
-        </tr>
+<div class="main-content">
 
-                <?php while ($row = $result->fetch_assoc()): ?>
-                    <tr>
-                        <td><?= $row['day'] ?></td>
+    <div class="container">
+        <h1>Library Hours</h1>
 
-                        <?php if ($row['day'] === "Sunday"): ?>
-                            <td colspan="2" class="closed">Closed</td>
+        <table>
+            <tr>
+                <th>Day</th>
+                <th>Opens</th>
+                <th>Closes</th>
+            </tr>
 
-                        <?php elseif ($row['open_time'] == "00:00:00" && $row['close_time'] == "00:00:00"): ?>
-                            <td colspan="2" class="closed">Closed</td>
+            <?php while ($row = $result->fetch_assoc()): ?>
+                <tr>
+                    <td><?= htmlspecialchars($row['day']); ?></td>
 
-                        <?php else: ?>
-                            <td><?= date("g:i A", strtotime($row['open_time'])) ?></td>
-                            <td><?= date("g:i A", strtotime($row['close_time'])) ?></td>
+                    <?php if ($row['day'] === "Sunday"): ?>
+                        <td colspan="2" class="closed">Closed</td>
 
-                        <?php endif; ?>
-                    </tr>
-                <?php endwhile; ?>
+                    <?php elseif ($row['open_time'] == "00:00:00" && $row['close_time'] == "00:00:00"): ?>
+                        <td colspan="2" class="closed">Closed</td>
 
+                    <?php else: ?>
+                        <td><?= date("g:i A", strtotime($row['open_time'])); ?></td>
+                        <td><?= date("g:i A", strtotime($row['close_time'])); ?></td>
+                    <?php endif; ?>
+                </tr>
+            <?php endwhile; ?>
 
-    </table>
+        </table>
+    </div>
+
 </div>
+
+<footer>
+    <p>
+        Email: library@emu.edu.tr<br><br>
+        Tel: +90 392 630 xxxx<br><br>
+        Fax: +90 392 630 xxxx
+    </p>
+</footer>
 
 </body>
 </html>

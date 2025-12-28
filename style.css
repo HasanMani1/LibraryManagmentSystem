@@ -111,9 +111,10 @@ section {
 
 
 footer {
-    height: 100%;
+    margin-top: auto;
     width: 100%;
     background-color: #024187;
+    padding: 20px 0;
 }
         section {
             background: transparent;

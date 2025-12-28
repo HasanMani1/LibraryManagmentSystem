@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// 📜 Fetch borrow history (DB verified)
+// 📜 Fetch borrow history
 $stmt = $conn->prepare("
     SELECT 
         b.title,
@@ -46,6 +46,14 @@ $result = $stmt->get_result();
             background-attachment: fixed;
             margin: 0;
             padding-top: 120px;
+
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-content {
+            flex: 1;
         }
 
         .container {
@@ -134,59 +142,70 @@ $result = $stmt->get_result();
             background: linear-gradient(135deg, #007bff, #00bfff);
             color: white;
             font-weight: 600;
-            border: none;
             border-radius: 50px;
             padding: 10px 18px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             text-decoration: none;
-            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
-        .back-btn:hover {
-            background: linear-gradient(135deg, #0056b3, #0080ff);
-            transform: scale(1.05);
+        footer {
+            width: 100%;
+            background-color: #024187;
+            color: #ffffff;
+            padding: 25px 0;
+            text-align: center;
+            font-size: 14px;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container">
-        <h1>📚 My Borrow History</h1>
+    <div class="main-content">
+        <div class="container">
+            <h1>📚 My Borrow History</h1>
 
-        <table>
-            <tr>
-                <th>Book Title</th>
-                <th>Author</th>
-                <th>Borrow Date</th>
-                <th>Due Date</th>
-                <th>Returned Date</th>
-                <th>Status</th>
-            </tr>
-
-            <?php if ($result->num_rows === 0): ?>
+            <table>
                 <tr>
-                    <td colspan="6" class="no-records">No borrow history found.</td>
+                    <th>Book Title</th>
+                    <th>Author</th>
+                    <th>Borrow Date</th>
+                    <th>Due Date</th>
+                    <th>Returned Date</th>
+                    <th>Status</th>
                 </tr>
-            <?php else: ?>
-                <?php while ($row = $result->fetch_assoc()): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($row['title']) ?></td>
-                        <td><?= htmlspecialchars($row['author']) ?></td>
-                        <td><?= date('Y-m-d', strtotime($row['borrow_date'])) ?></td>
-                        <td><?= date('Y-m-d', strtotime($row['due_date'])) ?></td>
-                        <td><?= $row['returned_date'] ? date('Y-m-d', strtotime($row['returned_date'])) : '—' ?></td>
-                        <td>
-                            <span class="status <?= htmlspecialchars($row['status_name']) ?>">
-                                <?= htmlspecialchars($row['status_name']) ?>
-                            </span>
-                        </td>
-                    </tr>
-                <?php endwhile; ?>
-            <?php endif; ?>
-        </table>
 
+                <?php if ($result->num_rows === 0): ?>
+                    <tr>
+                        <td colspan="6" class="no-records">No borrow history found.</td>
+                    </tr>
+                <?php else: ?>
+                    <?php while ($row = $result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($row['title']) ?></td>
+                            <td><?= htmlspecialchars($row['author']) ?></td>
+                            <td><?= date('Y-m-d', strtotime($row['borrow_date'])) ?></td>
+                            <td><?= date('Y-m-d', strtotime($row['due_date'])) ?></td>
+                            <td><?= $row['returned_date'] ? date('Y-m-d', strtotime($row['returned_date'])) : '—' ?></td>
+                            <td>
+                                <span class="status <?= htmlspecialchars($row['status_name']) ?>">
+                                    <?= htmlspecialchars($row['status_name']) ?>
+                                </span>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                <?php endif; ?>
+            </table>
+        </div>
     </div>
+
+    <footer>
+        <p>
+            Email: library@emu.edu.tr<br><br>
+            Tel: +90 392 630 xxxx<br><br>
+            Fax: +90 392 630 xxxx
+        </p>
+    </footer>
 
 </body>
 

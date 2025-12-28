@@ -118,7 +118,6 @@ while ($r = $res->fetch_assoc()) {
     <title>Borrow a Book</title>
 
     <style>
-        /* ===== ORIGINAL DESIGN — RESTORED ===== */
         body {
             font-family: Arial, sans-serif;
             background-image: url('images/saer.jpg');
@@ -126,6 +125,35 @@ while ($r = $res->fetch_assoc()) {
             background-attachment: fixed;
             margin: 0;
             padding-top: 120px;
+        }
+
+        /* === Layout for footer === */
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        /* === Footer === */
+        footer {
+            width: 100%;
+            background: #024187;
+            color: #ffffff;
+            padding: 25px 0;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        footer p {
+            margin: 6px 0;
         }
 
         .container {
@@ -186,6 +214,8 @@ while ($r = $res->fetch_assoc()) {
             background: #d4edda;
             color: #155724;
         }
+
+        /*  BACK BUTTON  */
         .back-btn {
             position: fixed;
             top: 25px;
@@ -204,6 +234,7 @@ while ($r = $res->fetch_assoc()) {
             transition: all 0.3s ease-in-out;
             z-index: 1000;
         }
+
         .back-btn:hover {
             background: linear-gradient(135deg, #0056b3, #0080ff);
             transform: scale(1.05);
@@ -211,46 +242,60 @@ while ($r = $res->fetch_assoc()) {
             color: #f8f9fa;
             text-decoration: none;
         }
-        .back-btn i { font-size: 18px; }
+
+        .back-btn i {
+            font-size: 18px;
+        }
     </style>
 </head>
 
 <body>
 
-    
     <a href="book.php" class="back-btn">←Go Back</a>
 
-    <div class="container">
-        <h1>📚 Borrow a Book</h1>
+    <main>
 
-        <?php foreach ($errors as $err): ?>
-            <div class="alert alert-error"><?= htmlspecialchars($err) ?></div>
-        <?php endforeach; ?>
+        <div class="container">
+            <h1>📚 Borrow a Book</h1>
 
-        <?php if (isset($_GET['requested'])): ?>
-            <div class="alert alert-success">
-                ✅ Your request has been sent for approval.
-            </div>
-        <?php endif; ?>
+            <?php foreach ($errors as $err): ?>
+                <div class="alert alert-error"><?= htmlspecialchars($err) ?></div>
+            <?php endforeach; ?>
 
-        <form method="post">
-            <label>Choose Book</label>
-            <select name="book_id" required>
-                <option value="">-- Select --</option>
-                <?php foreach ($books as $b): ?>
-                    <option value="<?= $b['book_id'] ?>"
-                        <?= $selected_book_id === (int)$b['book_id'] ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($b['title']) ?> — <?= htmlspecialchars($b['author']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+            <?php if (isset($_GET['requested'])): ?>
+                <div class="alert alert-success">
+                    ✅ Your request has been sent for approval.
+                </div>
+            <?php endif; ?>
 
-            <label>Due Date</label>
-            <input type="date" name="due_date" required min="<?= date('Y-m-d') ?>">
+            <form method="post">
+                <label>Choose Book</label>
+                <select name="book_id" required>
+                    <option value="">-- Select --</option>
+                    <?php foreach ($books as $b): ?>
+                        <option value="<?= $b['book_id'] ?>"
+                            <?= $selected_book_id === (int)$b['book_id'] ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($b['title']) ?> — <?= htmlspecialchars($b['author']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
 
-            <button type="submit">Submit Request</button>
-        </form>
-    </div>
+                <label>Due Date</label>
+                <input type="date" name="due_date" required min="<?= date('Y-m-d') ?>">
+
+                <button type="submit">Submit Request</button>
+            </form>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>
+            <br><br>Email: library@emu.edu.tr <br><br>
+            Tel: +90 392 630 xxxx <br><br>
+            Fax: +90 392 630 xxxx <br><br>
+        </p>
+    </footer>
 
 </body>
 
