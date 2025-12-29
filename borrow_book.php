@@ -3,87 +3,110 @@ session_start();
 include 'db_connect.php';
 include 'log_activity.php';
 
-// 🔐 Only logged-in users
+/* =========================
+   AUTH CHECK
+   ========================= */
 if (!isset($_SESSION['user_id'])) {
     header("Location: user_login.php");
     exit;
 }
 
-$user_id = $_SESSION['user_id'];
-$errors = [];
-$success = "";
-
-// 🚦 Pending approval status ID
+$user_id = (int)$_SESSION['user_id'];
 $pending_status_id = 4;
+$errors = [];
 
-// Auto-selected book (from Books page)
-$selected_book_id = isset($_GET['book_id']) && ctype_digit($_GET['book_id'])
-    ? (int)$_GET['book_id']
-    : null;
+/* =========================
+   AUTO-SELECT BOOK
+   ========================= */
+$selected_book_id = null;
+if (isset($_GET['book_id']) && ctype_digit($_GET['book_id'])) {
+    $selected_book_id = (int)$_GET['book_id'];
+}
 
 /* =========================
    HANDLE BORROW REQUEST
    ========================= */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $book_id  = (int)$_POST['book_id'];
-    $due_date = $_POST['due_date'];
+    $book_id  = (int)($_POST['book_id'] ?? 0);
+    $due_date = $_POST['due_date'] ?? '';
 
     if (!$book_id || !$due_date) {
         $errors[] = "Please select a book and due date.";
     } else {
 
-        // ❌ BLOCK EBOOKS
-        $typeStmt = $conn->prepare("
-            SELECT book_type 
-            FROM book 
-            WHERE book_id = ?
-        ");
-        $typeStmt->bind_param("i", $book_id);
-        $typeStmt->execute();
-        $typeRes = $typeStmt->get_result();
+        // Get book type
+        $stmt = $conn->prepare("SELECT book_type FROM book WHERE book_id = ?");
+        $stmt->bind_param("i", $book_id);
+        $stmt->execute();
+        $res = $stmt->get_result();
 
-        if ($typeRes->num_rows === 0) {
+        if ($res->num_rows === 0) {
             $errors[] = "Invalid book selected.";
         } else {
-            $bookType = $typeRes->fetch_assoc()['book_type'];
-            if ($bookType !== 'Hardcopy') {
-                $errors[] = "E-books cannot be borrowed.";
-            }
-        }
 
-        if (empty($errors)) {
+            $book_type = $res->fetch_assoc()['book_type'];
 
-            // ✅ Select available copy
-            $stmt = $conn->prepare("
-                SELECT inventory_id 
-                FROM book_inventory 
-                WHERE book_id = ? AND is_available = 1
-                LIMIT 1
-            ");
-            $stmt->bind_param("i", $book_id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result->num_rows === 0) {
-                $errors[] = "This book is currently unavailable.";
-            } else {
-
-                $inventory_id = $result->fetch_assoc()['inventory_id'];
+            /* =========================
+               E-BOOK BORROW
+               ========================= */
+            if ($book_type === 'Ebook') {
 
                 $stmt = $conn->prepare("
-                    INSERT INTO borrowing 
+                    INSERT INTO borrowing
                     (user_id, inventory_id, borrow_date, due_date, status_id)
-                    VALUES (?, ?, CURDATE(), ?, ?)
+                    VALUES (?, NULL, CURDATE(), ?, ?)
                 ");
-                $stmt->bind_param("iisi", $user_id, $inventory_id, $due_date, $pending_status_id);
+                $stmt->bind_param("isi", $user_id, $due_date, $pending_status_id);
 
                 if ($stmt->execute()) {
-                    logActivity($user_id, "Requested to borrow inventory ID: $inventory_id");
+                    logActivity($user_id, "Requested to borrow E-book ID $book_id");
                     header("Location: borrow_book.php?requested=1");
                     exit;
                 } else {
-                    $errors[] = "Request failed. Please try again.";
+                    $errors[] = "Failed to request e-book.";
+                }
+            }
+            /* =========================
+               HARDCOPY BORROW
+               ========================= */ else {
+
+                $stmt = $conn->prepare("
+                    SELECT inventory_id
+                    FROM book_inventory
+                    WHERE book_id = ? AND is_available = 1
+                    LIMIT 1
+                ");
+                $stmt->bind_param("i", $book_id);
+                $stmt->execute();
+                $invRes = $stmt->get_result();
+
+                if ($invRes->num_rows === 0) {
+                    $errors[] = "This hardcopy book is unavailable.";
+                } else {
+
+                    $inventory_id = $invRes->fetch_assoc()['inventory_id'];
+
+                    $stmt = $conn->prepare("
+                        INSERT INTO borrowing
+                        (user_id, inventory_id, borrow_date, due_date, status_id)
+                        VALUES (?, ?, CURDATE(), ?, ?)
+                    ");
+                    $stmt->bind_param(
+                        "iisi",
+                        $user_id,
+                        $inventory_id,
+                        $due_date,
+                        $pending_status_id
+                    );
+
+                    if ($stmt->execute()) {
+                        logActivity($user_id, "Requested to borrow inventory ID $inventory_id");
+                        header("Location: borrow_book.php?requested=1");
+                        exit;
+                    } else {
+                        $errors[] = "Borrow request failed.";
+                    }
                 }
             }
         }
@@ -91,22 +114,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 /* =========================
-   FETCH BORROWABLE BOOKS
-   (HARDCOPY ONLY)
+   FETCH ALL BOOKS
    ========================= */
 $books = [];
 $res = $conn->query("
-    SELECT DISTINCT b.book_id, b.title, b.author
+    SELECT DISTINCT 
+        b.book_id,
+        b.title,
+        b.author,
+        b.book_type
     FROM book b
-    JOIN book_inventory bi ON b.book_id = bi.book_id
-    WHERE 
-        bi.is_available = 1
-        AND b.book_type = 'Hardcopy'
+    LEFT JOIN book_inventory bi ON b.book_id = bi.book_id
     ORDER BY b.title
 ");
 
-while ($r = $res->fetch_assoc()) {
-    $books[] = $r;
+while ($row = $res->fetch_assoc()) {
+    $books[] = $row;
 }
 ?>
 
@@ -118,80 +141,70 @@ while ($r = $res->fetch_assoc()) {
     <title>Borrow a Book</title>
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-           
-            background-size: cover;
-            background-attachment: fixed;
-            margin: 0;
-            padding-top: 120px;
-        }
-
-        /* === Layout for footer === */
         html,
         body {
             height: 100%;
         }
 
         body {
+            margin: 0;
+            padding-top: 120px;
             display: flex;
             flex-direction: column;
+            font-family: Arial, sans-serif;
         }
 
         main {
             flex: 1;
         }
 
-   
-
         .container {
             width: 90%;
             max-width: 500px;
-            margin: 80px auto 50px;
-            background: #ffffff;
+            margin: 80px auto;
+            background: #fff;
             padding: 30px;
             border-radius: 10px;
+            border: 2px solid #94a3b8;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                   border: 2px solid #94a3b8;
         }
 
         h1 {
             text-align: center;
-            font-weight: bold;
             color: #007bff;
             margin-bottom: 25px;
         }
 
-        form label {
-            display: block;
-            margin-bottom: 5px;
+        label {
             font-weight: 600;
+            margin-bottom: 5px;
+            display: block;
         }
 
-        form select,
-        form input {
+        select,
+        input {
             width: 100%;
             padding: 8px;
             margin-bottom: 15px;
             border-radius: 5px;
-            border: 1px solid #ccc;
+            border: 2px solid #94a3b8;
         }
 
         button {
-            background: linear-gradient(135deg, #007bff, #00bfff);
-            border: none;
-            color: white;
+            width: 100%;
             padding: 10px;
+            background: linear-gradient(135deg, #007bff, #00bfff);
+            color: #fff;
+            border: none;
             border-radius: 6px;
             cursor: pointer;
-            width: 100%;
         }
 
         .alert {
             padding: 10px;
             border-radius: 6px;
-            text-align: center;
             margin-bottom: 15px;
+            text-align: center;
         }
 
         .alert-error {
@@ -204,80 +217,56 @@ while ($r = $res->fetch_assoc()) {
             color: #155724;
         }
 
-        /*  BACK BUTTON  */
         .back-btn {
             position: fixed;
             top: 25px;
             left: 25px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
             background: linear-gradient(135deg, #007bff, #00bfff);
-            color: white;
-            font-weight: 600;
-            border: none;
-            border-radius: 50px;
+            color: #fff;
             padding: 10px 18px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 50px;
             text-decoration: none;
-            transition: all 0.3s ease-in-out;
-            z-index: 1000;
-        }
-
-        .back-btn:hover {
-            background: linear-gradient(135deg, #0056b3, #0080ff);
-            transform: scale(1.05);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-            color: #f8f9fa;
-            text-decoration: none;
-        }
-
-        .back-btn i {
-            font-size: 18px;
+            font-weight: 600;
         }
     </style>
 </head>
 
 <body>
 
-    <a href="book.php" class="back-btn">←Go Back</a>
+    <a href="book.php" class="back-btn">← Go Back</a>
 
     <main>
-
         <div class="container">
-            <h1>📚 Borrow a Book</h1>
+            <h1>Borrow a Book</h1>
 
-            <?php foreach ($errors as $err): ?>
-                <div class="alert alert-error"><?= htmlspecialchars($err) ?></div>
+            <?php foreach ($errors as $e): ?>
+                <div class="alert alert-error"><?= htmlspecialchars($e) ?></div>
             <?php endforeach; ?>
 
             <?php if (isset($_GET['requested'])): ?>
-                <div class="alert alert-success">
-                    ✅ Your request has been sent for approval.
-                </div>
+                <div class="alert alert-success">Your request has been sent for approval.</div>
             <?php endif; ?>
 
             <form method="post">
                 <label>Choose Book</label>
-                <select name="book_id" required style="       border: 2px solid #94a3b8;">
+                <select name="book_id" required>
                     <option value="">-- Select --</option>
                     <?php foreach ($books as $b): ?>
                         <option value="<?= $b['book_id'] ?>"
-                            <?= $selected_book_id === (int)$b['book_id'] ? 'selected' : '' ?>>
+                            <?= ($selected_book_id === (int)$b['book_id']) ? 'selected' : '' ?>>
                             <?= htmlspecialchars($b['title']) ?> — <?= htmlspecialchars($b['author']) ?>
+                            (<?= $b['book_type'] ?>)
                         </option>
                     <?php endforeach; ?>
                 </select>
 
                 <label>Due Date</label>
-                <input type="date" name="due_date" required min="<?= date('Y-m-d') ?>">
+                <input type="date" name="due_date" min="<?= date('Y-m-d') ?>" required>
 
                 <button type="submit">Submit Request</button>
             </form>
         </div>
-
     </main>
-
 
 </body>
 

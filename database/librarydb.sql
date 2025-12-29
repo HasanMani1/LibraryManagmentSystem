@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Anamakine: 127.0.0.1
--- Üretim Zamanı: 29 Ara 2025, 17:27:57
--- Sunucu sürümü: 10.4.32-MariaDB
--- PHP Sürümü: 8.2.12
+-- Host: 127.0.0.1
+-- Generation Time: Dec 29, 2025 at 09:12 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Veritabanı: `librarydb`
+-- Database: `librarydb`
 --
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `account_blockage`
+-- Table structure for table `account_blockage`
 --
 
 CREATE TABLE `account_blockage` (
@@ -37,7 +37,7 @@ CREATE TABLE `account_blockage` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `activity_log`
+-- Table structure for table `activity_log`
 --
 
 CREATE TABLE `activity_log` (
@@ -48,7 +48,7 @@ CREATE TABLE `activity_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `activity_log`
+-- Dumping data for table `activity_log`
 --
 
 INSERT INTO `activity_log` (`log_id`, `user_id`, `action`, `timestamp`) VALUES
@@ -547,12 +547,26 @@ INSERT INTO `activity_log` (`log_id`, `user_id`, `action`, `timestamp`) VALUES
 (507, 2, 'Requested to borrow inventory ID: 12', '2025-12-29 18:18:09'),
 (508, 2, 'Logged out', '2025-12-29 18:21:35'),
 (509, 3, 'Logged in successfully', '2025-12-29 18:21:44'),
-(510, 3, 'Logged out', '2025-12-29 18:23:38');
+(510, 3, 'Logged out', '2025-12-29 18:23:38'),
+(511, 15, 'Logged in successfully', '2025-12-29 19:26:32'),
+(512, 17, 'Logged in successfully', '2025-12-29 20:48:27'),
+(513, 16, 'Logged in successfully', '2025-12-29 21:13:16'),
+(514, 16, 'Logged out', '2025-12-29 21:15:30'),
+(515, 17, 'Logged in successfully', '2025-12-29 21:21:11'),
+(516, 17, 'Added book ID 6 to wishlist', '2025-12-29 21:21:46'),
+(517, 17, 'Logged out', '2025-12-29 21:29:29'),
+(518, 15, 'Logged in successfully', '2025-12-29 21:39:37'),
+(519, 15, 'Logged out', '2025-12-29 21:44:20'),
+(520, 17, 'Logged in successfully', '2025-12-29 21:44:27'),
+(521, 17, 'Logged out', '2025-12-29 21:45:31'),
+(522, 15, 'Logged in successfully', '2025-12-29 21:45:59'),
+(523, 15, 'Logged out', '2025-12-29 22:05:28'),
+(524, 17, 'Logged in successfully', '2025-12-29 22:05:39');
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `attendance`
+-- Table structure for table `attendance`
 --
 
 CREATE TABLE `attendance` (
@@ -567,7 +581,7 @@ CREATE TABLE `attendance` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `book`
+-- Table structure for table `book`
 --
 
 CREATE TABLE `book` (
@@ -584,19 +598,36 @@ CREATE TABLE `book` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `book`
+-- Dumping data for table `book`
 --
 
 INSERT INTO `book` (`book_id`, `title`, `author`, `isbn`, `book_type`, `description`, `cover_image`, `availability_status`, `category_id`, `created_at`) VALUES
 (1, 'THE BOOK OF TIME TIME', 'Major', '213-45', 'Hardcopy', NULL, NULL, 'Available', 52, '2025-12-06 17:27:38'),
-(3, 'The What', 'Miles', '213-43', 'Ebook', NULL, NULL, 'Available', 1, '2025-12-21 21:04:27'),
-(4, 'The Leadership Pipeline', 'Tim John', '324-11', 'Hardcopy', NULL, NULL, 'Available', 1, '2025-12-22 12:39:20'),
-(5, 'STATE OF THE WALLET', 'DAINEL TANASE', '322-11', 'Ebook', 'Help in finance', 'uploads/books/694c5216548dc.png', 'Available', 11, '2025-12-24 22:50:30');
+(3, 'The What', 'Miles', '213-43', 'Ebook', 'A peom', 'uploads/books/6952defd71234.png', 'Available', 15, '2025-12-21 21:04:27'),
+(4, 'The Leadership Pipeline', 'Tim John', '324-11', 'Hardcopy', 'Explains leadership and how to be one', 'uploads/books/6952ded28febf.jpg', 'Available', 1, '2025-12-22 12:39:20'),
+(5, 'STATE OF THE WALLET', 'DAINEL TANASE', '322-11', 'Ebook', 'Help in finance', 'uploads/books/6952de7ec1723.jpg', 'Available', 11, '2025-12-24 22:50:30'),
+(6, 'Basic Sceince', 'John  O.', '553-90', 'Ebook', 'physics', 'uploads/books/6952de5db86e9.jpg', 'Available', 5, '2025-12-29 19:44:16'),
+(7, 'Introduction  to Computers', 'Jules Biggs', '353-22', 'Hardcopy', 'introduction to computer', 'uploads/books/6952dd3828443.jpg', 'Available', 1, '2025-12-29 19:47:20'),
+(8, 'Introduction to Technology', 'Malcom King', '345-12', 'Ebook', 'What is technology', 'uploads/books/6952dd118f6bb.jpg', 'Available', 2, '2025-12-29 19:52:06'),
+(9, 'Environmental Studies', 'Adil Hamza', '456-66', 'Hardcopy', 'The study of nature', 'uploads/books/6952dce460f6f.jpg', 'Available', 32, '2025-12-29 19:54:44'),
+(10, 'Plants and Nature', 'Sophia Martinez', '768-99', 'Hardcopy', 'Introduces domestic and wild animals with simple explanations.', 'uploads/books/6952dccc7c5c1.jpg', 'Available', 32, '2025-12-29 19:59:47'),
+(11, 'Essay Writing Practice', 'Rachel Adams', '112-44', 'Hardcopy', 'Helps students improve handwritting and sentence writting', 'uploads/books/6952dcb292b4a.jpg', 'Available', 13, '2025-12-29 20:03:19'),
+(12, 'World Map and Countries', 'Steven Clark', '434-75', 'Hardcopy', 'Introduces continents, countries, and basic geography', 'uploads/books/6952dc9b68df3.jpg', 'Available', 20, '2025-12-29 20:05:35'),
+(13, 'Software Engineering Principles', 'Andrew K. Wilson', '468-76', 'Ebook', 'Explains software development life  cycles, requirement analysis, and system design', 'uploads/books/6952dc7f79528.jpg', 'Available', 38, '2025-12-29 20:11:53'),
+(14, 'Cybersecurity Fundamentals', 'Michael J. Turner', '867-44', 'Ebook', 'Explains security threats, encryption basics, and safe computing practices', 'uploads/books/6952dc684df18.jpg', 'Available', 35, '2025-12-29 20:15:26'),
+(15, 'Human-Computer Interaction', 'Natalie W. Chen', '325-56', 'Ebook', 'Introducs usability, interface design, and user experience principles', 'uploads/books/6952dc4c812ce.jpg', 'Available', 2, '2025-12-29 20:18:53'),
+(16, 'Priciples of Business', 'Richard L. Howard', '568-39', 'Ebook', 'Introduces planning, organizing, leading, and controlling in organizations.', 'uploads/books/6952dc3651a4c.jpg', 'Available', 10, '2025-12-29 20:22:34'),
+(17, 'Intorduction to Law', 'Michael R. Turner', '345-77', 'Hardcopy', 'Explains legal systems, laws, and basic legal principles.', 'uploads/books/6952dc1b89ce4.jpg', 'Available', 26, '2025-12-29 20:24:50'),
+(18, 'The Silent Campus', 'Daniel R. Moore', '476-88', 'Hardcopy', 'A mystery novel set in a university where a hidden secret slowly unfolds.', 'uploads/books/6952d9dea1435.jpg', 'Available', 51, '2025-12-29 20:28:55'),
+(19, 'Echoes of Tomorrow', 'Mike A. Collins', '356-46', 'Ebook', 'A science-fiction story exploring future education and technology', 'uploads/books/6952d9b4d7cc8.jpg', 'Available', 51, '2025-12-29 20:31:13'),
+(20, 'Ehics and Society', 'Peter L. Morgan', '543-45', 'Hardcopy', 'Dicusses moral responsibility, ethics, and social values.', 'uploads/books/6952d99bb13a4.jpg', 'Available', 52, '2025-12-29 20:33:29'),
+(21, 'Ink and Silence', 'Oliver J. Hayes', '654-34', 'Ebook', 'Peoms focused on solitude, thought, and human emotion.', 'uploads/books/6952d9754c70d.jpg', 'Available', 15, '2025-12-29 20:36:17'),
+(22, 'The Quiet Line', 'Farah L. Brooks', '345-33', 'Hardcopy', 'Minimalist poetry capturing moments of reflection and clarity.', 'uploads/books/6952d962c3422.jpg', 'Available', 15, '2025-12-29 20:40:21');
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `book_category`
+-- Table structure for table `book_category`
 --
 
 CREATE TABLE `book_category` (
@@ -605,7 +636,7 @@ CREATE TABLE `book_category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `book_category`
+-- Dumping data for table `book_category`
 --
 
 INSERT INTO `book_category` (`category_id`, `category_name`) VALUES
@@ -674,7 +705,7 @@ INSERT INTO `book_category` (`category_id`, `category_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `book_donation`
+-- Table structure for table `book_donation`
 --
 
 CREATE TABLE `book_donation` (
@@ -688,7 +719,7 @@ CREATE TABLE `book_donation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `book_donation`
+-- Dumping data for table `book_donation`
 --
 
 INSERT INTO `book_donation` (`donation_id`, `donor_id`, `book_title`, `status`, `approver_id`, `is_approved`, `approved_date`) VALUES
@@ -702,7 +733,7 @@ INSERT INTO `book_donation` (`donation_id`, `donor_id`, `book_title`, `status`, 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `book_inventory`
+-- Table structure for table `book_inventory`
 --
 
 CREATE TABLE `book_inventory` (
@@ -714,7 +745,7 @@ CREATE TABLE `book_inventory` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `book_inventory`
+-- Dumping data for table `book_inventory`
 --
 
 INSERT INTO `book_inventory` (`inventory_id`, `book_id`, `copy_number`, `book_condition`, `is_available`) VALUES
@@ -731,12 +762,92 @@ INSERT INTO `book_inventory` (`inventory_id`, `book_id`, `copy_number`, `book_co
 (11, 3, 3, 'Good', 1),
 (12, 4, 1, 'Good', 1),
 (13, 5, 1, 'Good', 1),
-(14, 5, 2, 'Good', 1);
+(14, 5, 2, 'Good', 1),
+(15, 6, 1, 'Good', 1),
+(16, 6, 2, 'Good', 1),
+(17, 6, 3, 'Good', 1),
+(18, 7, 1, 'Good', 1),
+(19, 8, 1, 'Good', 1),
+(20, 8, 2, 'Good', 1),
+(21, 8, 3, 'Good', 1),
+(22, 9, 1, 'Good', 1),
+(23, 9, 2, 'Good', 1),
+(24, 9, 3, 'Good', 1),
+(25, 9, 4, 'Good', 1),
+(26, 9, 5, 'Good', 1),
+(27, 10, 1, 'Good', 1),
+(28, 10, 2, 'Good', 1),
+(29, 10, 3, 'Good', 1),
+(30, 10, 4, 'Good', 1),
+(31, 10, 5, 'Good', 1),
+(32, 10, 6, 'Good', 1),
+(33, 10, 7, 'Good', 1),
+(34, 10, 8, 'Good', 1),
+(35, 10, 9, 'Good', 1),
+(36, 10, 10, 'Good', 1),
+(37, 11, 1, 'Good', 1),
+(38, 11, 2, 'Good', 1),
+(39, 11, 3, 'Good', 1),
+(40, 11, 4, 'Good', 1),
+(41, 12, 1, 'Good', 1),
+(42, 12, 2, 'Good', 1),
+(43, 12, 3, 'Good', 1),
+(44, 12, 4, 'Good', 1),
+(45, 12, 5, 'Good', 1),
+(46, 12, 6, 'Good', 1),
+(47, 12, 7, 'Good', 1),
+(48, 12, 8, 'Good', 1),
+(49, 13, 1, 'Good', 1),
+(50, 13, 2, 'Good', 1),
+(51, 13, 3, 'Good', 1),
+(52, 13, 4, 'Good', 1),
+(53, 13, 5, 'Good', 1),
+(54, 13, 6, 'Good', 1),
+(55, 14, 1, 'Good', 1),
+(56, 14, 2, 'Good', 1),
+(57, 14, 3, 'Good', 1),
+(58, 14, 4, 'Good', 1),
+(59, 14, 5, 'Good', 1),
+(60, 15, 1, 'Good', 1),
+(61, 15, 2, 'Good', 1),
+(62, 15, 3, 'Good', 1),
+(63, 16, 1, 'Good', 1),
+(64, 16, 2, 'Good', 1),
+(65, 17, 1, 'Good', 1),
+(66, 17, 2, 'Good', 1),
+(67, 17, 3, 'Good', 1),
+(68, 17, 4, 'Good', 1),
+(69, 17, 5, 'Good', 1),
+(70, 17, 6, 'Good', 1),
+(71, 18, 1, 'Good', 1),
+(72, 18, 2, 'Good', 1),
+(73, 18, 3, 'Good', 1),
+(74, 19, 1, 'Good', 1),
+(75, 19, 2, 'Good', 1),
+(76, 19, 3, 'Good', 1),
+(77, 19, 4, 'Good', 1),
+(78, 20, 1, 'Good', 1),
+(79, 20, 2, 'Good', 1),
+(80, 20, 3, 'Good', 1),
+(81, 20, 4, 'Good', 1),
+(82, 20, 5, 'Good', 1),
+(83, 20, 6, 'Good', 1),
+(84, 21, 1, 'Good', 1),
+(85, 21, 2, 'Good', 1),
+(86, 21, 3, 'Good', 1),
+(87, 21, 4, 'Good', 1),
+(88, 21, 5, 'Good', 1),
+(89, 21, 6, 'Good', 1),
+(90, 21, 7, 'Good', 1),
+(91, 22, 1, 'Good', 1),
+(92, 22, 2, 'Good', 1),
+(93, 22, 3, 'Good', 1),
+(94, 22, 4, 'Good', 1);
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `book_management_log`
+-- Table structure for table `book_management_log`
 --
 
 CREATE TABLE `book_management_log` (
@@ -750,7 +861,7 @@ CREATE TABLE `book_management_log` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `book_rating`
+-- Table structure for table `book_rating`
 --
 
 CREATE TABLE `book_rating` (
@@ -763,7 +874,7 @@ CREATE TABLE `book_rating` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `book_rating`
+-- Dumping data for table `book_rating`
 --
 
 INSERT INTO `book_rating` (`rating_id`, `user_id`, `book_id`, `rating_value`, `comment`, `created_at`) VALUES
@@ -773,7 +884,7 @@ INSERT INTO `book_rating` (`rating_id`, `user_id`, `book_id`, `rating_value`, `c
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `borrowing`
+-- Table structure for table `borrowing`
 --
 
 CREATE TABLE `borrowing` (
@@ -788,7 +899,7 @@ CREATE TABLE `borrowing` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `borrowing`
+-- Dumping data for table `borrowing`
 --
 
 INSERT INTO `borrowing` (`borrowing_id`, `user_id`, `inventory_id`, `borrow_date`, `due_date`, `returned_date`, `qrcode_used`, `status_id`) VALUES
@@ -811,7 +922,7 @@ INSERT INTO `borrowing` (`borrowing_id`, `user_id`, `inventory_id`, `borrow_date
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `borrowing_status`
+-- Table structure for table `borrowing_status`
 --
 
 CREATE TABLE `borrowing_status` (
@@ -820,7 +931,7 @@ CREATE TABLE `borrowing_status` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `borrowing_status`
+-- Dumping data for table `borrowing_status`
 --
 
 INSERT INTO `borrowing_status` (`status_id`, `status_name`) VALUES
@@ -833,7 +944,7 @@ INSERT INTO `borrowing_status` (`status_id`, `status_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `contact_message`
+-- Table structure for table `contact_message`
 --
 
 CREATE TABLE `contact_message` (
@@ -847,7 +958,7 @@ CREATE TABLE `contact_message` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `contact_message`
+-- Dumping data for table `contact_message`
 --
 
 INSERT INTO `contact_message` (`message_id`, `user_id`, `name`, `email`, `subject`, `message`, `created_at`) VALUES
@@ -859,7 +970,7 @@ INSERT INTO `contact_message` (`message_id`, `user_id`, `name`, `email`, `subjec
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `ebook`
+-- Table structure for table `ebook`
 --
 
 CREATE TABLE `ebook` (
@@ -871,7 +982,7 @@ CREATE TABLE `ebook` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `event`
+-- Table structure for table `event`
 --
 
 CREATE TABLE `event` (
@@ -885,7 +996,7 @@ CREATE TABLE `event` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `event`
+-- Dumping data for table `event`
 --
 
 INSERT INTO `event` (`event_id`, `title`, `description`, `status`, `capacity`, `approver_id`, `created_at`) VALUES
@@ -902,7 +1013,7 @@ INSERT INTO `event` (`event_id`, `title`, `description`, `status`, `capacity`, `
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `event_attendance`
+-- Table structure for table `event_attendance`
 --
 
 CREATE TABLE `event_attendance` (
@@ -915,7 +1026,7 @@ CREATE TABLE `event_attendance` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `event_attendance`
+-- Dumping data for table `event_attendance`
 --
 
 INSERT INTO `event_attendance` (`attendance_id`, `event_id`, `user_id`, `attended`, `feedback`, `feedback_time`) VALUES
@@ -924,7 +1035,7 @@ INSERT INTO `event_attendance` (`attendance_id`, `event_id`, `user_id`, `attende
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `event_feedback`
+-- Table structure for table `event_feedback`
 --
 
 CREATE TABLE `event_feedback` (
@@ -937,7 +1048,7 @@ CREATE TABLE `event_feedback` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `event_feedback`
+-- Dumping data for table `event_feedback`
 --
 
 INSERT INTO `event_feedback` (`id`, `event_name`, `rating`, `comments`, `email`, `created_at`) VALUES
@@ -946,7 +1057,7 @@ INSERT INTO `event_feedback` (`id`, `event_name`, `rating`, `comments`, `email`,
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `event_proposal`
+-- Table structure for table `event_proposal`
 --
 
 CREATE TABLE `event_proposal` (
@@ -964,7 +1075,7 @@ CREATE TABLE `event_proposal` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `event_proposal`
+-- Dumping data for table `event_proposal`
 --
 
 INSERT INTO `event_proposal` (`proposal_id`, `title`, `description`, `capacity`, `status_s`, `create_at`, `event_id`, `proposed_by`, `approver_id`, `status`, `created_at`) VALUES
@@ -983,7 +1094,7 @@ INSERT INTO `event_proposal` (`proposal_id`, `title`, `description`, `capacity`,
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `library_capacity`
+-- Table structure for table `library_capacity`
 --
 
 CREATE TABLE `library_capacity` (
@@ -995,7 +1106,7 @@ CREATE TABLE `library_capacity` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `library_capacity`
+-- Dumping data for table `library_capacity`
 --
 
 INSERT INTO `library_capacity` (`capacity_id`, `max_capacity`, `current_occupancy`, `last_updated`, `updated_by`) VALUES
@@ -1004,7 +1115,7 @@ INSERT INTO `library_capacity` (`capacity_id`, `max_capacity`, `current_occupanc
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `library_hours`
+-- Table structure for table `library_hours`
 --
 
 CREATE TABLE `library_hours` (
@@ -1015,7 +1126,7 @@ CREATE TABLE `library_hours` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `library_hours`
+-- Dumping data for table `library_hours`
 --
 
 INSERT INTO `library_hours` (`id`, `day`, `open_time`, `close_time`) VALUES
@@ -1030,7 +1141,7 @@ INSERT INTO `library_hours` (`id`, `day`, `open_time`, `close_time`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `library_timing`
+-- Table structure for table `library_timing`
 --
 
 CREATE TABLE `library_timing` (
@@ -1044,7 +1155,7 @@ CREATE TABLE `library_timing` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `login_history`
+-- Table structure for table `login_history`
 --
 
 CREATE TABLE `login_history` (
@@ -1056,7 +1167,7 @@ CREATE TABLE `login_history` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `notification`
+-- Table structure for table `notification`
 --
 
 CREATE TABLE `notification` (
@@ -1069,7 +1180,7 @@ CREATE TABLE `notification` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `notification`
+-- Dumping data for table `notification`
 --
 
 INSERT INTO `notification` (`notification_id`, `user_id`, `title`, `message`, `is_read`, `created_at`) VALUES
@@ -1110,7 +1221,7 @@ INSERT INTO `notification` (`notification_id`, `user_id`, `title`, `message`, `i
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `recommendation`
+-- Table structure for table `recommendation`
 --
 
 CREATE TABLE `recommendation` (
@@ -1121,17 +1232,18 @@ CREATE TABLE `recommendation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `recommendation`
+-- Dumping data for table `recommendation`
 --
 
 INSERT INTO `recommendation` (`rec_id`, `book_id`, `suggested_by`, `display_on_dashboard`) VALUES
 (3, 3, 14, 1),
-(11, 1, 3, 1);
+(11, 1, 3, 1),
+(12, 14, 16, 1);
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `reminder`
+-- Table structure for table `reminder`
 --
 
 CREATE TABLE `reminder` (
@@ -1147,7 +1259,7 @@ CREATE TABLE `reminder` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `role`
+-- Table structure for table `role`
 --
 
 CREATE TABLE `role` (
@@ -1156,7 +1268,7 @@ CREATE TABLE `role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `role`
+-- Dumping data for table `role`
 --
 
 INSERT INTO `role` (`role_id`, `role_name`) VALUES
@@ -1168,7 +1280,7 @@ INSERT INTO `role` (`role_id`, `role_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `students`
+-- Table structure for table `students`
 --
 
 CREATE TABLE `students` (
@@ -1182,7 +1294,7 @@ CREATE TABLE `students` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `user`
+-- Table structure for table `user`
 --
 
 CREATE TABLE `user` (
@@ -1198,7 +1310,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `user`
+-- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`user_id`, `name`, `email`, `password`, `role_id`, `reset_token`, `token_expiry`, `remember_me_token`, `created_at`) VALUES
@@ -1218,7 +1330,7 @@ INSERT INTO `user` (`user_id`, `name`, `email`, `password`, `role_id`, `reset_to
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `wishlist`
+-- Table structure for table `wishlist`
 --
 
 CREATE TABLE `wishlist` (
@@ -1229,41 +1341,42 @@ CREATE TABLE `wishlist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Tablo döküm verisi `wishlist`
+-- Dumping data for table `wishlist`
 --
 
 INSERT INTO `wishlist` (`wishlist_id`, `user_id`, `book_id`, `created_at`) VALUES
 (10, 2, 4, '2025-12-23 16:11:13'),
 (15, 3, 4, '2025-12-29 17:44:39'),
-(16, 2, 1, '2025-12-29 18:15:49');
+(16, 2, 1, '2025-12-29 18:15:49'),
+(17, 17, 6, '2025-12-29 21:21:46');
 
 --
--- Dökümü yapılmış tablolar için indeksler
+-- Indexes for dumped tables
 --
 
 --
--- Tablo için indeksler `account_blockage`
+-- Indexes for table `account_blockage`
 --
 ALTER TABLE `account_blockage`
   ADD PRIMARY KEY (`block_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Tablo için indeksler `activity_log`
+-- Indexes for table `activity_log`
 --
 ALTER TABLE `activity_log`
   ADD PRIMARY KEY (`log_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Tablo için indeksler `attendance`
+-- Indexes for table `attendance`
 --
 ALTER TABLE `attendance`
   ADD PRIMARY KEY (`attendance_id`),
   ADD KEY `student_id` (`student_id`);
 
 --
--- Tablo için indeksler `book`
+-- Indexes for table `book`
 --
 ALTER TABLE `book`
   ADD PRIMARY KEY (`book_id`),
@@ -1272,13 +1385,13 @@ ALTER TABLE `book`
   ADD KEY `category_id` (`category_id`);
 
 --
--- Tablo için indeksler `book_category`
+-- Indexes for table `book_category`
 --
 ALTER TABLE `book_category`
   ADD PRIMARY KEY (`category_id`);
 
 --
--- Tablo için indeksler `book_donation`
+-- Indexes for table `book_donation`
 --
 ALTER TABLE `book_donation`
   ADD PRIMARY KEY (`donation_id`),
@@ -1286,14 +1399,14 @@ ALTER TABLE `book_donation`
   ADD KEY `approver_id` (`approver_id`);
 
 --
--- Tablo için indeksler `book_inventory`
+-- Indexes for table `book_inventory`
 --
 ALTER TABLE `book_inventory`
   ADD PRIMARY KEY (`inventory_id`),
   ADD KEY `book_id` (`book_id`);
 
 --
--- Tablo için indeksler `book_management_log`
+-- Indexes for table `book_management_log`
 --
 ALTER TABLE `book_management_log`
   ADD PRIMARY KEY (`log_id`),
@@ -1301,7 +1414,7 @@ ALTER TABLE `book_management_log`
   ADD KEY `performed_by` (`performed_by`);
 
 --
--- Tablo için indeksler `book_rating`
+-- Indexes for table `book_rating`
 --
 ALTER TABLE `book_rating`
   ADD PRIMARY KEY (`rating_id`),
@@ -1309,7 +1422,7 @@ ALTER TABLE `book_rating`
   ADD KEY `book_id` (`book_id`);
 
 --
--- Tablo için indeksler `borrowing`
+-- Indexes for table `borrowing`
 --
 ALTER TABLE `borrowing`
   ADD PRIMARY KEY (`borrowing_id`),
@@ -1318,34 +1431,34 @@ ALTER TABLE `borrowing`
   ADD KEY `status_id` (`status_id`);
 
 --
--- Tablo için indeksler `borrowing_status`
+-- Indexes for table `borrowing_status`
 --
 ALTER TABLE `borrowing_status`
   ADD PRIMARY KEY (`status_id`);
 
 --
--- Tablo için indeksler `contact_message`
+-- Indexes for table `contact_message`
 --
 ALTER TABLE `contact_message`
   ADD PRIMARY KEY (`message_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Tablo için indeksler `ebook`
+-- Indexes for table `ebook`
 --
 ALTER TABLE `ebook`
   ADD PRIMARY KEY (`ebook_id`),
   ADD KEY `book_id` (`book_id`);
 
 --
--- Tablo için indeksler `event`
+-- Indexes for table `event`
 --
 ALTER TABLE `event`
   ADD PRIMARY KEY (`event_id`),
   ADD KEY `approver_id` (`approver_id`);
 
 --
--- Tablo için indeksler `event_attendance`
+-- Indexes for table `event_attendance`
 --
 ALTER TABLE `event_attendance`
   ADD PRIMARY KEY (`attendance_id`),
@@ -1353,52 +1466,52 @@ ALTER TABLE `event_attendance`
   ADD KEY `user_id` (`user_id`);
 
 --
--- Tablo için indeksler `event_feedback`
+-- Indexes for table `event_feedback`
 --
 ALTER TABLE `event_feedback`
   ADD PRIMARY KEY (`id`);
 
 --
--- Tablo için indeksler `event_proposal`
+-- Indexes for table `event_proposal`
 --
 ALTER TABLE `event_proposal`
   ADD PRIMARY KEY (`proposal_id`);
 
 --
--- Tablo için indeksler `library_capacity`
+-- Indexes for table `library_capacity`
 --
 ALTER TABLE `library_capacity`
   ADD PRIMARY KEY (`capacity_id`),
   ADD KEY `updated_by` (`updated_by`);
 
 --
--- Tablo için indeksler `library_hours`
+-- Indexes for table `library_hours`
 --
 ALTER TABLE `library_hours`
   ADD PRIMARY KEY (`id`);
 
 --
--- Tablo için indeksler `library_timing`
+-- Indexes for table `library_timing`
 --
 ALTER TABLE `library_timing`
   ADD PRIMARY KEY (`timing_id`);
 
 --
--- Tablo için indeksler `login_history`
+-- Indexes for table `login_history`
 --
 ALTER TABLE `login_history`
   ADD PRIMARY KEY (`login_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Tablo için indeksler `notification`
+-- Indexes for table `notification`
 --
 ALTER TABLE `notification`
   ADD PRIMARY KEY (`notification_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Tablo için indeksler `recommendation`
+-- Indexes for table `recommendation`
 --
 ALTER TABLE `recommendation`
   ADD PRIMARY KEY (`rec_id`),
@@ -1406,26 +1519,26 @@ ALTER TABLE `recommendation`
   ADD KEY `suggested_by` (`suggested_by`);
 
 --
--- Tablo için indeksler `reminder`
+-- Indexes for table `reminder`
 --
 ALTER TABLE `reminder`
   ADD PRIMARY KEY (`reminder_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Tablo için indeksler `role`
+-- Indexes for table `role`
 --
 ALTER TABLE `role`
   ADD PRIMARY KEY (`role_id`);
 
 --
--- Tablo için indeksler `students`
+-- Indexes for table `students`
 --
 ALTER TABLE `students`
   ADD PRIMARY KEY (`student_id`);
 
 --
--- Tablo için indeksler `user`
+-- Indexes for table `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`user_id`),
@@ -1433,7 +1546,7 @@ ALTER TABLE `user`
   ADD KEY `role_id` (`role_id`);
 
 --
--- Tablo için indeksler `wishlist`
+-- Indexes for table `wishlist`
 --
 ALTER TABLE `wishlist`
   ADD PRIMARY KEY (`wishlist_id`),
@@ -1441,234 +1554,234 @@ ALTER TABLE `wishlist`
   ADD KEY `book_id` (`book_id`);
 
 --
--- Dökümü yapılmış tablolar için AUTO_INCREMENT değeri
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- Tablo için AUTO_INCREMENT değeri `account_blockage`
+-- AUTO_INCREMENT for table `account_blockage`
 --
 ALTER TABLE `account_blockage`
   MODIFY `block_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Tablo için AUTO_INCREMENT değeri `activity_log`
+-- AUTO_INCREMENT for table `activity_log`
 --
 ALTER TABLE `activity_log`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=511;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=525;
 
 --
--- Tablo için AUTO_INCREMENT değeri `attendance`
+-- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
   MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Tablo için AUTO_INCREMENT değeri `book`
+-- AUTO_INCREMENT for table `book`
 --
 ALTER TABLE `book`
-  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
--- Tablo için AUTO_INCREMENT değeri `book_category`
+-- AUTO_INCREMENT for table `book_category`
 --
 ALTER TABLE `book_category`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
--- Tablo için AUTO_INCREMENT değeri `book_donation`
+-- AUTO_INCREMENT for table `book_donation`
 --
 ALTER TABLE `book_donation`
   MODIFY `donation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- Tablo için AUTO_INCREMENT değeri `book_inventory`
+-- AUTO_INCREMENT for table `book_inventory`
 --
 ALTER TABLE `book_inventory`
-  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
--- Tablo için AUTO_INCREMENT değeri `book_management_log`
+-- AUTO_INCREMENT for table `book_management_log`
 --
 ALTER TABLE `book_management_log`
   MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Tablo için AUTO_INCREMENT değeri `book_rating`
+-- AUTO_INCREMENT for table `book_rating`
 --
 ALTER TABLE `book_rating`
   MODIFY `rating_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- Tablo için AUTO_INCREMENT değeri `borrowing`
+-- AUTO_INCREMENT for table `borrowing`
 --
 ALTER TABLE `borrowing`
   MODIFY `borrowing_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- Tablo için AUTO_INCREMENT değeri `borrowing_status`
+-- AUTO_INCREMENT for table `borrowing_status`
 --
 ALTER TABLE `borrowing_status`
   MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- Tablo için AUTO_INCREMENT değeri `contact_message`
+-- AUTO_INCREMENT for table `contact_message`
 --
 ALTER TABLE `contact_message`
   MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- Tablo için AUTO_INCREMENT değeri `ebook`
+-- AUTO_INCREMENT for table `ebook`
 --
 ALTER TABLE `ebook`
   MODIFY `ebook_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Tablo için AUTO_INCREMENT değeri `event`
+-- AUTO_INCREMENT for table `event`
 --
 ALTER TABLE `event`
   MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
--- Tablo için AUTO_INCREMENT değeri `event_attendance`
+-- AUTO_INCREMENT for table `event_attendance`
 --
 ALTER TABLE `event_attendance`
   MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- Tablo için AUTO_INCREMENT değeri `event_feedback`
+-- AUTO_INCREMENT for table `event_feedback`
 --
 ALTER TABLE `event_feedback`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- Tablo için AUTO_INCREMENT değeri `event_proposal`
+-- AUTO_INCREMENT for table `event_proposal`
 --
 ALTER TABLE `event_proposal`
   MODIFY `proposal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- Tablo için AUTO_INCREMENT değeri `library_capacity`
+-- AUTO_INCREMENT for table `library_capacity`
 --
 ALTER TABLE `library_capacity`
   MODIFY `capacity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- Tablo için AUTO_INCREMENT değeri `library_hours`
+-- AUTO_INCREMENT for table `library_hours`
 --
 ALTER TABLE `library_hours`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- Tablo için AUTO_INCREMENT değeri `library_timing`
+-- AUTO_INCREMENT for table `library_timing`
 --
 ALTER TABLE `library_timing`
   MODIFY `timing_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Tablo için AUTO_INCREMENT değeri `login_history`
+-- AUTO_INCREMENT for table `login_history`
 --
 ALTER TABLE `login_history`
   MODIFY `login_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Tablo için AUTO_INCREMENT değeri `notification`
+-- AUTO_INCREMENT for table `notification`
 --
 ALTER TABLE `notification`
   MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
--- Tablo için AUTO_INCREMENT değeri `recommendation`
+-- AUTO_INCREMENT for table `recommendation`
 --
 ALTER TABLE `recommendation`
-  MODIFY `rec_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `rec_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- Tablo için AUTO_INCREMENT değeri `reminder`
+-- AUTO_INCREMENT for table `reminder`
 --
 ALTER TABLE `reminder`
   MODIFY `reminder_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Tablo için AUTO_INCREMENT değeri `role`
+-- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
   MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- Tablo için AUTO_INCREMENT değeri `students`
+-- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
   MODIFY `student_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- Tablo için AUTO_INCREMENT değeri `user`
+-- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- Tablo için AUTO_INCREMENT değeri `wishlist`
+-- AUTO_INCREMENT for table `wishlist`
 --
 ALTER TABLE `wishlist`
-  MODIFY `wishlist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `wishlist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- Dökümü yapılmış tablolar için kısıtlamalar
+-- Constraints for dumped tables
 --
 
 --
--- Tablo kısıtlamaları `account_blockage`
+-- Constraints for table `account_blockage`
 --
 ALTER TABLE `account_blockage`
   ADD CONSTRAINT `account_blockage_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Tablo kısıtlamaları `activity_log`
+-- Constraints for table `activity_log`
 --
 ALTER TABLE `activity_log`
   ADD CONSTRAINT `activity_log_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE;
 
 --
--- Tablo kısıtlamaları `attendance`
+-- Constraints for table `attendance`
 --
 ALTER TABLE `attendance`
   ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
 
 --
--- Tablo kısıtlamaları `book`
+-- Constraints for table `book`
 --
 ALTER TABLE `book`
   ADD CONSTRAINT `book_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `book_category` (`category_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Tablo kısıtlamaları `book_donation`
+-- Constraints for table `book_donation`
 --
 ALTER TABLE `book_donation`
   ADD CONSTRAINT `book_donation_ibfk_1` FOREIGN KEY (`donor_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `book_donation_ibfk_2` FOREIGN KEY (`approver_id`) REFERENCES `user` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Tablo kısıtlamaları `book_inventory`
+-- Constraints for table `book_inventory`
 --
 ALTER TABLE `book_inventory`
   ADD CONSTRAINT `book_inventory_ibfk_1` FOREIGN KEY (`book_id`) REFERENCES `book` (`book_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Tablo kısıtlamaları `book_management_log`
+-- Constraints for table `book_management_log`
 --
 ALTER TABLE `book_management_log`
   ADD CONSTRAINT `book_management_log_ibfk_1` FOREIGN KEY (`book_id`) REFERENCES `book` (`book_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `book_management_log_ibfk_2` FOREIGN KEY (`performed_by`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Tablo kısıtlamaları `book_rating`
+-- Constraints for table `book_rating`
 --
 ALTER TABLE `book_rating`
   ADD CONSTRAINT `book_rating_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `book_rating_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `book` (`book_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Tablo kısıtlamaları `borrowing`
+-- Constraints for table `borrowing`
 --
 ALTER TABLE `borrowing`
   ADD CONSTRAINT `borrowing_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1676,69 +1789,69 @@ ALTER TABLE `borrowing`
   ADD CONSTRAINT `borrowing_ibfk_3` FOREIGN KEY (`status_id`) REFERENCES `borrowing_status` (`status_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Tablo kısıtlamaları `contact_message`
+-- Constraints for table `contact_message`
 --
 ALTER TABLE `contact_message`
   ADD CONSTRAINT `contact_message_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE SET NULL;
 
 --
--- Tablo kısıtlamaları `ebook`
+-- Constraints for table `ebook`
 --
 ALTER TABLE `ebook`
   ADD CONSTRAINT `ebook_ibfk_1` FOREIGN KEY (`book_id`) REFERENCES `book` (`book_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Tablo kısıtlamaları `event`
+-- Constraints for table `event`
 --
 ALTER TABLE `event`
   ADD CONSTRAINT `event_ibfk_1` FOREIGN KEY (`approver_id`) REFERENCES `user` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Tablo kısıtlamaları `event_attendance`
+-- Constraints for table `event_attendance`
 --
 ALTER TABLE `event_attendance`
   ADD CONSTRAINT `event_attendance_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `event_attendance_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Tablo kısıtlamaları `library_capacity`
+-- Constraints for table `library_capacity`
 --
 ALTER TABLE `library_capacity`
   ADD CONSTRAINT `library_capacity_ibfk_1` FOREIGN KEY (`updated_by`) REFERENCES `user` (`user_id`);
 
 --
--- Tablo kısıtlamaları `login_history`
+-- Constraints for table `login_history`
 --
 ALTER TABLE `login_history`
   ADD CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Tablo kısıtlamaları `notification`
+-- Constraints for table `notification`
 --
 ALTER TABLE `notification`
   ADD CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE;
 
 --
--- Tablo kısıtlamaları `recommendation`
+-- Constraints for table `recommendation`
 --
 ALTER TABLE `recommendation`
   ADD CONSTRAINT `recommendation_ibfk_1` FOREIGN KEY (`book_id`) REFERENCES `book` (`book_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `recommendation_ibfk_2` FOREIGN KEY (`suggested_by`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Tablo kısıtlamaları `reminder`
+-- Constraints for table `reminder`
 --
 ALTER TABLE `reminder`
   ADD CONSTRAINT `reminder_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Tablo kısıtlamaları `user`
+-- Constraints for table `user`
 --
 ALTER TABLE `user`
   ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Tablo kısıtlamaları `wishlist`
+-- Constraints for table `wishlist`
 --
 ALTER TABLE `wishlist`
   ADD CONSTRAINT `wishlist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,

@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Fetch wishlist books
+// Fetch wishlist books (CATEGORY NAME ADDED)
 $sql = "
     SELECT 
         w.wishlist_id,
@@ -20,9 +20,10 @@ $sql = "
         b.author,
         b.isbn,
         b.book_type,
-        b.category_id
+        c.category_name
     FROM wishlist w
     JOIN book b ON w.book_id = b.book_id
+    LEFT JOIN book_category c ON b.category_id = c.category_id
     WHERE w.user_id = ?
     ORDER BY w.created_at DESC
 ";
@@ -87,66 +88,65 @@ $result = $stmt->get_result();
         .back-btn i {
             font-size: 18px;
         }
-.container{
-       border: 2px solid #94a3b8;
-}
-     
+
+        .container {
+            border: 2px solid #94a3b8;
+        }
     </style>
 </head>
 
 <body class="bg-light">
 
-    <div class="main-content">
+<div class="main-content">
 
-        <div class="container mt-5">
-            <h2 class="text-center mb-4">
-                <i class="bi bi-heart-fill text-danger"></i> My Wishlist
-            </h2>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">
+            <i class="bi bi-heart-fill text-danger"></i> My Wishlist
+        </h2>
 
-            <table class="table table-bordered table-hover text-center align-middle">
-                <thead class="table-primary">
+        <table class="table table-bordered table-hover text-center align-middle">
+            <thead class="table-primary">
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>ISBN</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            <?php if ($result->num_rows === 0): ?>
+                <tr>
+                    <td colspan="7">Your wishlist is empty.</td>
+                </tr>
+            <?php else: ?>
+                <?php while ($b = $result->fetch_assoc()): ?>
                     <tr>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th>ISBN</th>
-                        <th>Type</th>
-                        <th>Category</th>
-                        <th>Action</th>
+                        <td><?= $b['book_id']; ?></td>
+                        <td><?= htmlspecialchars($b['title']); ?></td>
+                        <td><?= htmlspecialchars($b['author']); ?></td>
+                        <td><?= htmlspecialchars($b['isbn']); ?></td>
+                        <td><?= htmlspecialchars($b['book_type']); ?></td>
+                        <td><?= htmlspecialchars($b['category_name'] ?? '—'); ?></td>
+                        <td>
+                            <a href="remove_from_wishlist.php?id=<?= $b['wishlist_id']; ?>"
+                               class="btn btn-sm btn-outline-danger"
+                               onclick="return confirm('Remove this book from your wishlist?');">
+                                <i class="bi bi-trash"></i> Remove
+                            </a>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
+                <?php endwhile; ?>
+            <?php endif; ?>
 
-                    <?php if ($result->num_rows === 0): ?>
-                        <tr>
-                            <td colspan="7">Your wishlist is empty.</td>
-                        </tr>
-                    <?php else: ?>
-                        <?php while ($b = $result->fetch_assoc()): ?>
-                            <tr>
-                                <td><?= $b['book_id']; ?></td>
-                                <td><?= htmlspecialchars($b['title']); ?></td>
-                                <td><?= htmlspecialchars($b['author']); ?></td>
-                                <td><?= htmlspecialchars($b['isbn']); ?></td>
-                                <td><?= htmlspecialchars($b['book_type']); ?></td>
-                                <td><?= $b['category_id']; ?></td>
-                                <td>
-                                    <a href="remove_from_wishlist.php?id=<?= $b['wishlist_id']; ?>"
-                                        class="btn btn-sm btn-outline-danger"
-                                        onclick="return confirm('Remove this book from your wishlist?');">
-                                        <i class="bi bi-trash"></i> Remove
-                                    </a>
-                                </td>
-                            </tr>
-                        <?php endwhile; ?>
-                    <?php endif; ?>
-
-                </tbody>
-            </table>
-        </div>
-
+            </tbody>
+        </table>
     </div>
 
-</body>
+</div>
 
+</body>
 </html>

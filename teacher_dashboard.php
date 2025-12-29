@@ -159,7 +159,6 @@ $name = $_SESSION['name'];
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="book.php">Books</a></li>
-                        <li><a class="dropdown-item" href="borrow_book.php">Borrow Books</a></li>
                         <li><a class="dropdown-item" href="return_book.php">Return Books</a></li>
                         <li><a class="dropdown-item" href="borrow_history.php">Borrow History</a></li>
                         <li><a class="dropdown-item" href="rate_book.php">Rate Books</a></li>

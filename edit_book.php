@@ -91,20 +91,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
 
             // ----------------------
-            // IMAGE UPLOAD (OPTIONAL)
+            // IMAGE UPLOAD (JFIF FIX)
             // ----------------------
             $imagePath = $book['cover_image'];
 
             if (!empty($_FILES['cover_image']['name'])) {
+
                 $ext = strtolower(pathinfo($_FILES['cover_image']['name'], PATHINFO_EXTENSION));
-                $allowedExt = ['jpg', 'jpeg', 'png'];
+                $allowedExt = ['jpg', 'jpeg', 'png', 'jfif'];
 
                 if (!in_array($ext, $allowedExt)) {
                     $error = "Only JPG and PNG images are allowed.";
                 } else {
+
+                    // Normalize jfif to jpg
+                    if ($ext === 'jfif') {
+                        $ext = 'jpg';
+                    }
+
                     if (!is_dir("uploads/books")) {
                         mkdir("uploads/books", 0777, true);
                     }
+
                     $imagePath = "uploads/books/" . uniqid() . "." . $ext;
                     move_uploaded_file($_FILES['cover_image']['tmp_name'], $imagePath);
                 }
@@ -192,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
-                border: 2px solid #94a3b8;
+            border: 2px solid #94a3b8;
         }
 
         label {
