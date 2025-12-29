@@ -64,6 +64,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <meta http-equiv="refresh" content="3;url=user_login.php">
     <?php endif; ?>
     <style>
+        html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* 🔥 removes scrollbar */
+}
         .signup-container {
             display: flex;
             justify-content: center;

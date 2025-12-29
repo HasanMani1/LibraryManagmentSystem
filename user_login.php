@@ -51,6 +51,13 @@ $conn->close();
      <link rel="stylesheet" href="css/footer.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>User Login</title>
+    <style>
+        html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* 🔥 removes scrollbar */
+}
+    </style>
 </head>
 <body class="login-page">
 <header>
