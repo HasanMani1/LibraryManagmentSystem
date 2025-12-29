@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         } else {
 
             // ----------------------
-            // IMAGE UPLOAD (JFIF FIX)
+            // IMAGE UPLOAD 
             // ----------------------
             $imagePath = null;
 

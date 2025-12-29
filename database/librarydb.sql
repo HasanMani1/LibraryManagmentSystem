@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 29, 2025 at 09:12 PM
+-- Generation Time: Dec 29, 2025 at 11:37 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -561,7 +561,21 @@ INSERT INTO `activity_log` (`log_id`, `user_id`, `action`, `timestamp`) VALUES
 (521, 17, 'Logged out', '2025-12-29 21:45:31'),
 (522, 15, 'Logged in successfully', '2025-12-29 21:45:59'),
 (523, 15, 'Logged out', '2025-12-29 22:05:28'),
-(524, 17, 'Logged in successfully', '2025-12-29 22:05:39');
+(524, 17, 'Logged in successfully', '2025-12-29 22:05:39'),
+(525, 17, 'Requested to borrow inventory ID 15', '2025-12-29 23:57:48'),
+(526, 17, 'Requested to borrow inventory ID 55', '2025-12-29 23:58:07'),
+(527, 17, 'Logged in successfully', '2025-12-29 23:58:25'),
+(528, 17, 'Returned book copy ID: 9', '2025-12-29 23:58:37'),
+(529, 17, 'Logged in successfully', '2025-12-30 00:21:20'),
+(530, 17, 'Logged out', '2025-12-30 00:22:51'),
+(531, 15, 'Logged in successfully', '2025-12-30 00:23:05'),
+(532, 15, 'Rejected donation ID 7', '2025-12-30 00:23:16'),
+(533, 15, 'Logged out', '2025-12-30 00:24:05'),
+(534, 17, 'Logged in successfully', '2025-12-30 00:24:12'),
+(535, 17, 'Requested to borrow inventory ID 74', '2025-12-30 00:36:11'),
+(536, 17, 'Logged out', '2025-12-30 00:36:21'),
+(537, 15, 'Logged in successfully', '2025-12-30 00:36:36'),
+(538, 15, 'Rejected donation ID 8', '2025-12-30 00:36:48');
 
 -- --------------------------------------------------------
 
@@ -622,7 +636,8 @@ INSERT INTO `book` (`book_id`, `title`, `author`, `isbn`, `book_type`, `descript
 (19, 'Echoes of Tomorrow', 'Mike A. Collins', '356-46', 'Ebook', 'A science-fiction story exploring future education and technology', 'uploads/books/6952d9b4d7cc8.jpg', 'Available', 51, '2025-12-29 20:31:13'),
 (20, 'Ehics and Society', 'Peter L. Morgan', '543-45', 'Hardcopy', 'Dicusses moral responsibility, ethics, and social values.', 'uploads/books/6952d99bb13a4.jpg', 'Available', 52, '2025-12-29 20:33:29'),
 (21, 'Ink and Silence', 'Oliver J. Hayes', '654-34', 'Ebook', 'Peoms focused on solitude, thought, and human emotion.', 'uploads/books/6952d9754c70d.jpg', 'Available', 15, '2025-12-29 20:36:17'),
-(22, 'The Quiet Line', 'Farah L. Brooks', '345-33', 'Hardcopy', 'Minimalist poetry capturing moments of reflection and clarity.', 'uploads/books/6952d962c3422.jpg', 'Available', 15, '2025-12-29 20:40:21');
+(22, 'The Quiet Line', 'Farah L. Brooks', '345-33', 'Hardcopy', 'Minimalist poetry capturing moments of reflection and clarity.', 'uploads/books/6952d962c3422.jpg', 'Available', 15, '2025-12-29 20:40:21'),
+(23, 'The cow', 'Major Musa', '790-09', 'Ebook', 'Story book', 'uploads/books/6952fe3e7d89b.png', 'Available', 15, '2025-12-30 00:18:38');
 
 -- --------------------------------------------------------
 
@@ -715,20 +730,30 @@ CREATE TABLE `book_donation` (
   `status` varchar(50) DEFAULT 'Pending',
   `approver_id` int(11) DEFAULT NULL,
   `is_approved` tinyint(1) DEFAULT 0,
-  `approved_date` datetime DEFAULT NULL
+  `approved_date` datetime DEFAULT NULL,
+  `author` varchar(255) DEFAULT NULL,
+  `isbn` varchar(50) DEFAULT NULL,
+  `book_type` varchar(50) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `cover_image` varchar(255) DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  `copies` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `book_donation`
 --
 
-INSERT INTO `book_donation` (`donation_id`, `donor_id`, `book_title`, `status`, `approver_id`, `is_approved`, `approved_date`) VALUES
-(1, 15, 'The Boys', 'Rejected', 15, 0, '2025-12-15 21:43:43'),
-(2, 16, 'THEE ONE', 'Approved', 15, 1, '2025-12-15 21:48:15'),
-(3, 15, 'The What', 'Rejected', 15, 0, '2025-12-21 20:55:06'),
-(4, 15, 'The What', 'Rejected', 15, 0, '2025-12-21 20:54:15'),
-(5, 17, 'The What', 'Approved', 15, 1, '2025-12-21 21:04:27'),
-(6, 10, 'The Leadership Pipeline', 'Approved', 8, 1, '2025-12-22 12:39:20');
+INSERT INTO `book_donation` (`donation_id`, `donor_id`, `book_title`, `status`, `approver_id`, `is_approved`, `approved_date`, `author`, `isbn`, `book_type`, `description`, `cover_image`, `category_id`, `copies`, `created_at`) VALUES
+(1, 15, 'The Boys', 'Rejected', 15, 0, '2025-12-15 21:43:43', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-12-30 00:34:35'),
+(2, 16, 'THEE ONE', 'Approved', 15, 1, '2025-12-15 21:48:15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-12-30 00:34:35'),
+(3, 15, 'The What', 'Rejected', 15, 0, '2025-12-21 20:55:06', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-12-30 00:34:35'),
+(4, 15, 'The What', 'Rejected', 15, 0, '2025-12-21 20:54:15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-12-30 00:34:35'),
+(5, 17, 'The What', 'Approved', 15, 1, '2025-12-21 21:04:27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-12-30 00:34:35'),
+(6, 10, 'The Leadership Pipeline', 'Approved', 8, 1, '2025-12-22 12:39:20', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-12-30 00:34:35'),
+(7, 17, 'iyio7', 'Rejected', 15, 0, '2025-12-30 00:23:16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-12-30 00:34:35'),
+(8, 17, 'hgvhv', 'Rejected', 15, 0, '2025-12-30 00:36:48', 'nbb', '213-43', 'Ebook', 'jhjg', NULL, 30, 6, '2025-12-30 00:35:06');
 
 -- --------------------------------------------------------
 
@@ -757,7 +782,7 @@ INSERT INTO `book_inventory` (`inventory_id`, `book_id`, `copy_number`, `book_co
 (6, 1, 6, 'Good', 1),
 (7, 1, 7, 'Good', 1),
 (8, 1, 8, 'Good', 1),
-(9, 3, 1, 'Good', 0),
+(9, 3, 1, 'Good', 1),
 (10, 3, 2, 'Good', 0),
 (11, 3, 3, 'Good', 1),
 (12, 4, 1, 'Good', 1),
@@ -842,7 +867,8 @@ INSERT INTO `book_inventory` (`inventory_id`, `book_id`, `copy_number`, `book_co
 (91, 22, 1, 'Good', 1),
 (92, 22, 2, 'Good', 1),
 (93, 22, 3, 'Good', 1),
-(94, 22, 4, 'Good', 1);
+(94, 22, 4, 'Good', 1),
+(95, 23, 1, 'Good', 1);
 
 -- --------------------------------------------------------
 
@@ -912,12 +938,15 @@ INSERT INTO `borrowing` (`borrowing_id`, `user_id`, `inventory_id`, `borrow_date
 (8, 15, 1, '2025-12-21 00:00:00', '2025-12-25 00:00:00', NULL, 0, 5),
 (9, 15, 1, '2025-12-21 00:00:00', '2025-12-25 00:00:00', NULL, 0, 5),
 (10, 17, 1, '2025-12-21 00:00:00', '2025-12-31 00:00:00', '2025-12-21 00:00:00', 0, 2),
-(11, 17, 9, '2025-12-21 00:00:00', '2025-12-22 00:00:00', NULL, 0, 1),
+(11, 17, 9, '2025-12-21 00:00:00', '2025-12-22 00:00:00', '2025-12-29 00:00:00', 0, 2),
 (12, 17, 1, '2025-12-21 00:00:00', '2025-12-23 00:00:00', NULL, 0, 1),
 (13, 10, 10, '2025-12-22 00:00:00', '2025-12-22 00:00:00', NULL, 0, 1),
 (14, 2, 11, '2025-12-23 00:00:00', '2025-12-26 00:00:00', NULL, 0, 4),
 (15, 3, 1, '2025-12-29 00:00:00', '2025-12-30 00:00:00', '2025-12-29 00:00:00', 0, 2),
-(16, 2, 12, '2025-12-29 00:00:00', '2026-01-01 00:00:00', NULL, 0, 4);
+(16, 2, 12, '2025-12-29 00:00:00', '2026-01-01 00:00:00', NULL, 0, 4),
+(17, 17, 15, '2025-12-29 00:00:00', '2025-12-30 00:00:00', NULL, 0, 4),
+(18, 17, 55, '2025-12-29 00:00:00', '2026-01-08 00:00:00', NULL, 0, 4),
+(19, 17, 74, '2025-12-30 00:00:00', '2026-01-01 00:00:00', NULL, 0, 4);
 
 -- --------------------------------------------------------
 
@@ -1216,7 +1245,13 @@ INSERT INTO `notification` (`notification_id`, `user_id`, `title`, `message`, `i
 (30, 1, 'Book Returned', 'User ID 3 has returned the book: \'THE BOOK OF TIME TIME\'.', 0, '2025-12-29 15:03:50'),
 (31, 8, 'Book Returned', 'User ID 3 has returned the book: \'THE BOOK OF TIME TIME\'.', 0, '2025-12-29 15:03:50'),
 (32, 15, 'Book Returned', 'User ID 3 has returned the book: \'THE BOOK OF TIME TIME\'.', 0, '2025-12-29 15:03:50'),
-(33, 5, 'Book Returned', 'User ID 3 has returned the book: \'THE BOOK OF TIME TIME\'.', 0, '2025-12-29 15:03:50');
+(33, 5, 'Book Returned', 'User ID 3 has returned the book: \'THE BOOK OF TIME TIME\'.', 0, '2025-12-29 15:03:50'),
+(34, 1, 'Book Returned', 'User ID 17 has returned the book: \'The What\'.', 0, '2025-12-29 21:58:38'),
+(35, 8, 'Book Returned', 'User ID 17 has returned the book: \'The What\'.', 0, '2025-12-29 21:58:38'),
+(36, 15, 'Book Returned', 'User ID 17 has returned the book: \'The What\'.', 0, '2025-12-29 21:58:38'),
+(37, 5, 'Book Returned', 'User ID 17 has returned the book: \'The What\'.', 0, '2025-12-29 21:58:38'),
+(38, 17, 'Book Donation Rejected', 'Your donated book \'iyio7\' was rejected. Please contact the library for details.', 0, '2025-12-29 22:23:16'),
+(39, 17, 'Book Donation Rejected', 'Your donated book \'hgvhv\' was rejected. Please contact the library for details.', 0, '2025-12-29 22:36:48');
 
 -- --------------------------------------------------------
 
@@ -1567,7 +1602,7 @@ ALTER TABLE `account_blockage`
 -- AUTO_INCREMENT for table `activity_log`
 --
 ALTER TABLE `activity_log`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=525;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=539;
 
 --
 -- AUTO_INCREMENT for table `attendance`
@@ -1579,7 +1614,7 @@ ALTER TABLE `attendance`
 -- AUTO_INCREMENT for table `book`
 --
 ALTER TABLE `book`
-  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `book_category`
@@ -1591,13 +1626,13 @@ ALTER TABLE `book_category`
 -- AUTO_INCREMENT for table `book_donation`
 --
 ALTER TABLE `book_donation`
-  MODIFY `donation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `donation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `book_inventory`
 --
 ALTER TABLE `book_inventory`
-  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
+  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
 
 --
 -- AUTO_INCREMENT for table `book_management_log`
@@ -1615,7 +1650,7 @@ ALTER TABLE `book_rating`
 -- AUTO_INCREMENT for table `borrowing`
 --
 ALTER TABLE `borrowing`
-  MODIFY `borrowing_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `borrowing_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `borrowing_status`
@@ -1687,7 +1722,7 @@ ALTER TABLE `login_history`
 -- AUTO_INCREMENT for table `notification`
 --
 ALTER TABLE `notification`
-  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `recommendation`

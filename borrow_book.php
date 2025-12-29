@@ -35,79 +35,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "Please select a book and due date.";
     } else {
 
-        // Get book type
-        $stmt = $conn->prepare("SELECT book_type FROM book WHERE book_id = ?");
+        /* =========================
+           UNIFIED INVENTORY LOGIC
+           ========================= */
+        $stmt = $conn->prepare("
+            SELECT inventory_id
+            FROM book_inventory
+            WHERE book_id = ?
+              AND is_available = 1
+            LIMIT 1
+        ");
         $stmt->bind_param("i", $book_id);
         $stmt->execute();
-        $res = $stmt->get_result();
+        $invRes = $stmt->get_result();
 
-        if ($res->num_rows === 0) {
-            $errors[] = "Invalid book selected.";
+        if ($invRes->num_rows === 0) {
+            $errors[] = "This book is currently unavailable.";
         } else {
 
-            $book_type = $res->fetch_assoc()['book_type'];
+            $inventory_id = (int)$invRes->fetch_assoc()['inventory_id'];
 
-            /* =========================
-               E-BOOK BORROW
-               ========================= */
-            if ($book_type === 'Ebook') {
+            $stmt = $conn->prepare("
+                INSERT INTO borrowing
+                (user_id, inventory_id, borrow_date, due_date, status_id)
+                VALUES (?, ?, CURDATE(), ?, ?)
+            ");
+            $stmt->bind_param(
+                "iisi",
+                $user_id,
+                $inventory_id,
+                $due_date,
+                $pending_status_id
+            );
 
-                $stmt = $conn->prepare("
-                    INSERT INTO borrowing
-                    (user_id, inventory_id, borrow_date, due_date, status_id)
-                    VALUES (?, NULL, CURDATE(), ?, ?)
-                ");
-                $stmt->bind_param("isi", $user_id, $due_date, $pending_status_id);
-
-                if ($stmt->execute()) {
-                    logActivity($user_id, "Requested to borrow E-book ID $book_id");
-                    header("Location: borrow_book.php?requested=1");
-                    exit;
-                } else {
-                    $errors[] = "Failed to request e-book.";
-                }
-            }
-            /* =========================
-               HARDCOPY BORROW
-               ========================= */ else {
-
-                $stmt = $conn->prepare("
-                    SELECT inventory_id
-                    FROM book_inventory
-                    WHERE book_id = ? AND is_available = 1
-                    LIMIT 1
-                ");
-                $stmt->bind_param("i", $book_id);
-                $stmt->execute();
-                $invRes = $stmt->get_result();
-
-                if ($invRes->num_rows === 0) {
-                    $errors[] = "This hardcopy book is unavailable.";
-                } else {
-
-                    $inventory_id = $invRes->fetch_assoc()['inventory_id'];
-
-                    $stmt = $conn->prepare("
-                        INSERT INTO borrowing
-                        (user_id, inventory_id, borrow_date, due_date, status_id)
-                        VALUES (?, ?, CURDATE(), ?, ?)
-                    ");
-                    $stmt->bind_param(
-                        "iisi",
-                        $user_id,
-                        $inventory_id,
-                        $due_date,
-                        $pending_status_id
-                    );
-
-                    if ($stmt->execute()) {
-                        logActivity($user_id, "Requested to borrow inventory ID $inventory_id");
-                        header("Location: borrow_book.php?requested=1");
-                        exit;
-                    } else {
-                        $errors[] = "Borrow request failed.";
-                    }
-                }
+            if ($stmt->execute()) {
+                logActivity($user_id, "Requested to borrow inventory ID $inventory_id");
+                header("Location: borrow_book.php?requested=1");
+                exit;
+            } else {
+                $errors[] = "Borrow request failed.";
             }
         }
     }
