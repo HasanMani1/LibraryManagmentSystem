@@ -2,6 +2,7 @@
 session_start();
 include 'db_connect.php';
 include 'log_activity.php';
+include 'back_button.php';
 
 
 // Fetch attendance list with event + user info
@@ -31,7 +32,7 @@ $result = $conn->query($sql);
 <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url('images/img_14901_3.jpg');
+           
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -76,53 +77,40 @@ $result = $conn->query($sql);
             background-color: #f2f2f2;
         }
         .alert-success { background-color: #d4edda; color: #155724; }
-        .back-btn {
-            position: fixed;
-            top: 25px;
-            left: 25px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: linear-gradient(135deg, #007bff, #00bfff);
-            color: white;
-            font-weight: 600;
-            border: none;
-            border-radius: 50px;
-            padding: 10px 18px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            text-decoration: none;
-            transition: all 0.3s ease-in-out;
-            z-index: 1000;
+.back-btn {
+    position: fixed;
+    top: 25px;
+    left: 25px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #007bff, #00bfff);
+    color: white;
+    font-weight: 600;
+    border-radius: 50px;
+    padding: 10px 18px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    z-index: 1000;
+}
+               .container {
+            border: 2px solid #94a3b8;
+            border-radius: 10px;
+            padding: 20px;
+            background: white;
         }
 
 </style>
 </head>
 
- <body>
-        <header>
-        <div class="logo">
-            <img src="images/emu-dau-logo.png" alt="EMU Logo">
-            <div class="head">
-                <h4 style="color: white; padding-left:80px;">EASTERN MEDITERRANEAN UNIVERSITY</h4>
-                <h4 style="color: white; padding-left:80px;">ONLINE LIBRARY MANAGEMENT SYSTEM</h4>
-                </div>
-        </div>
-            <nav>
-            <ul> 
-                <li><a href="admin_dashboard.php">HOME</a></li>
-                <li><a href="notifications.php">NOTIFICATIONS</a></li>
-                <li><a href="logout.php">LOGOUT</a></li>
-                </ul>
-            </nav>
-        </header>
+ <body>  
+
 
 <section>
     <br>
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <a href="event_list.php" class="btn btn-secondary back-btn">
-                <i class="bi bi-arrow-left"></i> Back
-            </a>
+
             <h2 class="text-center flex-grow-1 mb-0">Event Attendance List</h2>
         </div>
 
@@ -133,7 +121,7 @@ $result = $conn->query($sql);
                     <th>Event Title</th>
                     <th>Participant</th>
                     <th>Attendance</th>
-                    <th>Feedback</th>
+                   
                 </tr>
             </thead>
             <tbody>
@@ -150,7 +138,7 @@ $result = $conn->query($sql);
                                     <span class="badge bg-secondary">Not Attended</span>
                                 <?php endif; ?>
                             </td>
-                            <td><?= !empty($row['feedback']) ? htmlspecialchars($row['feedback']) : '<em>No feedback</em>' ?></td>
+                            
                         </tr>
                     <?php endwhile; ?>
                 <?php else: ?>
@@ -161,12 +149,5 @@ $result = $conn->query($sql);
     </div>
 </section>
 
-<footer>
-    <p style="color: white; text-align:center;">
-        <br><br>Email: &nbsp;library@emu.edu.tr <br><br>
-        Tel: &nbsp;+90 392 630 xxxx <br><br>
-        Fax: &nbsp;+90 392 630 xxxx <br><br>
-    </p>
-</footer>
 </body>
 </html>

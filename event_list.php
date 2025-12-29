@@ -122,7 +122,7 @@ $result = $conn->query("SELECT * FROM event ORDER BY event_id DESC");
             color: #f8f9fa;
             text-decoration: none;
         }
-        .back-btn i { font-size: 18px; }
+        
 
 
 

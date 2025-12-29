@@ -2,7 +2,7 @@
 include 'db_connect.php';
 include 'back_button.php';
 
-$sql = "SELECT title, description, capacity FROM event
+$sql = "SELECT event_id, title, description, capacity FROM event
         ORDER BY event_id DESC";
 $result = $conn->query($sql);
 ?>
@@ -17,7 +17,7 @@ $result = $conn->query($sql);
 
 <style>
 body {
-    background-image: url('images/img_14901_3.jpg');
+    background-color: white;
     background-size: cover;
     padding-top: 140px;
     font-family: 'Poppins', sans-serif;
@@ -31,12 +31,13 @@ body {
     flex: 1;
 }
 
-.container {
-    background: white;
-    padding: 30px;
-    border-radius: 14px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
+
+       .container {
+            border: 2px solid #94a3b8;
+            border-radius: 10px;
+            padding: 20px;
+            background: white;
+        }
 
 .card {
     border-radius: 14px;
@@ -95,7 +96,10 @@ footer {
             <?php if ($result && $result->num_rows > 0): ?>
                 <?php while ($row = $result->fetch_assoc()): ?>
                     <div class="col-md-4">
-                        <div class="card h-100">
+                        <a href="event.php?id=<?= $row['event_id'] ?>" class="text-decoration-none text-dark">
+                            <div class="card h-100">
+                                
+
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title">
                                     <?= htmlspecialchars($row['title']) ?>
@@ -110,6 +114,7 @@ footer {
                                 </span>
                             </div>
                         </div>
+                </a>
                     </div>
                 <?php endwhile; ?>
             <?php else: ?>

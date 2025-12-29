@@ -253,7 +253,7 @@ $name = $_SESSION['name'];
                             <li><a class="dropdown-item" href="recommended_books.php">Recommended Books</a></li>
                         </ul>
                     </li>
-                   <li><a class="dropdown-item" href="wishlist.php">Wishlist</a></li>
+                   <li><a class="nav-link text-transparent" href="wishlist.php">Wishlist</a></li>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button">Notifications</a>
@@ -272,7 +272,7 @@ $name = $_SESSION['name'];
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link text-danger fw-bold" href="logout.php">Logout</a>
+                        <a class="nav-link text-white fw-bold" href="logout.php">Logout</a>
                     </li>
 
                 </ul>

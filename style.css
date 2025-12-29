@@ -1,101 +1,4 @@
 
-video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    outline: 0;
-    font-size: 100%;
-    vertical-align: baseline;
-    background: transparent;
-}
-
-body {
-    line-height: 1;
-}
-
-
-section {
-    display: block;
-}
-
-nav ul {
-    list-style: none;
-}
-
-blockquote,
-q {
-    quotes: none;
-}
-
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-    content: '';
-    content: none;
-}
-
-a {
-    margin: 0;
-    padding: 0;
-    font-size: 100%;
-    vertical-align: baseline;
-    background: transparent;
-}
-
-/* change colours to suit your needs */
-ins {
-    background-color: #ff9;
-    color: #000;
-    text-decoration: none;
-}
-
-/* change colours to suit your needs */
-mark {
-    background-color: #ff9;
-    color: #000;
-    font-style: italic;
-    font-weight: bold;
-}
-
-del {
-    text-decoration: line-through;
-}
-
-abbr[title],
-dfn[title] {
-    border-bottom: 1px dotted;
-    cursor: help;
-}
-
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
-}
-
-/* change border colour to suit your needs */
-hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 1px solid #cccccc;
-    margin: 1em 0;
-    padding: 0;
-}
-
-input,
-select {
-    vertical-align: middle;
-}
-
-/*----------------------Main COode-----------------------*/
-
-.wrapper {
-    height: 200px;
-    width: 100%;
-    background-color: #024187;
-
-}
 
 header {
     height: 120px;
@@ -103,32 +6,7 @@ header {
     background-color: #024187;
 }
 
-section {
-    height: 750px;
-    width: 100%;
-    background-color: white;
-}
 
-
-footer {
-    margin-top: auto;
-    width: 100%;
-    background-color: #024187;
-    padding: 20px 0;
-}
-        section {
-            background: transparent;
-        }
-        h2 {
-            display: inline-block;                  
-            padding: 12px 25px;                     
-            background: rgba(255, 255, 255, 0.25);  
-            backdrop-filter: blur(10px);            
-            -webkit-backdrop-filter: blur(10px);    
-            border-radius: 12px;                    
-            color: white;                           
-            font-weight: bold;
-        }
 
 .logo {
     float: left;
@@ -165,13 +43,12 @@ footer {
 
 nav {
     float: right;
-    word-spacing: 30px;
+    word-spacing: 0;
     padding: 20px;
 }
 
 nav li {
-    display: inline-block;
-    line-height: 80px;
+    line-height: 30px;
 }
 
 section .sec_img {
@@ -283,54 +160,4 @@ form .login {
     padding: 20px;
 }
 /* Ensure navbar dropdowns behave properly */
-.navbar {
-    position: relative;
-    z-index: 1000;
-}
 
-.navbar .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: auto;
-    right: 0;
-    margin-top: 5px;
-    min-width: 220px;
-    z-index: 1050;
-}
-
-/* Prevent dropdowns from stretching */
-.dropdown-menu {
-    max-height: 350px;
-    overflow-y: auto;
-}
-
-/* Smooth appearance */
-.dropdown-menu {
-    animation: fadeDown 0.2s ease-in-out;
-}
-
-@keyframes fadeDown {
-    from {
-        opacity: 0;
-        transform: translateY(-8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-/* Enable hover-based dropdowns */
-.navbar .dropdown:hover > .dropdown-menu {
-    display: block;
-    margin-top: 0;
-}
-
-/* Prevent click-only behavior conflicts */
-.navbar .dropdown-toggle::after {
-    transition: transform 0.2s ease;
-}
-
-/* Optional: subtle arrow movement on hover */
-.navbar .dropdown:hover .dropdown-toggle::after {
-    transform: rotate(180deg);
-}

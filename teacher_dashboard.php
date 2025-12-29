@@ -167,6 +167,14 @@ $name = $_SESSION['name'];
                         <li><a class="dropdown-item" href="teacher_recommendations.php">Recommended Books</a></li>
                     </ul>
                 </li>
+                     <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button">Notifications</a>
+                        <ul class="dropdown-menu">
+                           
+                            <li><a class="dropdown-item" href="library_hours.php">Library Hours</a></li>
+                       
+                        </ul>
+                    </li>
                 <!-- WISHLIST -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button">
@@ -188,7 +196,7 @@ $name = $_SESSION['name'];
 
                 <!-- SIGN OUT -->
                 <li class="nav-item">
-                    <a class="nav-link text-danger fw-bold" href="logout.php">
+                    <a class="nav-link text-white fw-bold" href="logout.php">
                         Logout
                     </a>
                 </li>

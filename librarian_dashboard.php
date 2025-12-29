@@ -202,7 +202,7 @@ $name = $_SESSION['name'];
 
                 <!-- SIGN OUT -->
                 <li class="nav-item">
-                    <a class="nav-link text-danger fw-bold" href="logout.php">
+                    <a class="nav-link text-white fw-bold" href="logout.php">
                        Logout
                     </a>
                 </li>
