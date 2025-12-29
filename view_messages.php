@@ -25,7 +25,7 @@ $result = $conn->query("
 
 <style>
 body {
-    background-image: url('images/saer.jpg');
+
     background-size: cover;
     background-attachment: fixed;
     padding-top: 140px; /* ✅ pushes content below back button */
@@ -37,6 +37,7 @@ body {
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        border: 2px solid #94a3b8;
 }
 
 table {
@@ -48,8 +49,7 @@ table {
 table th, table td {
     padding: 12px;
     text-align: center; /* ✅ align headers and cells */
-    vertical-align: middle;
-}
+    vertical-align: middle;}
 
 table th {
     background-color: #007bff;

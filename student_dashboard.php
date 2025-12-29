@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+include 'db_connect.php';
 $timeout_duration = 900; // 15 minutes
 
 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) > $timeout_duration) {
@@ -12,15 +13,24 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) >
 $_SESSION['LAST_ACTIVITY'] = time();
 
 include 'db_connect.php';
-// ✅ Fetch upcoming approved events (limit 4)
-$sqlEvents = "
-    SELECT title, description, capacity
-    FROM event
-    WHERE LOWER(TRIM(status)) = 'approved'
-    ORDER BY created_at DESC
+
+
+// ✅ Fetch recommended books for dashboard
+$sqlRecs = "
+    SELECT 
+        b.book_id,
+        b.title,
+        b.author,
+        u.name AS teacher_name
+    FROM recommendation r
+    JOIN book b ON r.book_id = b.book_id
+    JOIN user u ON r.suggested_by = u.user_id
+    WHERE r.display_on_dashboard = 1
+    ORDER BY r.rec_id DESC
     LIMIT 4
 ";
-$eventsResult = $conn->query($sqlEvents);
+$recResult = $conn->query($sqlRecs);
+
 
 // ✅ Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -244,7 +254,8 @@ $name = $_SESSION['name'];
                             <li><a class="dropdown-item" href="recommended_books.php">Recommended Books</a></li>
                         </ul>
                     </li>
-
+                   <li><a class="dropdown-item" href="wishlist.php">Wishlist</a></li>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button">Notifications</a>
                         <ul class="dropdown-menu">
@@ -273,41 +284,65 @@ $name = $_SESSION['name'];
 
 <section style="padding: 40px; text-align:center;">
     <div class="container">
-        <h2>🎓 Welcome, <?php echo htmlspecialchars($name); ?>!</h2>
+        <h2 style="background:none;border:none">🎓 Welcome, <?php echo htmlspecialchars($name); ?>!</h2>
         <hr>
 
-      <div class="card mx-auto mt-4 dashboard-card">
+   <div class="card mx-auto mt-4 dashboard-card">
     <div class="card-body">
 
-        <!-- DASHBOARD INFO -->
-        <hr class="my-4">
+        <h4 class="card-title text-center mb-3">
+            📖 Recommended by Your Teachers
+        </h4>
 
-        <!-- UPCOMING EVENTS -->
-        <h5 class="text-center mb-3">📅 Upcoming Library Events</h5>
-
-        <?php if ($eventsResult && $eventsResult->num_rows > 0): ?>
+        <?php if ($recResult && $recResult->num_rows > 0): ?>
             <div class="events-inside-card">
-                <?php while ($event = $eventsResult->fetch_assoc()): ?>
+                <?php while ($rec = $recResult->fetch_assoc()): ?>
                     <div class="event-row">
-                        <h6 class="event-title">
-                            <?= htmlspecialchars($event['title']); ?>
-                        </h6>
-                        <p class="event-desc">
-                            <?= htmlspecialchars($event['description']); ?>
-                        </p>
-                        <span class="event-capacity">
-                            Capacity: <?= htmlspecialchars($event['capacity']); ?>
-                        </span>
+                        <div class="event-title">
+                            <?= htmlspecialchars($rec['title']); ?>
+                        </div>
+
+                        <div class="event-desc">
+                            Author: <?= htmlspecialchars($rec['author']); ?>
+                        </div>
+
+                        <div class="event-capacity">
+                            Recommended by <?= htmlspecialchars($rec['teacher_name']); ?>
+                        </div>
                     </div>
                 <?php endwhile; ?>
             </div>
+
+            <div class="text-center mt-3">
+                <a href="recommended_books.php" class="btn btn-outline-primary btn-sm" style="
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid #024187;
+            background: transparent;
+            color: #024187;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        "
+        onmouseover="this.style.background='#024187'; this.style.color='white';"
+        onmouseout="this.style.background='transparent'; this.style.color='#024187';">
+                    View All Recommendations
+                </a>
+            </div>
+
         <?php else: ?>
             <p class="text-muted text-center mb-0">
-                No upcoming events at the moment.
+                No recommendations available yet.
             </p>
         <?php endif; ?>
 
     </div>
+</div>
+
 </div>
 
     </div>

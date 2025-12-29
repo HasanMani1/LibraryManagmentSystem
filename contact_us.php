@@ -41,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <style>
         /* Layout for footer */
         body {
-            background-image: url('images/saer.jpg');
             background-size: cover;
 
             margin: 0;
@@ -90,17 +89,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background: #fff;
             padding: 30px;
             border-radius: 10px;
+               border: 2px solid #94a3b8;
         }
 
-        /* FOOTER — SAME AS ALL OTHER PAGES */
-        footer {
-            width: 100%;
-            background-color: #024187;
-            color: white;
-            padding: 25px 0;
-            text-align: center;
-            font-size: 14px;
-        }
+.form-control{
+       border: 2px solid #94a3b8;
+}
     </style>
 </head>
 
@@ -126,13 +120,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     </div>
 
-    <footer>
-        <p>
-            Email: library@emu.edu.tr<br><br>
-            Tel: +90 392 630 xxxx<br><br>
-            Fax: +90 392 630 xxxx
-        </p>
-    </footer>
 
 </body>
 

@@ -50,6 +50,7 @@ $result = $stmt->get_result();
 
         .main-content {
             flex: 1;
+            
         }
 
         .back-btn {
@@ -78,14 +79,9 @@ $result = $stmt->get_result();
             color: #f8f9fa;
         }
 
-        footer {
-            width: 100%;
-            background-color: #024187;
-            color: white;
-            padding: 25px 0;
-            text-align: center;
-            font-size: 14px;
-        }
+   .container{
+        border: 2px solid #94a3b8;
+   }
     </style>
 </head>
 
@@ -136,20 +132,61 @@ $result = $stmt->get_result();
                                             <i class="bi bi-check-circle-fill"></i> In Wishlist
                                         </span>
                                     <?php else: ?>
-                                        <form method="POST"
-                                            action="add_to_wishlist.php"
-                                            class="d-inline me-2"
-                                            onsubmit="return confirm('Add this book to your wishlist?');">
-                                            <input type="hidden" name="book_id" value="<?= $r['book_id']; ?>">
-                                            <button class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-heart"></i> Wishlist
-                                            </button>
-                                        </form>
+                           <form method="POST"
+      action="add_to_wishlist.php"
+      class="d-inline me-2"
+      onsubmit="return confirm('Add this book to your wishlist?');"
+      style="display:inline;">
+      
+    <input type="hidden" name="book_id" value="<?= $r['book_id']; ?>">
+
+    <button type="submit"
+        style="
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid #024187;
+            background: transparent;
+            color: #024187;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        "
+        onmouseover="this.style.background='#024187'; this.style.color='white';"
+        onmouseout="this.style.background='transparent'; this.style.color='#024187';"
+    >
+        <i class="bi bi-heart"></i>
+        Wishlist
+    </button>
+</form>
+
                                     <?php endif; ?>
 
-                                    <a href="borrow_book.php" class="btn btn-sm btn-outline-success">
-                                        <i class="bi bi-book"></i> Borrow
-                                    </a>
+                                   <a href="borrow_book.php"
+   style="
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        border: 1px solid #198754;
+        background: transparent;
+        color: #198754;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+   "
+   onmouseover="this.style.background='#198754'; this.style.color='white';"
+   onmouseout="this.style.background='transparent'; this.style.color='#198754';"
+>
+    <i class="bi bi-book"></i>
+    Borrow
+</a>
+
 
                                 </td>
                             </tr>
@@ -163,13 +200,7 @@ $result = $stmt->get_result();
 
     </div>
 
-    <footer>
-        <p>
-            Email: library@emu.edu.tr<br><br>
-            Tel: +90 392 630 xxxx<br><br>
-            Fax: +90 392 630 xxxx
-        </p>
-    </footer>
+    
 
 </body>
 

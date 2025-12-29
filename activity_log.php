@@ -29,7 +29,7 @@ $result = $conn->query($query);
 body {
             font-family: 'Poppins', sans-serif;
             font-family: Arial, sans-serif;
-            background-image: url('images/saer.jpg');
+
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
@@ -44,6 +44,7 @@ body {
     border-radius: 12px;
     padding: 25px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border: 2px solid #94a3b8;
 }
 h2 {
     text-align: center;

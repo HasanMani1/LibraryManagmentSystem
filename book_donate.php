@@ -71,6 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+              border: 2px solid #94a3b8;
         }
 
         h2 {
@@ -136,15 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             text-decoration: none;
             z-index: 1000;
         }
-
-        footer {
-            width: 100%;
-            background-color: #024187;
-            color: white;
-            padding: 25px 0;
-            text-align: center;
-            font-size: 14px;
-        }
+    
     </style>
 </head>
 
@@ -164,19 +157,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <form method="POST">
                 <label>Title</label>
-                <input type="text" name="title" required>
+                <input type="text" name="title" required style="  border: 2px solid #94a3b8;">
 
                 <label>Author</label>
-                <input type="text" name="author">
+                <input type="text" name="author"style="  border: 2px solid #94a3b8;">
 
                 <label>ISBN</label>
-                <input type="text" name="isbn">
+                <input type="text" name="isbn"style="  border: 2px solid #94a3b8;">
 
                 <label>Book Type</label>
-                <input type="text" name="book_type" placeholder="e.g. Hardcover, eBook, PDF">
+                <input type="text" name="book_type" placeholder="e.g. Hardcover, eBook, PDF"style="  border: 2px solid #94a3b8;">
 
                 <label>Category</label>
-                <select name="category_id">
+                <select name="category_id"style="  border: 2px solid #94a3b8;">
                     <option value="">-- Select Category (Optional) --</option>
                     <?php while ($c = $categories->fetch_assoc()): ?>
                         <option value="<?= $c['category_id'] ?>">
@@ -186,20 +179,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </select>
 
                 <label>Number of Copies</label>
-                <input type="number" name="copies" min="1" required>
+                <input type="number" name="copies" min="1" required style="  border: 2px solid #94a3b8;">
 
                 <button type="submit">Submit Donation</button>
             </form>
         </div>
     </div>
 
-    <footer>
-        <p>
-            Email: library@emu.edu.tr<br><br>
-            Tel: +90 392 630 xxxx<br><br>
-            Fax: +90 392 630 xxxx
-        </p>
-    </footer>
 
 </body>
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Anamakine: 127.0.0.1
--- Üretim Zamanı: 28 Ara 2025, 21:46:53
+-- Üretim Zamanı: 29 Ara 2025, 17:27:57
 -- Sunucu sürümü: 10.4.32-MariaDB
 -- PHP Sürümü: 8.2.12
 
@@ -489,7 +489,65 @@ INSERT INTO `activity_log` (`log_id`, `user_id`, `action`, `timestamp`) VALUES
 (449, 1, 'Logged in successfully', '2025-12-28 22:45:30'),
 (450, 1, 'Logged out', '2025-12-28 22:45:57'),
 (451, 2, 'Logged in successfully', '2025-12-28 22:46:04'),
-(452, 2, 'Logged out', '2025-12-28 22:46:13');
+(452, 2, 'Logged out', '2025-12-28 22:46:13'),
+(453, 1, 'Logged in successfully', '2025-12-29 11:35:10'),
+(454, 1, 'Logged in successfully', '2025-12-29 13:10:29'),
+(455, 1, 'Updated library capacity to 90', '2025-12-29 13:28:42'),
+(456, 1, 'Updated library capacity to 90', '2025-12-29 13:28:49'),
+(457, 1, 'Updated library capacity to 90', '2025-12-29 13:28:50'),
+(458, 1, 'Logged in successfully', '2025-12-29 14:11:57'),
+(459, 1, 'Logged out', '2025-12-29 14:16:23'),
+(460, 5, 'Logged in successfully', '2025-12-29 14:16:31'),
+(461, 5, 'Logged out', '2025-12-29 14:17:54'),
+(462, 1, 'Logged in successfully', '2025-12-29 14:18:00'),
+(463, 1, 'Logged out', '2025-12-29 14:29:04'),
+(464, 5, 'Logged in successfully', '2025-12-29 14:29:49'),
+(465, 5, 'Logged in successfully', '2025-12-29 15:55:27'),
+(466, 5, 'Logged out', '2025-12-29 15:59:33'),
+(467, 2, 'Logged in successfully', '2025-12-29 15:59:49'),
+(468, 2, 'Logged in successfully', '2025-12-29 16:31:18'),
+(469, 2, 'Logged out', '2025-12-29 16:59:49'),
+(470, 3, 'Logged in successfully', '2025-12-29 16:59:57'),
+(471, 3, 'Added book ID 1 to wishlist', '2025-12-29 17:01:00'),
+(472, 3, 'Requested to borrow inventory ID: 1', '2025-12-29 17:01:55'),
+(473, 3, 'Logged out', '2025-12-29 17:02:36'),
+(474, 1, 'Logged in successfully', '2025-12-29 17:02:40'),
+(475, 1, 'Approved borrow ID: 15', '2025-12-29 17:02:48'),
+(476, 1, 'Logged out', '2025-12-29 17:02:52'),
+(477, 3, 'Logged in successfully', '2025-12-29 17:03:21'),
+(478, 3, 'Returned book copy ID: 1', '2025-12-29 17:03:50'),
+(479, 2, 'Logged in successfully', '2025-12-29 17:21:05'),
+(480, 2, 'Logged out', '2025-12-29 17:21:31'),
+(481, 3, 'Logged in successfully', '2025-12-29 17:21:42'),
+(482, 3, 'Logged out', '2025-12-29 17:28:10'),
+(483, 2, 'Logged in successfully', '2025-12-29 17:28:14'),
+(484, 2, 'Logged out', '2025-12-29 17:28:46'),
+(485, 3, 'Logged in successfully', '2025-12-29 17:28:55'),
+(486, 3, 'Added book ID 5 to wishlist', '2025-12-29 17:42:42'),
+(487, 3, 'Added book ID 4 to wishlist', '2025-12-29 17:42:50'),
+(488, 3, 'Added book ID 3 to wishlist', '2025-12-29 17:42:50'),
+(489, 3, 'Removed book ID 4 from wishlist', '2025-12-29 17:43:06'),
+(490, 3, 'Removed book ID 3 from wishlist', '2025-12-29 17:43:08'),
+(491, 3, 'Removed book ID 5 from wishlist', '2025-12-29 17:43:10'),
+(492, 3, 'Removed book ID 1 from wishlist', '2025-12-29 17:43:11'),
+(493, 3, 'Added book ID 4 to wishlist', '2025-12-29 17:44:39'),
+(494, 3, 'Logged out', '2025-12-29 17:51:34'),
+(495, 2, 'Logged in successfully', '2025-12-29 17:52:59'),
+(496, 2, 'Logged out', '2025-12-29 18:05:12'),
+(497, 1, 'Logged in successfully', '2025-12-29 18:07:34'),
+(498, 1, 'Logged out', '2025-12-29 18:09:25'),
+(499, 5, 'Logged in successfully', '2025-12-29 18:09:36'),
+(500, 5, 'Logged out', '2025-12-29 18:12:20'),
+(501, 1, 'Logged in successfully', '2025-12-29 18:12:24'),
+(502, 1, 'Logged out', '2025-12-29 18:13:06'),
+(503, 5, 'Logged in successfully', '2025-12-29 18:13:12'),
+(504, 5, 'Logged out', '2025-12-29 18:14:20'),
+(505, 2, 'Logged in successfully', '2025-12-29 18:14:28'),
+(506, 2, 'Added book ID 1 to wishlist', '2025-12-29 18:15:49'),
+(507, 2, 'Requested to borrow inventory ID: 12', '2025-12-29 18:18:09'),
+(508, 2, 'Logged out', '2025-12-29 18:21:35'),
+(509, 3, 'Logged in successfully', '2025-12-29 18:21:44'),
+(510, 3, 'Logged out', '2025-12-29 18:23:38');
 
 -- --------------------------------------------------------
 
@@ -746,7 +804,9 @@ INSERT INTO `borrowing` (`borrowing_id`, `user_id`, `inventory_id`, `borrow_date
 (11, 17, 9, '2025-12-21 00:00:00', '2025-12-22 00:00:00', NULL, 0, 1),
 (12, 17, 1, '2025-12-21 00:00:00', '2025-12-23 00:00:00', NULL, 0, 1),
 (13, 10, 10, '2025-12-22 00:00:00', '2025-12-22 00:00:00', NULL, 0, 1),
-(14, 2, 11, '2025-12-23 00:00:00', '2025-12-26 00:00:00', NULL, 0, 4);
+(14, 2, 11, '2025-12-23 00:00:00', '2025-12-26 00:00:00', NULL, 0, 4),
+(15, 3, 1, '2025-12-29 00:00:00', '2025-12-30 00:00:00', '2025-12-29 00:00:00', 0, 2),
+(16, 2, 12, '2025-12-29 00:00:00', '2026-01-01 00:00:00', NULL, 0, 4);
 
 -- --------------------------------------------------------
 
@@ -837,7 +897,7 @@ INSERT INTO `event` (`event_id`, `title`, `description`, `status`, `capacity`, `
 (28, 'Book Displaying', 'Creating dynamic displays(re-designing shelfs)', 'Pending', 15, NULL, '2025-12-23 19:33:55'),
 (29, 'Author Meet Up', 'Meet and greet', 'Pending', 25, NULL, '2025-12-28 22:45:38'),
 (30, 'Book Buddy Programs', 'Older students read with younger ones.', 'Pending', 35, NULL, '2025-12-28 22:45:41'),
-(31, 'Book Buddy Programs', 'Older students read with younger ones.', 'Pending', 35, NULL, '2025-12-28 22:45:43');
+(31, 'Book Buddy Programs', 'Older students read with younger ones.', 'Pending', 40, NULL, '2025-12-28 22:45:43');
 
 -- --------------------------------------------------------
 
@@ -939,7 +999,7 @@ CREATE TABLE `library_capacity` (
 --
 
 INSERT INTO `library_capacity` (`capacity_id`, `max_capacity`, `current_occupancy`, `last_updated`, `updated_by`) VALUES
-(1, 100, 100, '2025-12-23 18:32:07', 1);
+(1, 100, 90, '2025-12-29 13:28:50', 1);
 
 -- --------------------------------------------------------
 
@@ -1032,15 +1092,20 @@ INSERT INTO `notification` (`notification_id`, `user_id`, `title`, `message`, `i
 (17, 14, 'Approved Library Event', 'Your proposed library event \'Book Tastings\' has been approved.', 0, '2025-12-22 14:06:18'),
 (18, 1, 'New Event Proposal Submitted', 'A new event proposal titled \'Book Buddy Programs\' has been submitted and is awaiting approval.', 0, '2025-12-22 15:36:53'),
 (19, 1, 'New Event Proposal Submitted', 'A new event proposal titled \'Author Meet Up\' has been submitted and is awaiting approval.', 1, '2025-12-22 16:06:24'),
-(20, 1, 'New Event Proposal Submitted', 'A new event proposal titled \'Book Swap\' has been submitted and is awaiting approval.', 0, '2025-12-23 17:26:39'),
-(21, 1, 'New Event Proposal Submitted', 'A new event proposal titled \'Book Displaying\' has been submitted and is awaiting approval.', 0, '2025-12-23 17:31:34'),
+(20, 1, 'New Event Proposal Submitted', 'A new event proposal titled \'Book Swap\' has been submitted and is awaiting approval.', 1, '2025-12-23 17:26:39'),
+(21, 1, 'New Event Proposal Submitted', 'A new event proposal titled \'Book Displaying\' has been submitted and is awaiting approval.', 1, '2025-12-23 17:31:34'),
 (22, 1, 'New Event Proposal Submitted', 'A new event proposal titled \'Book Displaying\' has been submitted and is awaiting approval.', 0, '2025-12-23 17:32:46'),
 (23, 5, 'Approved Library Event', 'Your proposed library event \'Book Swap\' has been approved.', 1, '2025-12-23 17:33:44'),
 (24, 5, 'Event Proposal Rejected', 'Your event proposal \'Book Displaying\' has been rejected.', 0, '2025-12-23 17:33:50'),
 (25, 5, 'Approved Library Event', 'Your proposed library event \'Book Displaying\' has been approved.', 0, '2025-12-23 17:33:55'),
 (26, 14, 'Approved Library Event', 'Your proposed library event \'Author Meet Up\' has been approved.', 0, '2025-12-28 20:45:38'),
 (27, 14, 'Approved Library Event', 'Your proposed library event \'Book Buddy Programs\' has been approved.', 0, '2025-12-28 20:45:41'),
-(28, 14, 'Approved Library Event', 'Your proposed library event \'Book Buddy Programs\' has been approved.', 0, '2025-12-28 20:45:43');
+(28, 14, 'Approved Library Event', 'Your proposed library event \'Book Buddy Programs\' has been approved.', 0, '2025-12-28 20:45:43'),
+(29, 3, 'Borrow Request Approved', 'Your request to borrow \'THE BOOK OF TIME TIME\' has been approved.', 0, '2025-12-29 15:02:48'),
+(30, 1, 'Book Returned', 'User ID 3 has returned the book: \'THE BOOK OF TIME TIME\'.', 0, '2025-12-29 15:03:50'),
+(31, 8, 'Book Returned', 'User ID 3 has returned the book: \'THE BOOK OF TIME TIME\'.', 0, '2025-12-29 15:03:50'),
+(32, 15, 'Book Returned', 'User ID 3 has returned the book: \'THE BOOK OF TIME TIME\'.', 0, '2025-12-29 15:03:50'),
+(33, 5, 'Book Returned', 'User ID 3 has returned the book: \'THE BOOK OF TIME TIME\'.', 0, '2025-12-29 15:03:50');
 
 -- --------------------------------------------------------
 
@@ -1060,8 +1125,8 @@ CREATE TABLE `recommendation` (
 --
 
 INSERT INTO `recommendation` (`rec_id`, `book_id`, `suggested_by`, `display_on_dashboard`) VALUES
-(2, 1, 3, 1),
-(3, 3, 14, 1);
+(3, 3, 14, 1),
+(11, 1, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -1168,7 +1233,9 @@ CREATE TABLE `wishlist` (
 --
 
 INSERT INTO `wishlist` (`wishlist_id`, `user_id`, `book_id`, `created_at`) VALUES
-(10, 2, 4, '2025-12-23 16:11:13');
+(10, 2, 4, '2025-12-23 16:11:13'),
+(15, 3, 4, '2025-12-29 17:44:39'),
+(16, 2, 1, '2025-12-29 18:15:49');
 
 --
 -- Dökümü yapılmış tablolar için indeksler
@@ -1387,7 +1454,7 @@ ALTER TABLE `account_blockage`
 -- Tablo için AUTO_INCREMENT değeri `activity_log`
 --
 ALTER TABLE `activity_log`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=453;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=511;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `attendance`
@@ -1435,7 +1502,7 @@ ALTER TABLE `book_rating`
 -- Tablo için AUTO_INCREMENT değeri `borrowing`
 --
 ALTER TABLE `borrowing`
-  MODIFY `borrowing_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `borrowing_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `borrowing_status`
@@ -1507,13 +1574,13 @@ ALTER TABLE `login_history`
 -- Tablo için AUTO_INCREMENT değeri `notification`
 --
 ALTER TABLE `notification`
-  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `recommendation`
 --
 ALTER TABLE `recommendation`
-  MODIFY `rec_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `rec_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `reminder`
@@ -1543,7 +1610,7 @@ ALTER TABLE `user`
 -- Tablo için AUTO_INCREMENT değeri `wishlist`
 --
 ALTER TABLE `wishlist`
-  MODIFY `wishlist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `wishlist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Dökümü yapılmış tablolar için kısıtlamalar

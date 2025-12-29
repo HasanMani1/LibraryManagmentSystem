@@ -50,14 +50,7 @@ $isFull = $data['current_occupancy'] >= $data['max_capacity'];
         z-index: 1000;
     }
 
-    footer {
-        width: 100%;
-        background-color: #024187;
-        color: white;
-        padding: 25px 0;
-        text-align: center;
-        font-size: 14px;
-    }
+    
 </style>
 
 <body class="bg-light">
@@ -82,13 +75,7 @@ $isFull = $data['current_occupancy'] >= $data['max_capacity'];
         </div>
     </div>
 
-    <footer>
-        <p>
-            Email: library@emu.edu.tr<br><br>
-            Tel: +90 392 630 xxxx<br><br>
-            Fax: +90 392 630 xxxx
-        </p>
-    </footer>
+
 
 </body>
 

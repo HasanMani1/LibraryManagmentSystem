@@ -87,16 +87,10 @@ $result = $stmt->get_result();
         .back-btn i {
             font-size: 18px;
         }
-
-        /* FOOTER — SAME AS ALL OTHER PAGES */
-        footer {
-            width: 100%;
-            background-color: #024187;
-            color: white;
-            padding: 25px 0;
-            text-align: center;
-            font-size: 14px;
-        }
+.container{
+       border: 2px solid #94a3b8;
+}
+     
     </style>
 </head>
 
@@ -152,14 +146,6 @@ $result = $stmt->get_result();
         </div>
 
     </div>
-
-    <footer>
-        <p>
-            Email: library@emu.edu.tr<br><br>
-            Tel: +90 392 630 xxxx<br><br>
-            Fax: +90 392 630 xxxx
-        </p>
-    </footer>
 
 </body>
 

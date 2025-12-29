@@ -145,6 +145,10 @@ $conn->close();
 .librarian { background: linear-gradient(135deg, #17a2b8, #20c997); }
 .teacher { background: linear-gradient(135deg, #007bff, #00bfff); }
 .student { background: linear-gradient(135deg, #28a745, #34d058); }
+
+.btn{
+   margin-top: 4px;
+}
     </style>
 </head>
 <body>
@@ -222,34 +226,14 @@ $conn->close();
                 <a href="event_proposal.php" class="btn btn-primary">Proposed Events</a>
                  <a href="view_messages.php" class="btn btn-primary">View Messages</a>
                 <a href="manage_capacity.php" class="btn btn-primary">🏢 Manage Capacity</a>
+                   <a href="event_list.php" class="btn btn-primary">Event List</a>
+                    <a href="create_event.php" class="btn btn-primary">Propose Event</a>
                 <a href="logout.php" class="btn btn-danger">Logout</a>
             </div>
         </div>
     </div>
 </section>
-<footer class="site-footer">
-    <div class="footer-container">
 
-        <div class="footer-left">
-            <p>
-                Email: library@emu.edu.tr<br>
-                Tel: +90 392 630 xxxx<br>
-                Fax: +90 392 630 xxxx
-            </p>
-        </div>
-
-        <div class="footer-center">
-            © <?php echo date("Y"); ?> Eastern Mediterranean University Library
-        </div>
-
-        <div class="footer-right">
-            <a href="https://students.emu.edu.tr/" target="_blank">
-                students.emu.edu.tr
-            </a>
-        </div>
-
-    </div>
-</footer>
 
 
 </body>

@@ -15,7 +15,7 @@ session_start();
 </head>
 <style> 
          body {
-            background-image: url('images/library-books.jpg');
+         
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -29,22 +29,6 @@ session_start();
 </style>
 <body >
 
-<header>
-    <div class="logo">
-        <img src="images/emu-dau-logo.png" alt="EMU Logo">
-        <div class="head">
-            <h4 style="color: white; padding-left:80px;">EASTERN MEDITERRANEAN UNIVERSITY</h4>
-            <h4 style="color: white; padding-left:80px;">ONLINE LIBRARY MANAGEMENT SYSTEM</h4>
-        </div>
-    </div>
-
-    <nav>
-        <ul>
-            <li><a href="home.html">HOME</a></li>
-            <li><a href="user_login.php">LOGIN</a></li>
-        </ul>
-    </nav>
-</header>
 
 <section style="padding: 100px; text-align:center;">
     <div class="container">
@@ -59,19 +43,12 @@ session_start();
                 </p>
                 <br>
                 <a href="user_login.php" class="btn btn-primary">Go to Login</a>
-                <a href="home.html" class="btn btn-secondary">Back to Home</a>
+                <a href="librarian_dashboard.php" class="btn btn-secondary">Go back</a>
             </div>
         </div>
     </div>
 </section>
 
-<footer>
-    <p style="color: white; text-align:center;">
-        <br><br>Email: &nbsp;library@emu.edu.tr <br><br>
-        Tel: &nbsp;+90 392 630 xxxx <br><br>
-        Fax: &nbsp;+90 392 630 xxxx <br><br>
-    </p>
-</footer>
 
 </body>
 </html>

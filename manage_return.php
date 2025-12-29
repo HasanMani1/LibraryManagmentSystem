@@ -68,7 +68,6 @@ $result = $stmt->get_result();
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url('images/saer.jpg');
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
@@ -83,6 +82,7 @@ $result = $stmt->get_result();
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                border: 2px solid #94a3b8;
         }
         h2 {
             text-align: center;
@@ -99,6 +99,7 @@ $result = $stmt->get_result();
             padding: 8px;
             border-radius: 5px;
             border: 1px solid #ccc;
+                border: 2px solid #94a3b8;
         }
         button, .btn {
             padding: 6px 12px;

@@ -67,6 +67,7 @@ $result = $conn->query($query);
             padding: 25px 40px;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border: 2px solid #94a3b8;
         }
 
         h1 {
@@ -80,6 +81,7 @@ $result = $conn->query($query);
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
+               border: 2px solid #94a3b8;
         }
 
         th, td {
@@ -102,15 +104,7 @@ $result = $conn->query($query);
             font-weight: bold;
         }
 
-        /* FOOTER — SAME AS OTHER PAGES */
-        footer {
-            width: 100%;
-            background-color: #024187;
-            color: white;
-            padding: 25px 0;
-            text-align: center;
-            font-size: 14px;
-        }
+     
     </style>
 </head>
 
@@ -150,13 +144,7 @@ $result = $conn->query($query);
 
 </div>
 
-<footer>
-    <p>
-        Email: library@emu.edu.tr<br><br>
-        Tel: +90 392 630 xxxx<br><br>
-        Fax: +90 392 630 xxxx
-    </p>
-</footer>
+
 
 </body>
 </html>

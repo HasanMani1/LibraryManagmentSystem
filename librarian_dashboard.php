@@ -168,7 +168,7 @@ $name = $_SESSION['name'];
                         <li><a class="dropdown-item" href="rate_book.php">Rate Books</a></li>
                         <li><a class="dropdown-item" href="view_book_ratings.php">View Book Ratings</a></li>
                         <li><a class="dropdown-item" href="manage_donate.php">Donations</a></li>
-                        <li><a class="dropdown-item" href="recommended_books.php">Recommended Books</a></li>
+                
                     </ul>
                 </li>
 
@@ -224,7 +224,6 @@ $name = $_SESSION['name'];
                 <ul style="text-align:left; display:inline-block;">
                     <li>📖 Manage books and inventory</li>
                     <li>🔄 Handle borrow and return requests</li>
-                    <li>Propose or view library events 📅</li> 
                     <li>📅 Organize and approve book donations</li>
                      <li>📅 Organize and check the events</li>
                 </ul>

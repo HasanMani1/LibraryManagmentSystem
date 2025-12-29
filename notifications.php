@@ -37,7 +37,7 @@ $result = $conn->query(
     <style>
         /* Layout for sticky footer */
         body {
-            background-image: url('images/saer.jpg');
+        
             background-size: cover;
 
             margin: 0;
@@ -84,22 +84,16 @@ $result = $conn->query(
             background: white;
             padding: 30px;
             border-radius: 12px;
+                border: 2px solid #94a3b8;
         }
 
         .unread {
             background-color: #f8f9fa;
             font-weight: 600;
+            
         }
 
-        /* FOOTER — SAME AS OTHER PAGES */
-        footer {
-            width: 100%;
-            background-color: #024187;
-            color: white;
-            padding: 25px 0;
-            text-align: center;
-            font-size: 14px;
-        }
+
     </style>
 </head>
 
@@ -134,13 +128,6 @@ $result = $conn->query(
 
 </div>
 
-<footer>
-    <p>
-        Email: library@emu.edu.tr<br><br>
-        Tel: +90 392 630 xxxx<br><br>
-        Fax: +90 392 630 xxxx
-    </p>
-</footer>
 
 </body>
 </html>

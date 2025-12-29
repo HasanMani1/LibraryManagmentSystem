@@ -70,6 +70,12 @@ $data = $res->fetch_assoc();
         .back-btn i {
             font-size: 18px;
         }
+        .container{
+                border: 2px solid #94a3b8;
+        }
+        .form-control{
+                border: 2px solid #94a3b8;
+        }
 </style>
 <div class="container mt-5">
     <h2 class="text-center mb-4">🏢 Manage Library Capacity</h2>

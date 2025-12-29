@@ -51,7 +51,7 @@ if (isset($_POST['submit'])) {
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-        background-image: url('images/img_14901_3.jpg');
+    
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
@@ -68,7 +68,7 @@ if (isset($_POST['submit'])) {
             border-radius: 20px;
             background: rgba(255,255,255,0.25);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
+                   border: 2px solid #94a3b8;
         }
 
 
@@ -113,6 +113,9 @@ if (isset($_POST['submit'])) {
         }
         .back-btn i {
             font-size: 18px;
+        }
+        .form-control{
+                   border: 2px solid #94a3b8;
         }
     </style>
 </head>

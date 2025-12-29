@@ -122,7 +122,7 @@ while ($r = $res->fetch_assoc()) $active[] = $r;
     body {
       display: flex;
       flex-direction: column;
-      background-image: url('images/saer.jpg');
+    
       background-size: cover;
       background-attachment: fixed;
       margin: 0;
@@ -131,19 +131,6 @@ while ($r = $res->fetch_assoc()) $active[] = $r;
 
     main {
       flex: 1;
-    }
-
-    footer {
-      width: 100%;
-      background: #024187;
-      color: #ffffff;
-      padding: 25px 0;
-      text-align: center;
-      font-size: 14px;
-    }
-
-    footer p {
-      margin: 6px 0;
     }
 
     /* ===== ORIGINAL STYLES — UNTOUCHED ===== */
@@ -217,7 +204,7 @@ while ($r = $res->fetch_assoc()) $active[] = $r;
   <main>
 
     <div class="container">
-      <h1 style="color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.6);">
+      <h1 style="color: #000000ff; text-shadow: 0 2px 6px rgba(0,0,0,0.6);">
         Return Book
       </h1>
 
@@ -250,13 +237,6 @@ while ($r = $res->fetch_assoc()) $active[] = $r;
 
   </main>
 
-  <footer>
-    <p>
-      <br><br>Email: library@emu.edu.tr <br><br>
-      Tel: +90 392 630 xxxx <br><br>
-      Fax: +90 392 630 xxxx <br><br>
-    </p>
-  </footer>
 
 </body>
 

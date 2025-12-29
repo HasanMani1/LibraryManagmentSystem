@@ -35,7 +35,7 @@ $result = $conn->query("SELECT * FROM event ORDER BY event_id DESC");
 <style>
          body {
             font-family: Arial, sans-serif;
-            background-image: url('images/saer.jpg');
+        
             background-size: cover;
             background-attachment: fixed;
             margin: 0;
@@ -49,6 +49,7 @@ $result = $conn->query("SELECT * FROM event ORDER BY event_id DESC");
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+               border: 2px solid #94a3b8;
         }
 
         h2 {
@@ -156,12 +157,6 @@ $result = $conn->query("SELECT * FROM event ORDER BY event_id DESC");
                 <i class="bi bi-plus-circle"></i> CREATE</a>
     </div>
     </section>
-    <footer>
-        <p style="color: white; text-align:center;">
-            <br><br>Email: &nbsp;library@emu.edu.tr <br><br>
-            Tel: &nbsp;+90 392 630 xxxx <br><br>
-            Fax: &nbsp;+90 392 630 xxxx <br><br>
-        </p>
-    </footer>
+
    </body>
  </html>

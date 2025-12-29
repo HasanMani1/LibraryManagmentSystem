@@ -116,6 +116,7 @@ while ($r = $result->fetch_assoc()) {
       padding: 30px;
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        border: 2px solid #94a3b8;
     }
 
     h1 {
@@ -141,7 +142,7 @@ while ($r = $result->fetch_assoc()) {
 
     .stars label {
       font-size: 28px;
-      color: #ccc;
+      color: #000000ff;
       cursor: pointer;
     }
 
@@ -170,15 +171,10 @@ while ($r = $result->fetch_assoc()) {
       font-weight: bold;
       text-decoration: none;
     }
+.form-control{
+    border: 2px solid #94a3b8;
+}
 
-    footer {
-      width: 100%;
-      background-color: #024187;
-      color: white;
-      padding: 25px 0;
-      text-align: center;
-      font-size: 14px;
-    }
   </style>
 </head>
 
@@ -227,13 +223,7 @@ while ($r = $result->fetch_assoc()) {
     </div>
   </div>
 
-  <footer>
-    <p>
-      Email: library@emu.edu.tr<br><br>
-      Tel: +90 392 630 xxxx<br><br>
-      Fax: +90 392 630 xxxx
-    </p>
-  </footer>
+
 
 </body>
 

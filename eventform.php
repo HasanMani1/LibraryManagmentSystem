@@ -1,7 +1,7 @@
 <?php
 session_start();
 include 'db_connect.php';
-
+include 'back_button.php';
 // Fetch events
 $events = $conn->query("SELECT event_id, title FROM event");
 
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <style>
     body {
-        background-image: url('images/img_14901_3.jpg');
+      
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         border-radius: 20px;
         background: rgba(255,255,255,0.25);
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(255,255,255,0.3);
+         border: 2px solid #94a3b8;
     }
 
     .header-text {
@@ -76,6 +76,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         border-radius: 10px;
         font-weight: bold;
     }
+    .form-control{
+            border: 2px solid #94a3b8;
+    }
+           .back-btn {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #007bff, #00bfff);
+            color: white;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 18px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        .back-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #0080ff);
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            color: #f8f9fa;
+            text-decoration: none;
+        }
+        .back-btn i {
+            font-size: 18px;
+        }
 </style>
 </head>
 

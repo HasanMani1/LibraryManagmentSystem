@@ -120,7 +120,7 @@ while ($r = $res->fetch_assoc()) {
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url('images/saer.jpg');
+           
             background-size: cover;
             background-attachment: fixed;
             margin: 0;
@@ -142,19 +142,7 @@ while ($r = $res->fetch_assoc()) {
             flex: 1;
         }
 
-        /* === Footer === */
-        footer {
-            width: 100%;
-            background: #024187;
-            color: #ffffff;
-            padding: 25px 0;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        footer p {
-            margin: 6px 0;
-        }
+   
 
         .container {
             width: 90%;
@@ -164,6 +152,7 @@ while ($r = $res->fetch_assoc()) {
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                   border: 2px solid #94a3b8;
         }
 
         h1 {
@@ -270,7 +259,7 @@ while ($r = $res->fetch_assoc()) {
 
             <form method="post">
                 <label>Choose Book</label>
-                <select name="book_id" required>
+                <select name="book_id" required style="       border: 2px solid #94a3b8;">
                     <option value="">-- Select --</option>
                     <?php foreach ($books as $b): ?>
                         <option value="<?= $b['book_id'] ?>"
@@ -289,13 +278,6 @@ while ($r = $res->fetch_assoc()) {
 
     </main>
 
-    <footer>
-        <p>
-            <br><br>Email: library@emu.edu.tr <br><br>
-            Tel: +90 392 630 xxxx <br><br>
-            Fax: +90 392 630 xxxx <br><br>
-        </p>
-    </footer>
 
 </body>
 

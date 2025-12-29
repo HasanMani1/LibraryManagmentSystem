@@ -145,6 +145,12 @@ $name = $_SESSION['name'];
 
         <div class="collapse navbar-collapse" id="teacherNavbar">
             <ul class="navbar-nav ms-auto">
+ <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button">Events</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="final_event_list.php">Upcoming Events</a></li>
+                        </ul>
+                    </li>
 
                 <!-- BOOKS -->
                 <li class="nav-item dropdown">

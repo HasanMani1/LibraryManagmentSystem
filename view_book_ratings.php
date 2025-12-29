@@ -35,7 +35,6 @@ $result = $conn->query($query);
 
     <style>
         body {
-            background-image: url('images/library-books.jpg');
             background-size: cover;
             background-attachment: fixed;
             margin: 0;
@@ -56,6 +55,7 @@ $result = $conn->query($query);
             padding: 25px 30px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+               border: 2px solid #94a3b8;
         }
 
         table {
@@ -81,7 +81,7 @@ $result = $conn->query($query);
         }
 
         .stars {
-            color: #FFD700;
+            color: #ffda09ff;
             font-size: 18px;
         }
 
@@ -107,14 +107,7 @@ $result = $conn->query($query);
             z-index: 1000;
         }
 
-        footer {
-            width: 100%;
-            background-color: #024187;
-            color: white;
-            padding: 25px 0;
-            text-align: center;
-            font-size: 14px;
-        }
+     
     </style>
 </head>
 
@@ -123,7 +116,6 @@ $result = $conn->query($query);
     <div class="main-content">
         <div class="rating-container">
             <h2 style="color:#024187;">📚 View Book Ratings</h2>
-            <p>See average ratings and reviews for each book.</p>
             <hr>
 
             <?php if ($result && $result->num_rows > 0): ?>
@@ -159,13 +151,7 @@ $result = $conn->query($query);
         </div>
     </div>
 
-    <footer>
-        <p>
-            Email: library@emu.edu.tr<br><br>
-            Tel: +90 392 630 xxxx<br><br>
-            Fax: +90 392 630 xxxx
-        </p>
-    </footer>
+
 
 </body>
 

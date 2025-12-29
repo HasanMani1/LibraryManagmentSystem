@@ -149,7 +149,6 @@ $result = $stmt->get_result();
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url('images/saer.jpg');
             background-size: cover;
             background-attachment: fixed;
             padding-top: 120px;
@@ -161,11 +160,13 @@ $result = $stmt->get_result();
             background: #fff;
             padding: 30px;
             border-radius: 10px;
+                border: 2px solid #94a3b8;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            
         }
 
         th,

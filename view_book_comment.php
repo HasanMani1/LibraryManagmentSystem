@@ -60,6 +60,7 @@ body {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+           border: 2px solid #94a3b8;
 }
 h2 { text-align: center; margin-bottom: 20px; color: #024187; }
 table { width: 100%; border-collapse: collapse; }
@@ -67,22 +68,26 @@ th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
 th { background: #024187; color: #fff; }
 tr:hover { background-color: #f9f9f9; }
 .stars { color: #FFD700; font-size: 16px; }
-.back-btn {
-    display: inline-block;
-    margin-bottom: 15px;
-    padding: 6px 12px;
-    background: #007bff;
-    color: white;
-    border-radius: 5px;
-    text-decoration: none;
-}
+
+        .back-btn {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            padding: 10px 18px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #007bff, #00bfff);
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            z-index: 1000;
+        }
 .back-btn:hover { background: #0056b3; }
 </style>
 </head>
 <body>
 
 <div class="container">
-    <a href="view_ratings.php" class="back-btn"><i class="bi bi-arrow-left"></i> Back to Ratings</a>
+
     <h2>📖 Comments for "<?= htmlspecialchars($book['title']); ?>"</h2>
 
     <?php if ($comments_result->num_rows === 0): ?>

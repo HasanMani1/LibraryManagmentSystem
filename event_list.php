@@ -1,7 +1,9 @@
 <?php
-include 'db_connect.php';
-include 'log_activity.php';
 session_start();
+include 'db_connect.php';
+include 'back_button.php';
+include 'log_activity.php';
+
 
 if (isset($_GET['delete'])) {
     $rid = intval($_GET['delete']);
@@ -32,7 +34,7 @@ $result = $conn->query("SELECT * FROM event ORDER BY event_id DESC");
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
             body {
-            background-image: url('images/img_14901_3.jpg');
+   
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -40,10 +42,7 @@ $result = $conn->query("SELECT * FROM event ORDER BY event_id DESC");
             margin: 0;
             padding: 0;
         }
-        section {
-            background: transparent;
-        }
-
+      
         .header-text { 
             text-align: center;
             margin-bottom: 30px;
@@ -58,6 +57,7 @@ $result = $conn->query("SELECT * FROM event ORDER BY event_id DESC");
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                border: 2px solid #94a3b8;
  }
          table {
             width: 100%;
@@ -97,7 +97,32 @@ $result = $conn->query("SELECT * FROM event ORDER BY event_id DESC");
             transition: all 0.3s ease-in-out;
             z-index: 1000;
         }
-
+   .back-btn {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #007bff, #00bfff);
+            color: white;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 18px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        .back-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #0080ff);
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            color: #f8f9fa;
+            text-decoration: none;
+        }
+        .back-btn i { font-size: 18px; }
 
 
 
@@ -105,24 +130,7 @@ $result = $conn->query("SELECT * FROM event ORDER BY event_id DESC");
 </head>
 
  <body>
-        <header>
-        <div class="logo">
-            <img src="images/emu-dau-logo.png" alt="EMU Logo">
-            <div class="head">
-                <h4 style="color: white; padding-left:80px;">EASTERN MEDITERRANEAN UNIVERSITY</h4>
-                <h4 style="color: white; padding-left:80px;">ONLINE LIBRARY MANAGEMENT SYSTEM</h4>
-                </div>
-        </div>
-            <nav>
-            <ul> 
-                <li><a href="admin_dashboard.php">HOME</a></li>
-                <li><a href="event_feedback.php">FEEDBACK</a></li>
-                <li><a href="event_proposal.php">PROPOSALS</a></li>
-                <li><a href="event_attendance_list.php">ATTENDANCE</a></li>
-                <li><a href="logout.php">LOGOUT</a></li>
-                </ul>
-            </nav>
-        </header>
+      
         <section>
              <br>
         <div class="container">
@@ -162,12 +170,6 @@ $result = $conn->query("SELECT * FROM event ORDER BY event_id DESC");
         </table>
     </section>
     <br>
-    <footer>
-        <p style="color: white; text-align:center;">
-            <br><br>Email: &nbsp;library@emu.edu.tr <br><br>
-            Tel: &nbsp;+90 392 630 xxxx <br><br>
-            Fax: &nbsp;+90 392 630 xxxx <br><br>
-        </p>
-    </footer>
+
    </body>
  </html>

@@ -69,6 +69,9 @@ $result = $stmt->get_result();
         .back-btn i {
             font-size: 18px;
         }
+        .container{
+              border: 2px solid #94a3b8;
+        }
 </style>
 <body class="bg-light">
 

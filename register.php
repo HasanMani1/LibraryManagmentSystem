@@ -66,7 +66,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         /* Centered form styling */
         body {
             font-family: Arial, sans-serif;
-            background-image: url('images/OIP (4).webp');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -76,13 +75,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         form {
-            background: #ffffff;
+            background: #ffffffff;
             width: 400px;
             margin: auto;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
             text-align: center;
+            
         }
 
         h3 {
@@ -95,6 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin: 10px 0 20px;
             border: 1px solid #ccc;
             border-radius: 6px;
+                border: 2px solid #94a3b8;
         }
 
         button {
@@ -125,9 +126,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin: 60px auto;
             padding: 30px;
             border-radius: 20px;
-            background: rgba(255,255,255,0.25);
+            background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
+               border: 2px solid #94a3b8;
         }
         .success { background-color: #d4edda; color: #155724; }
         .error { background-color: #f8d7da; color: #721c24; }

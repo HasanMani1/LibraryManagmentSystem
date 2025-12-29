@@ -62,7 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         /* Centered form styling */
         body {
             font-family: Arial, sans-serif;
-            background-image: url('images/saer.jpg');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -91,6 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin: 10px 0 20px;
             border: 1px solid #ccc;
             border-radius: 6px;
+                border: 2px solid #94a3b8;
         }
 
         button {
@@ -123,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border-radius: 20px;
             background: rgba(255,255,255,0.25);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
+             border: 2px solid #94a3b8;
         }
         .success { background-color: #d4edda; color: #155724; }
         .error { background-color: #f8d7da; color: #721c24; }

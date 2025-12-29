@@ -159,6 +159,10 @@ $donations = $conn->query("
             text-decoration: none;
         }
         .back-btn i { font-size: 18px; }
+
+        .container{
+                border: 2px solid #94a3b8;
+        }
     </style>
 </style>
 </head>

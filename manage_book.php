@@ -74,7 +74,7 @@ while ($c = $categories_result->fetch_assoc()) {
     <style>
          body {
             font-family: Arial, sans-serif;
-            background-image: url('images/saer.jpg');
+         
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
@@ -90,6 +90,7 @@ while ($c = $categories_result->fetch_assoc()) {
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                border: 2px solid #94a3b8;
         }
 
         h2 { text-align: center; margin-bottom: 25px; }
@@ -100,12 +101,14 @@ while ($c = $categories_result->fetch_assoc()) {
             margin-bottom: 20px;
             flex-wrap: wrap;
             gap: 10px;
+            
         }
 
         input[type="text"], select {
             padding: 8px;
             border-radius: 5px;
             border: 1px solid #ccc;
+                border: 2px solid #94a3b8;
         }
 
         button, .btn {

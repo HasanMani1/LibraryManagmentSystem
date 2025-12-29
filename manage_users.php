@@ -96,7 +96,6 @@ $roles = $conn->query("SELECT role_id, role_name FROM role");
         }
 body {
     font-family: Arial, sans-serif;
-    background-image: url('images/saer.jpg');
     background-size: cover;
     background-attachment: fixed;
     padding-top: 120px;
@@ -196,10 +195,10 @@ tr:hover {
 <h2>👥 Manage Users</h2>
 
 <form class="filter-bar" method="GET">
-    <input type="text" name="search" placeholder="Search by name or email..."
+    <input type="text" name="search" style="   border: 2px solid #94a3b8;"placeholder="Search by name or email..."
            value="<?= htmlspecialchars($search); ?>">
 
-    <select name="filter_role">
+    <select name="filter_role"style="   border: 2px solid #94a3b8;">
         <option value="0">All Roles</option>
         <?php while ($r = $roles->fetch_assoc()): ?>
             <option value="<?= $r['role_id']; ?>"

@@ -41,7 +41,7 @@ $result = $stmt->get_result();
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url('images/saer.jpg');
+    
             background-size: cover;
             background-attachment: fixed;
             margin: 0;
@@ -64,6 +64,7 @@ $result = $stmt->get_result();
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+              border: 2px solid #94a3b8;
         }
 
         h1 {
@@ -148,14 +149,6 @@ $result = $stmt->get_result();
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
-        footer {
-            width: 100%;
-            background-color: #024187;
-            color: #ffffff;
-            padding: 25px 0;
-            text-align: center;
-            font-size: 14px;
-        }
     </style>
 </head>
 
@@ -199,13 +192,7 @@ $result = $stmt->get_result();
         </div>
     </div>
 
-    <footer>
-        <p>
-            Email: library@emu.edu.tr<br><br>
-            Tel: +90 392 630 xxxx<br><br>
-            Fax: +90 392 630 xxxx
-        </p>
-    </footer>
+
 
 </body>
 

@@ -132,7 +132,7 @@ $result = $conn->query(
 
 <style>
 body {
-    background-image: url('images/img_14901_3.jpg');
+   
     background-size: cover;
     background-attachment: fixed;
 }
@@ -141,7 +141,10 @@ body {
     margin-top: 40px;
     background: rgba(255,255,255,0.9);
     padding: 30px;
-    border-radius: 10px;}
+    border-radius: 10px;
+        border: 2px solid #94a3b8;
+}
+    
     
         .btn-custom {
             width: 100%;

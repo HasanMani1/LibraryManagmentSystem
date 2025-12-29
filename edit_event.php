@@ -35,7 +35,7 @@ if (isset($_POST['update'])) {
     $update_stmt->bind_param("ssii", $title, $description, $capacity, $event_id);
 
     if ($update_stmt->execute()) {
-        header("Location: event_list.php?updated=1");
+        header("Location: accepted.php?updated=1");
         exit;
     } else {
         echo "Error updating event.";
@@ -51,7 +51,7 @@ if (isset($_POST['update'])) {
     <style>
             body {
             font-family: Arial, sans-serif;
-            background-image: url('images/img_14901_3.jpg');
+       
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -67,9 +67,13 @@ if (isset($_POST['update'])) {
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+               border: 2px solid #94a3b8;
         }
         section {
             background: transparent;
+        }
+        .form-control{
+               border: 2px solid #94a3b8;
         }
     </style>
 </head>
@@ -104,7 +108,7 @@ if (isset($_POST['update'])) {
                         <i class="bi bi-check-circle"></i> Save Changes
                     </button>
 
-                    <a href="event_list.php" class="btn btn-secondary">
+                    <a href="accepted.php" class="btn btn-secondary">
                         <i class="bi bi-arrow-left"></i> Cancel
                     </a>
                 </div>
